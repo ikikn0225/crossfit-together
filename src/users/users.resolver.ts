@@ -5,6 +5,6 @@ import { User } from './entities/user.entity';
 export class UserResolver {
     @Query(returns => [User])
     users(@Args('input') email:string):User[] {
-        return [];
+        return []; 
     }
 }
