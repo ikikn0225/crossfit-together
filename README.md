@@ -1,11 +1,12 @@
 # crossfit-together-backend :weight_lifting_man:
+> CrossFit is also meant to keep the body healthy, but at the same time, to have a good relationship with others. The project can manage CrossFit exercise records, share records with people in the box, and allow them to feel a sense of belonging, thereby helping them with physical health and emotional stability.
 
 ## :hammer: Skill Spec
 + NodeJS FrameWork - NestJS
-    + 선정이유 -
+    + reason to choose -
 + Graphql Server - Apollo Server
-    + 선정이유 - 
+    + reason to choose - 
 + Database - PostgreSQL
-    + 선정이유 - 
+    + reason to choose - 
 + Language - Typescript
-    + 선정이유 - 
+    + reason to choose - 
