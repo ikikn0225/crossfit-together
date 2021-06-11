@@ -1,1 +1,1 @@
-# crossfit-together
+# crossfit-together-backend :weight_lifting_man:
