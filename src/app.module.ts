@@ -30,7 +30,7 @@ import { User } from './user/entities/user.entity';
       "password": process.env.DB_PASSWORD,
       "database": process.env.DB_NAME,
       "synchronize": process.env.NODE_ENV !== 'prod',
-      "logging": true,
+      "logging": process.env.NODE_ENV !== 'prod',
       entities:[
         User
       ]
@@ -41,6 +41,6 @@ import { User } from './user/entities/user.entity';
     UserModule,
   ],
   controllers: [],
-  providers: [UserService],
+  providers: [],
 })
 export class AppModule {}

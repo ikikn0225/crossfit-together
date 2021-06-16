@@ -4,7 +4,11 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 @ObjectType()
 @Entity()
 export class User {
+
   @PrimaryGeneratedColumn()
+  @Field(type => Number)
+  id: number;
+
   @Field(type => String)
   @Column()
   email: string;
