@@ -10,7 +10,7 @@ export class UserResolver {
     ) {}
 
     @Query(returns => [User])
-    users(@Args('input') email:string):User[] {
-        return []; 
+    users(): Promise<User[]> {
+        return this.userService.getAll();
     }
 }
