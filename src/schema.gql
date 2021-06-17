@@ -3,14 +3,47 @@
 # ------------------------------------------------------
 
 type User {
-  id: Float!
-  email: String!
   name: String!
+  email: String!
   password: String!
-  role: String!
+  role: UserRole!
   affiliated: String!
+}
+
+enum UserRole {
+  Crossfiter
+  Coach
+}
+
+type CreateAccountOutput {
+  error: String
+  ok: Boolean!
+}
+
+type LoginOutput {
+  error: String
+  ok: Boolean!
+  token: String
 }
 
 type Query {
   users: [User!]!
+}
+
+type Mutation {
+  createAccount(input: CreateAccountInput!): CreateAccountOutput!
+  login(input: LoginInput!): LoginOutput!
+}
+
+input CreateAccountInput {
+  name: String!
+  email: String!
+  password: String!
+  role: UserRole!
+  affiliated: String!
+}
+
+input LoginInput {
+  email: String!
+  password: String!
 }

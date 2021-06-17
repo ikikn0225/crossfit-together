@@ -8,6 +8,5 @@ import { UserService } from './user.service';
     //forFeature() method to define which repositories are registered in the current scope
     imports:[TypeOrmModule.forFeature([User])],
     providers: [UserResolver, UserService],
-    exports:[UserService],
 })
 export class UserModule {}
