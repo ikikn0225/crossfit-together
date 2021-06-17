@@ -7,6 +7,7 @@ import { ConfigModule } from '@nestjs/config';
 import { UserService } from './user/user.service';
 import * as Joi from 'joi';
 import { User } from './user/entities/user.entity';
+import { CommonModule } from './common/common.module';
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import { User } from './user/entities/user.entity';
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
     }),
     UserModule,
+    CommonModule,
   ],
   controllers: [],
   providers: [],
