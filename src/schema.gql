@@ -4,8 +4,8 @@
 
 type User {
   id: Float!
-  email: String!
   name: String!
+  email: String!
   password: String!
   role: String!
   affiliated: String!

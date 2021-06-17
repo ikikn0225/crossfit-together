@@ -11,11 +11,11 @@ export class User {
 
   @Field(type => String)
   @Column()
-  email: string;
-
+  name: string;
+  
   @Field(type => String)
   @Column()
-  name: string;
+  email: string;
 
   @Field(type => String)
   @Column()
