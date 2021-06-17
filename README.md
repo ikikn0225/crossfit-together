@@ -25,8 +25,9 @@
         + role
         + affiliated
 ### :hammer: User CRUD
-+ Create Account
-+ Log In
++ ~~Create Account~~
++ ~~Log In~~
 + See Profile
 + Edit Profile
-+ Verify Email and Approval of affiliated gym by the coach
++ Verify Email
++ Approval of affiliated gym by the coach
