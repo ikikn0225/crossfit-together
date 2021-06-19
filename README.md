@@ -26,8 +26,9 @@
         + affiliated
 ### :hammer: User CRUD
 + ~~Create Account~~
-+ ~~Log In~~
-+ See Profile
++ Log In
+    + ~~JWT~~
+    + ~~AuthGuard and AuthGuard Decorator~~
 + Edit Profile
 + Verify Email
 + Approval of affiliated gym by the coach
