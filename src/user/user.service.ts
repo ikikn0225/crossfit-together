@@ -5,25 +5,30 @@ import { CreateAccountInput } from './dtos/create-account.dto';
 import { LoginInput } from './dtos/login.dto';
 import { User } from './entities/user.entity';
 import { JwtService } from 'src/jwt/jwt.service';
+import { UserProfileOutput } from './dtos/user-profile.dto';
+import { EditProfileInput, EditProfileOutput } from './dtos/edit-profile.dto';
+import { Verification } from './entities/verification.entity';
 
 @Injectable()
 export class UserService {
     constructor(
-        @InjectRepository(User) private readonly users: Repository<User>,
+        @InjectRepository(User)         
+            private readonly users: Repository<User>,
+        @InjectRepository(Verification) 
+            private readonly verification: Repository<Verification>,
         private readonly jwtService: JwtService,
     ) {}
 
-    getAll(): Promise<User[]> {
-        return this.users.find();
-    }
-
     async createAccount({ name, email, password, role, affiliated }: CreateAccountInput): Promise<{ok: boolean; error?:string;}> {
         try {
-            const user = await this.users.findOne({email});
-            if(user) 
+            const userExist = await this.users.findOne({email});
+            if(userExist) 
                 return {ok:false, error:'There is an existed user with the email'};
 
-            await this.users.save(this.users.create({name, email, password, role, affiliated}));
+            const user = await this.users.save(this.users.create({name, email, password, role, affiliated}));
+            const verification = await this.verification.save(
+                this.verification.create({ user })
+            );
             return {ok: true};
         } catch (e) {
             return {ok:false, error:'Could not create account.'};
@@ -57,7 +62,44 @@ export class UserService {
         }
     }
 
-    async findById(id: number): Promise<User> {
-        return this.users.findOne({ id });
+    async findById(id: number): Promise<UserProfileOutput> {
+        try {
+            const user = await this.users.findOneOrFail({id});
+            if(user) {
+                return {
+                    ok: true,
+                    user,
+                }
+            }
+        } catch (error) {
+            return {
+                ok:false,
+                error:'User not found.',
+            }
+        }
+    }
+
+    async editProfile(
+        userId:number,
+        { email, password }:EditProfileInput
+    ):Promise<EditProfileOutput> {
+        try {
+            const  user = await this.users.findOne(userId);
+            if(email) {
+                user.email = email;
+                user.verified = false;
+                await this.verification.save(this.verification.create({user}));
+            }
+            if(password) {
+                user.password = password;
+            }
+            await this.users.save(user);
+            return {ok:true,}
+        } catch (error) {
+            return {
+                ok:false,
+                error: 'Could not update profile'
+            }
+        }
     }
 }
