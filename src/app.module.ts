@@ -10,6 +10,7 @@ import { User } from './user/entities/user.entity';
 import { CommonModule } from './common/common.module';
 import { JwtModule } from './jwt/jwt.module';
 import { JwtMiddleware } from './jwt/jwt.middleware';
+import { Verification } from './user/entities/verification.entity';
 
 @Module({
   imports: [
@@ -36,7 +37,8 @@ import { JwtMiddleware } from './jwt/jwt.middleware';
       "synchronize": process.env.NODE_ENV !== 'prod',
       "logging": process.env.NODE_ENV !== 'prod',
       entities:[
-        User
+        User,
+        Verification,
       ]
     }),
     GraphQLModule.forRoot({

@@ -30,5 +30,6 @@
     + ~~JWT~~
     + ~~AuthGuard and AuthGuard Decorator~~
 + Edit Profile
++ Delete Profile
 + Verify Email
 + Approval of affiliated gym by the coach
