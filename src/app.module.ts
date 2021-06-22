@@ -11,6 +11,7 @@ import { CommonModule } from './common/common.module';
 import { JwtModule } from './jwt/jwt.module';
 import { JwtMiddleware } from './jwt/jwt.middleware';
 import { Verification } from './user/entities/verification.entity';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -42,9 +43,15 @@ import { Verification } from './user/entities/verification.entity';
       ]
     }),
     GraphQLModule.forRoot({
-      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
-      context: ({ req }) => ({ user: req['user'] }),
+      autoSchemaFile: true,
+      context: ({ req, connection }) => {
+        const TOKEN_KEY = 'x-jwt';
+        return {
+          token: req ? req.headers[TOKEN_KEY] : connection.context[TOKEN_KEY],
+        }
+      },
     }),
+    AuthModule,
     UserModule,
     CommonModule,
     JwtModule.forRoot({

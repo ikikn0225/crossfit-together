@@ -6,19 +6,21 @@ import * as bcrypt from 'bcrypt';
 import { InternalServerErrorException } from '@nestjs/common';
 
 export enum UserRole {
-  Crossfiter = 'Client',
+  Crossfiter = 'Crossfiter',
   Coach = 'Coach'
 };
 
 registerEnumType(UserRole, {name: 'UserRole'});
-
+//ORM?
+//ORM(Object Relational Model)은 사물을 추상화시켜 이해하려는 OOP적 사고방식과 DataModel을 정형화하여 
+//관리하려는 RDB 사이를 연결할 계층의 역할로 제시된 패러다임으로 RDB의 모델을 OOP에 Entity 형태로 투영시키는 방식을 사용한다.
 @InputType({ isAbstract:true })
 @ObjectType()
 @Entity()
 export class User extends CoreEntity {
 
-  @Field(type => String)
-  @Column()
+  @Field(type => String)  // nest(gql) - schema type 지정
+  @Column()               // typeorm
   name: string;
 
   @Field(type => String)
@@ -27,7 +29,7 @@ export class User extends CoreEntity {
   email: string;
 
   @Field(type => String)
-  @Column()
+  @Column({select: false})
   password: string;
 
   @Field(type => UserRole)
@@ -37,7 +39,7 @@ export class User extends CoreEntity {
 
   @Field(type => String)
   @Column()
-  affiliated: string;
+  affiliatedBox: string;
 
   @Field(type => Boolean)
   @Column({ default: false })
@@ -46,10 +48,12 @@ export class User extends CoreEntity {
   @BeforeInsert()
   @BeforeUpdate()
   async hashPassword(): Promise<void> {
-    try {
-      this.password = await bcrypt.hash(this.password, 10);
-    } catch (error) {
-      throw new InternalServerErrorException();
+    if(this.password) {
+      try {
+        this.password = await bcrypt.hash(this.password, 10);
+      } catch (error) {
+        throw new InternalServerErrorException();
+      }
     }
   }
 

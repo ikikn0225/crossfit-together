@@ -32,4 +32,4 @@
 + Edit Profile
 + Delete Profile
 + Verify Email
-+ Approval of affiliated gym by the coach
++ [Crossfiter]Subscription to affiliatedBox Coach that have an authorization to invite to the box 
