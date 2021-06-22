@@ -48,16 +48,16 @@ export class UserResolver {
         return authUser;
     }
 
-    @UseGuards(AuthGuard)
     @Query(returns => UserProfileOutput)
+    @UseGuards(AuthGuard)
     async userProfile(
         @Args() userProfileInput: UserProfileInput
     ):Promise<UserProfileOutput> {
         return this.userService.findById(userProfileInput.userId);
     }
 
-    @UseGuards(AuthGuard)
     @Mutation(returns => EditProfileOutput)
+    @UseGuards(AuthGuard)
     async editProfile(
         @AuthUser() authUser:User,
         @Args('input') editProfileInput:EditProfileInput):Promise<EditProfileOutput> {
