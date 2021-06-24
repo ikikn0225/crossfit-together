@@ -9,6 +9,7 @@ import { UserProfileOutput } from './dtos/user-profile.dto';
 import { EditProfileInput, EditProfileOutput } from './dtos/edit-profile.dto';
 import { Verification } from './entities/verification.entity';
 import { VerifyEmailOutput } from './dtos/verify-email.dto';
+import { MailService } from 'src/mail/mail.service';
 
 @Injectable()
 export class UserService {
@@ -18,6 +19,7 @@ export class UserService {
         @InjectRepository(Verification) 
             private readonly verification: Repository<Verification>,
         private readonly jwtService: JwtService,
+        private readonly mailService: MailService,
     ) {}
 
     async createAccount({ name, email, password, role, affiliatedBox }: CreateAccountInput): Promise<CreateAccountOutput> {
@@ -30,6 +32,7 @@ export class UserService {
             const verification = await this.verification.save(
                 this.verification.create({ user })
             );
+            this.mailService.sendVerificationEmail(user.name, user.email, verification.code);
             return {ok: true};
         } catch (e) {
             return {ok:false, error:'Could not create account.'};
@@ -38,7 +41,7 @@ export class UserService {
 
     async login({ email, password }: LoginInput): Promise<LoginOutput> {
         try {
-            const user = await this.users.findOne({email}, {select:['password']});
+            const user = await this.users.findOne({email}, {select:['id', 'password']});
             if(!user) 
                 return {
                     ok:false,
@@ -89,7 +92,8 @@ export class UserService {
             if(email) {
                 user.email = email;
                 user.verified = false;
-                await this.verification.save(this.verification.create({user}));
+                const verification = await this.verification.save(this.verification.create({user}));
+                this.mailService.sendVerificationEmail(user.name, user.email, verification.code);
             }
             if(password) {
                 user.password = password;

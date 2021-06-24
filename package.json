@@ -27,6 +27,7 @@
     "@nestjs/graphql": "7.10.6",
     "@nestjs/platform-express": "^7.6.15",
     "@nestjs/typeorm": "^7.1.5",
+    "@sendgrid/mail": "^7.4.5",
     "@types/bcrypt": "^5.0.0",
     "@types/jsonwebtoken": "^8.5.1",
     "apollo-server-express": "^2.25.1",
@@ -43,6 +44,7 @@
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^6.6.6",
+    "sendgrid-nodejs": "0.1.0-2",
     "typeorm": "^0.2.34",
     "uuid": "^8.3.2"
   },
