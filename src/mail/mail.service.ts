@@ -14,9 +14,10 @@ export class MailService {
         const sgMail = require('@sendgrid/mail')
         sgMail.setApiKey(this.options.apiKey)
 
-        const name = emailVars[0].value;
-        const to = emailVars[1].value;
-        const code = emailVars[2].value;
+        const name  = emailVars[0].value;
+        const to    = emailVars[1].value;
+        const code  = emailVars[2].value;
+console.log(this.options);
 
         const msg = {
             to:             to,
