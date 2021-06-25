@@ -13,6 +13,9 @@ import { JwtMiddleware } from './jwt/jwt.middleware';
 import { Verification } from './user/entities/verification.entity';
 import { AuthModule } from './auth/auth.module';
 import { MailModule } from './mail/mail.module';
+import { Wod } from './wod/entities/wod.entity';
+import { AffiliatedBox } from './box/entities/box.entity';
+import { AffiliatedBoxModule } from './box/box.module';
 
 @Module({
   imports: [
@@ -44,6 +47,8 @@ import { MailModule } from './mail/mail.module';
       entities:[
         User,
         Verification,
+        Wod,
+        AffiliatedBox,
       ]
     }),
     GraphQLModule.forRoot({
@@ -66,6 +71,7 @@ import { MailModule } from './mail/mail.module';
     AuthModule,
     UserModule,
     CommonModule,
+    AffiliatedBoxModule,
   ],
   controllers: [],
   providers: [],

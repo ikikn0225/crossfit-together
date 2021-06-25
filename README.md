@@ -24,12 +24,25 @@
         + password
         + role
         + affiliated
+        
 ### :hammer: User CRUD
 + ~~Create Account~~
 + Log In
     + ~~JWT~~
     + ~~AuthGuard and AuthGuard Decorator~~
-+ Edit Profile
++ ~~Edit Profile~~
++ ~~Verify Email~~
 + Delete Profile
-+ Verify Email
 + [Crossfiter]Subscription to affiliatedBox Coach that have an authorization to invite to the box 
+
+### :bricks: Box
++ Relation with Wod
++ Relation with Board of Record
++ Relation with Leader Board
++ Hold and Free Trial system
+
+### :clipboard: Wod CRUD
++ Relation with Box
++ Create Wod
++ Edit Wod
++ Delete Wod
