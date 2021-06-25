@@ -15,12 +15,13 @@ export class AuthGuard implements CanActivate {
         private readonly usersService:UserService,) {}
     async canActivate(context: ExecutionContext) {
         const roles = this.reflector.get<AllowedRoles>('roles', context.getHandler());
+        console.log(roles);
         if(!roles) {
             return true;
         }
         const gqlContext = GqlExecutionContext.create(context).getContext();
         const user: User = gqlContext['user'];
-        
+        console.log(gqlContext);
         if (roles.includes('Any')) {
             return true;
         }
