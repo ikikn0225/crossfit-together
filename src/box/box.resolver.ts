@@ -9,17 +9,16 @@ import { AffiliatedBox } from "./entities/box.entity";
 
 Resolver(of => AffiliatedBox)
 export class AffiliatedBoxResolver {
+    constructor(private readonly boxService:AffiliatedBoxService) {}
 
-    constructor(
-        private readonly boxService:AffiliatedBoxService,
-    ) {}
-
-    @Mutation(returns => CreateAffiliatedBoxOutput)
     @Role(["Coach"])
+    @Mutation(returns => CreateAffiliatedBoxOutput)
     async createAffiliatedBox( 
             @AuthUser() authUser:User,
             @Args('input') createAffiliatedBoxInput:CreateAffiliatedBoxInput,
         ): Promise<CreateAffiliatedBoxOutput> {
+            console.log(this.boxService);
+
         return this.boxService.createAffiliatedBox(authUser, createAffiliatedBoxInput);
     }
 }

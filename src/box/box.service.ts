@@ -18,18 +18,18 @@ export class AffiliatedBoxService {
         createAffiliatedBoxInput: CreateAffiliatedBoxInput): Promise<CreateAffiliatedBoxOutput> {
         try {
             const newBox = this.box.create(createAffiliatedBoxInput)
-            newBox.users.push(owner);
-console.log(newBox.users);
+            //유저가 해당 박스의 id 값을 가지고 있는지 체크
+            // newBox.users.push(owner);
 
-            await this.box.save(newBox);
+            // await this.box.save(newBox);
             return {
                 ok:true,
-                affiliatedBoxId: newBox.id,
+                affiliatedBoxId: 1,
             }
         } catch {
             return {
                 ok: false,
-                error: "Could not create restaurant.",
+                error: "Could not create Box.",
             };
         }
     }

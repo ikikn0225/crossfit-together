@@ -45,7 +45,17 @@ export class UserResolver {
     async editProfile(
         @AuthUser() authUser:User,
         @Args('input') editProfileInput:EditProfileInput):Promise<EditProfileOutput> {
-        return this.userService.editProfile(authUser.id, editProfileInput);
+            try {
+                await this.userService.editProfile(authUser.id, editProfileInput);
+                return {
+                    ok: true,
+                }
+            } catch (error) {
+                return {
+                    ok: false,
+                    error
+                }
+            }
     }
 
     @Mutation(returns => VerifyEmailOutput)

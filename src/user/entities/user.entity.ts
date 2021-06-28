@@ -17,7 +17,7 @@ registerEnumType(AffiliatedBoxList, {name: 'AffiliatedBoxList'});
 //ORM?
 //ORM(Object Relational Model)은 사물을 추상화시켜 이해하려는 OOP적 사고방식과 DataModel을 정형화하여 
 //관리하려는 RDB 사이를 연결할 계층의 역할로 제시된 패러다임으로 RDB의 모델을 OOP에 Entity 형태로 투영시키는 방식을 사용한다.
-@InputType({isAbstract: true})
+@InputType("UserInputType", {isAbstract: true})
 @ObjectType()
 @Entity()
 export class User extends CoreEntity {

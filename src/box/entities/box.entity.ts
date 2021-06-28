@@ -15,8 +15,8 @@ export class AffiliatedBox extends CoreEntity {
     @Column()
     name: AffiliatedBoxList;
 
-    @Field(type => String)
-    @Column()
+    @Field(type => String, { nullable: true })
+    @Column({ nullable: true })
     @IsString()
     coverImg: string;
 
