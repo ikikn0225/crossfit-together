@@ -7,7 +7,7 @@ import { CreateAffiliatedBoxInput, CreateAffiliatedBoxOutput } from "./dtos/crea
 import { AffiliatedBox } from "./entities/box.entity";
 
 
-Resolver(of => AffiliatedBox)
+@Resolver(of => AffiliatedBox)
 export class AffiliatedBoxResolver {
     constructor(private readonly boxService:AffiliatedBoxService) {}
 
@@ -17,8 +17,6 @@ export class AffiliatedBoxResolver {
             @AuthUser() authUser:User,
             @Args('input') createAffiliatedBoxInput:CreateAffiliatedBoxInput,
         ): Promise<CreateAffiliatedBoxOutput> {
-            console.log(this.boxService);
-
         return this.boxService.createAffiliatedBox(authUser, createAffiliatedBoxInput);
     }
 }

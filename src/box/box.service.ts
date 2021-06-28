@@ -11,20 +11,23 @@ export class AffiliatedBoxService {
     constructor(
         @InjectRepository(AffiliatedBox)
         private readonly box:Repository<AffiliatedBox>,
+        @InjectRepository(User)         
+        private readonly users: Repository<User>,
     ) {}
 
     async createAffiliatedBox(
         owner: User,
         createAffiliatedBoxInput: CreateAffiliatedBoxInput): Promise<CreateAffiliatedBoxOutput> {
         try {
-            const newBox = this.box.create(createAffiliatedBoxInput)
-            //유저가 해당 박스의 id 값을 가지고 있는지 체크
-            // newBox.users.push(owner);
+            const newBox = this.box.create(createAffiliatedBoxInput);
+            //유저에게 해당 박스의 id 값 담기
+            const user = await this.users.findOne(owner.id);
+            user.affiliatedBoxId = newBox.id;
 
-            // await this.box.save(newBox);
+            await this.box.save(newBox);
             return {
                 ok:true,
-                affiliatedBoxId: 1,
+                affiliatedBoxId: newBox.id,
             }
         } catch {
             return {

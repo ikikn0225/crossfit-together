@@ -40,11 +40,6 @@ export class User extends CoreEntity {
   @IsEnum(UserRole)
   role: UserRole;
 
-  @Field(type => AffiliatedBoxList)
-  @Column({type: 'enum', enum: AffiliatedBoxList})
-  @IsEnum(AffiliatedBoxList)
-  myBox:AffiliatedBoxList;
-
   @ManyToOne(
       type => AffiliatedBox,
       affiliatedBox => affiliatedBox.users,

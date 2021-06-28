@@ -28,7 +28,7 @@ export class UserService {
             if(userExist) 
                 return {ok:false, error:'There is an existed user with the email'};
 
-            const user = await this.users.save(this.users.create({name, email, password, role, myBox}));
+            const user = await this.users.save(this.users.create({name, email, password, role}));
             const verification = await this.verification.save(
                 this.verification.create({ user })
             );

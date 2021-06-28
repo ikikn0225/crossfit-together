@@ -44,12 +44,7 @@ import { AffiliatedBoxModule } from './box/box.module';
       "database": process.env.DB_NAME,
       "synchronize": process.env.NODE_ENV !== 'prod',
       "logging": process.env.NODE_ENV !== 'prod',
-      entities:[
-        User,
-        Verification,
-        Wod,
-        AffiliatedBox,
-      ]
+      entities:[ User, Verification, AffiliatedBox, Wod ]
     }),
     GraphQLModule.forRoot({
       autoSchemaFile: true,
