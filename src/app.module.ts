@@ -13,6 +13,10 @@ import { JwtMiddleware } from './jwt/jwt.middleware';
 import { Verification } from './user/entities/verification.entity';
 import { AuthModule } from './auth/auth.module';
 import { MailModule } from './mail/mail.module';
+import { Wod } from './wod/entities/wod.entity';
+import { AffiliatedBox } from './box/entities/box.entity';
+import { AffiliatedBoxModule } from './box/box.module';
+import { WodModule } from './wod/wod.module';
 
 @Module({
   imports: [
@@ -41,10 +45,7 @@ import { MailModule } from './mail/mail.module';
       "database": process.env.DB_NAME,
       "synchronize": process.env.NODE_ENV !== 'prod',
       "logging": process.env.NODE_ENV !== 'prod',
-      entities:[
-        User,
-        Verification,
-      ]
+      entities:[ User, Verification, AffiliatedBox, Wod ]
     }),
     GraphQLModule.forRoot({
       autoSchemaFile: true,
@@ -65,6 +66,8 @@ import { MailModule } from './mail/mail.module';
     }),
     AuthModule,
     UserModule,
+    AffiliatedBoxModule,
+    WodModule,
     CommonModule,
   ],
   controllers: [],

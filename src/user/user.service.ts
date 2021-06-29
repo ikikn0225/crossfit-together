@@ -10,6 +10,7 @@ import { EditProfileInput, EditProfileOutput } from './dtos/edit-profile.dto';
 import { Verification } from './entities/verification.entity';
 import { VerifyEmailOutput } from './dtos/verify-email.dto';
 import { MailService } from 'src/mail/mail.service';
+import { DeleteAccountOutput } from './dtos/delete-account.dto';
 
 @Injectable()
 export class UserService {
@@ -22,13 +23,13 @@ export class UserService {
         private readonly mailService: MailService,
     ) {}
 
-    async createAccount({ name, email, password, role, affiliatedBox }: CreateAccountInput): Promise<CreateAccountOutput> {
+    async createAccount({ name, email, password, role, myBox }: CreateAccountInput): Promise<CreateAccountOutput> {
         try {
             const userExist = await this.users.findOne({email});
             if(userExist) 
                 return {ok:false, error:'There is an existed user with the email'};
 
-            const user = await this.users.save(this.users.create({name, email, password, role, affiliatedBox}));
+            const user = await this.users.save(this.users.create({name, email, password, role}));
             const verification = await this.verification.save(
                 this.verification.create({ user })
             );
@@ -92,6 +93,7 @@ export class UserService {
             if(email) {
                 user.email = email;
                 user.verified = false;
+                await this.verification.delete({ user: { id: user.id } })
                 const verification = await this.verification.save(this.verification.create({user}));
                 this.mailService.sendVerificationEmail(user.name, user.email, verification.code);
             }
@@ -104,6 +106,30 @@ export class UserService {
             return {
                 ok:false,
                 error: 'Could not update profile'
+            }
+        }
+    }
+
+    async deleteAccount(
+        userId:number
+    ): Promise<DeleteAccountOutput> {
+        try {
+            const user = await this.users.findOne(userId);
+            if(!user) {
+                return {
+                    ok:false,
+                    error:"User not found"
+                }
+            }
+            await this.users.delete(user.id);
+
+            return {
+                ok: true,
+            }
+        } catch (error) {
+            return {
+                ok:false,
+                error
             }
         }
     }

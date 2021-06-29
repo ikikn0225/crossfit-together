@@ -17,7 +17,6 @@ export class MailService {
         const name  = emailVars[0].value;
         const to    = emailVars[1].value;
         const code  = emailVars[2].value;
-console.log(this.options);
 
         const msg = {
             to:             to,

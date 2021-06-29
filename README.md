@@ -24,12 +24,46 @@
         + password
         + role
         + affiliated
+        
 ### :hammer: User CRUD
-+ ~~Create Account~~
++ ~~Create Account~~ **profile image soon**
 + Log In
     + ~~JWT~~
+    + ~~AuthUser, context~~
     + ~~AuthGuard and AuthGuard Decorator~~
-+ Edit Profile
-+ Delete Profile
-+ Verify Email
++ ~~Edit Profile~~
++ ~~Verify Email~~
++ ~~Delete Account~~
++ Log Out
 + [Crossfiter]Subscription to affiliatedBox Coach that have an authorization to invite to the box 
+
+### :bald_man: MyPage
+
+### :bricks: Box
++ ~~Relation with User~~
++ ~~Relation with Wod~~
++ Relation with Board of Record
++ Relation with Leader Board
++ Hold and Free Trial system
++ ~~Create Box~~
++ ~~Delete Box~~
++ Edit Box(change main image) - process on frontend part
+
+### :clipboard: Wod
++ ~~Relation with Box~~
++ ~~Create Wod~~
++ ~~Read Wod~~
++ ~~Edit Wod~~
++ ~~Delete Wod~~
+
+### :file_folder: Board of Record
++ Create Board of Record
++ Read Board of Record
++ Edit Board of Record
++ Delete Board of Record
+
+### :trophy: Leader Board
+
+### :stop_sign: Hold System
+
+### :tickets: Free Trial System

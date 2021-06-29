@@ -4,6 +4,7 @@ import { AuthUser } from 'src/auth/auth-user.decorator';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { Role } from 'src/auth/role-decorator';
 import { CreateAccountInput, CreateAccountOutput } from './dtos/create-account.dto';
+import { DeleteAccountOutput } from './dtos/delete-account.dto';
 import { EditProfileInput, EditProfileOutput } from './dtos/edit-profile.dto';
 import { LoginInput, LoginOutput } from './dtos/login.dto';
 import { UserProfileInput, UserProfileOutput } from './dtos/user-profile.dto';
@@ -26,8 +27,8 @@ export class UserResolver {
         return this.userService.login(loginInput);
     }
 
-    @Query(returns => User)
     @Role(['Any'])
+    @Query(returns => User)
     me(@AuthUser() authUser:User){
         return authUser;
     }
@@ -47,7 +48,25 @@ export class UserResolver {
     async editProfile(
         @AuthUser() authUser:User,
         @Args('input') editProfileInput:EditProfileInput):Promise<EditProfileOutput> {
-        return this.userService.editProfile(authUser.id, editProfileInput);
+            try {
+                await this.userService.editProfile(authUser.id, editProfileInput);
+                return {
+                    ok: true,
+                }
+            } catch (error) {
+                return {
+                    ok: false,
+                    error
+                }
+            }
+    }
+
+    @Role(['Any'])
+    @Mutation(type => DeleteAccountOutput)
+    async deleteAccount(
+        @AuthUser() authUser:User
+    ): Promise<DeleteAccountOutput> {
+        return this.userService.deleteAccount(authUser.id);
     }
 
     @Mutation(returns => VerifyEmailOutput)
