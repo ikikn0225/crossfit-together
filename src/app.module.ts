@@ -11,6 +11,8 @@ import { CommonModule } from './common/common.module';
 import { JwtModule } from './jwt/jwt.module';
 import { JwtMiddleware } from './jwt/jwt.middleware';
 import { Verification } from './user/entities/verification.entity';
+import { AuthModule } from './auth/auth.module';
+import { MailModule } from './mail/mail.module';
 
 @Module({
   imports: [
@@ -18,13 +20,16 @@ import { Verification } from './user/entities/verification.entity';
       isGlobal: true,
       envFilePath: process.env.NODE_ENV === 'dev' ? '.env.dev' : '.env.test',
       validationSchema: Joi.object({
-        NODE_ENV:     Joi.string().valid('dev', 'prod').required(),
-        DB_HOST:      Joi.string().required(),
-        DB_PORT:      Joi.string().required(),
-        DB_USERNAME:  Joi.string().required(),
-        DB_PASSWORD:  Joi.string().required(),
-        DB_NAME:      Joi.string().required(),
-        PRIVATE_KEY:   Joi.string().required(),
+        NODE_ENV:             Joi.string().valid('dev', 'prod').required(),
+        DB_HOST:              Joi.string().required(),
+        DB_PORT:              Joi.string().required(),
+        DB_USERNAME:          Joi.string().required(),
+        DB_PASSWORD:          Joi.string().required(),
+        DB_NAME:              Joi.string().required(),
+        PRIVATE_KEY:          Joi.string().required(),
+        SENDGRID_API_KEY:     Joi.string().required(),
+        SENDGRID_FROM_EMAIL:  Joi.string().required(),
+        SENDGRID_TEMPLATE_ID: Joi.string().required(),
       })
     }),
     TypeOrmModule.forRoot({
@@ -42,14 +47,25 @@ import { Verification } from './user/entities/verification.entity';
       ]
     }),
     GraphQLModule.forRoot({
-      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
-      context: ({ req }) => ({ user: req['user'] }),
+      autoSchemaFile: true,
+      context: ({ req, connection }) => {
+        const TOKEN_KEY = 'x-jwt';
+        return {
+          token: req ? req.headers[TOKEN_KEY] : connection.context[TOKEN_KEY],
+        }
+      },
     }),
-    UserModule,
-    CommonModule,
     JwtModule.forRoot({
       privateKey: process.env.PRIVATE_KEY,
     }),
+    MailModule.forRoot({
+      apiKey: process.env.SENDGRID_API_KEY,
+      fromEmail: process.env.SENDGRID_FROM_EMAIL,
+      templateId: process.env.SENDGRID_TEMPLATE_ID,
+    }),
+    AuthModule,
+    UserModule,
+    CommonModule,
   ],
   controllers: [],
   providers: [],
