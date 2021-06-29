@@ -23,10 +23,10 @@ export class Wod extends CoreEntity {
         box => box.wods,
         { onDelete: 'CASCADE', nullable: false },
     )
-    box: AffiliatedBox;
+    affiliatedBox: AffiliatedBox;
 
-    @RelationId((wod: Wod) => wod.box)
-    boxId: number;
+    @RelationId((wod: Wod) => wod.affiliatedBox)
+    affiliatedBoxId: number;
 
     // @Field(type => Comment)
     // @OneToMany(

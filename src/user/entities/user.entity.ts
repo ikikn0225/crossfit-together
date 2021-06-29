@@ -1,4 +1,4 @@
-import { Field, InputType, ObjectType, registerEnumType } from '@nestjs/graphql';
+import { Field, InputType, Int, ObjectType, registerEnumType } from '@nestjs/graphql';
 import { IsEmail, IsEnum } from 'class-validator';
 import { CoreEntity } from 'src/common/core.entity';
 import { BeforeInsert, BeforeUpdate, Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn, RelationId } from 'typeorm';
@@ -40,12 +40,13 @@ export class User extends CoreEntity {
   @IsEnum(UserRole)
   role: UserRole;
 
+  @Field(type => AffiliatedBox)
   @ManyToOne(
-      type => AffiliatedBox,
-      affiliatedBox => affiliatedBox.users,
-      { onDelete: 'CASCADE' },
+    type => AffiliatedBox,
+    affiliatedbox => affiliatedbox.users,
+    { onDelete: 'SET NULL', nullable: true }
   )
-  affiliatedBox: AffiliatedBox;
+  affiliatedBox?: AffiliatedBox;
 
   @RelationId((user: User) => user.affiliatedBox)
   affiliatedBoxId: number;

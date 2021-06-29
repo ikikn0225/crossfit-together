@@ -28,14 +28,14 @@ export class AffiliatedBox extends CoreEntity {
     @Field(type => [User])
     @OneToMany(
         type => User,
-        user => user.affiliatedBox
+        user => user.affiliatedBox,
     )
     users: User[];
 
     @Field(type => [Wod])
     @OneToMany(
         type => Wod,
-        wod => wod.box,
+        wod => wod.affiliatedBox,
     )
     wods: Wod[];
 }

@@ -10,6 +10,7 @@ import { EditProfileInput, EditProfileOutput } from './dtos/edit-profile.dto';
 import { Verification } from './entities/verification.entity';
 import { VerifyEmailOutput } from './dtos/verify-email.dto';
 import { MailService } from 'src/mail/mail.service';
+import { DeleteAccountOutput } from './dtos/delete-account.dto';
 
 @Injectable()
 export class UserService {
@@ -105,6 +106,30 @@ export class UserService {
             return {
                 ok:false,
                 error: 'Could not update profile'
+            }
+        }
+    }
+
+    async deleteAccount(
+        userId:number
+    ): Promise<DeleteAccountOutput> {
+        try {
+            const user = await this.users.findOne(userId);
+            if(!user) {
+                return {
+                    ok:false,
+                    error:"User not found"
+                }
+            }
+            await this.users.delete(user.id);
+
+            return {
+                ok: true,
+            }
+        } catch (error) {
+            return {
+                ok:false,
+                error
             }
         }
     }

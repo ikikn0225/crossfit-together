@@ -16,6 +16,7 @@ import { MailModule } from './mail/mail.module';
 import { Wod } from './wod/entities/wod.entity';
 import { AffiliatedBox } from './box/entities/box.entity';
 import { AffiliatedBoxModule } from './box/box.module';
+import { WodModule } from './wod/wod.module';
 
 @Module({
   imports: [
@@ -66,6 +67,7 @@ import { AffiliatedBoxModule } from './box/box.module';
     AuthModule,
     UserModule,
     AffiliatedBoxModule,
+    WodModule,
     CommonModule,
   ],
   controllers: [],

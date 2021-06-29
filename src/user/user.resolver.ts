@@ -4,6 +4,7 @@ import { AuthUser } from 'src/auth/auth-user.decorator';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { Role } from 'src/auth/role-decorator';
 import { CreateAccountInput, CreateAccountOutput } from './dtos/create-account.dto';
+import { DeleteAccountOutput } from './dtos/delete-account.dto';
 import { EditProfileInput, EditProfileOutput } from './dtos/edit-profile.dto';
 import { LoginInput, LoginOutput } from './dtos/login.dto';
 import { UserProfileInput, UserProfileOutput } from './dtos/user-profile.dto';
@@ -56,6 +57,14 @@ export class UserResolver {
                     error
                 }
             }
+    }
+
+    @Role(['Any'])
+    @Mutation(type => DeleteAccountOutput)
+    async deleteAccount(
+        @AuthUser() authUser:User
+    ): Promise<DeleteAccountOutput> {
+        return this.userService.deleteAccount(authUser.id);
     }
 
     @Mutation(returns => VerifyEmailOutput)

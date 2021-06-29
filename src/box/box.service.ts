@@ -3,6 +3,8 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { User } from "src/user/entities/user.entity";
 import { Repository } from "typeorm";
 import { CreateAffiliatedBoxInput, CreateAffiliatedBoxOutput } from "./dtos/create-box.dto";
+import { DeleteAffiliatedBoxOutput } from "./dtos/delete-box.dto";
+import { MyAffiliatedBoxUsersOutput } from "./dtos/my-affiliated-box-users.dto";
 import { AffiliatedBox } from "./entities/box.entity";
 
 
@@ -20,11 +22,11 @@ export class AffiliatedBoxService {
         createAffiliatedBoxInput: CreateAffiliatedBoxInput): Promise<CreateAffiliatedBoxOutput> {
         try {
             const newBox = this.box.create(createAffiliatedBoxInput);
-            //유저에게 해당 박스의 id 값 담기
             const user = await this.users.findOne(owner.id);
-            user.affiliatedBoxId = newBox.id;
+            user.affiliatedBox = newBox;
 
             await this.box.save(newBox);
+            await this.users.save(user);
             return {
                 ok:true,
                 affiliatedBoxId: newBox.id,
@@ -34,6 +36,44 @@ export class AffiliatedBoxService {
                 ok: false,
                 error: "Could not create Box.",
             };
+        }
+    }
+
+    async deleteAffiliatedBox( user:User ):Promise<DeleteAffiliatedBoxOutput> {
+        try {
+            const affiliatedBox = await this.box.findOne(user.affiliatedBoxId);
+            if(!affiliatedBox) {
+                return {
+                    ok:false,
+                    error: "Affiliated Box not found.",
+                }
+            }
+            await this.box.delete(affiliatedBox.id);
+            return {
+                ok:true,
+            }
+        } catch (error) {
+            return {
+                ok:false,
+                error
+            }
+        }
+    }
+
+    async myAffiliatedBoxUsers( user:User ):Promise<MyAffiliatedBoxUsersOutput> {
+        try {
+            const affiliatedBox = await this.box.findOne(user.affiliatedBoxId);
+            const users = await this.users.find({affiliatedBox});
+            
+            return {
+                users: users,
+                ok:true,
+            }
+        } catch (error) {
+            return {
+                ok:false,
+                error
+            }
         }
     }
 }
