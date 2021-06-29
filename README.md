@@ -34,7 +34,10 @@
 + ~~Edit Profile~~
 + ~~Verify Email~~
 + ~~Delete Account~~
++ Log Out
 + [Crossfiter]Subscription to affiliatedBox Coach that have an authorization to invite to the box 
+
+### :bald_man: MyPage
 
 ### :bricks: Box
 + ~~Relation with User~~
