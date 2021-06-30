@@ -42,7 +42,7 @@
 ### :bricks: Box
 + ~~Relation with User~~
 + ~~Relation with Wod~~
-+ Relation with Board of Record
++ ~~Relation with Board of Record(Box -> Wod -> Bor)~~
 + Relation with Leader Board
 + Hold and Free Trial system
 + ~~Create Box~~
@@ -57,12 +57,18 @@
 + ~~Delete Wod~~
 
 ### :file_folder: Board of Record
-+ Create Board of Record
-+ Read Board of Record
-+ Edit Board of Record
-+ Delete Board of Record
++ ~~Create Board of Record~~
++ ~~Read Board of Record~~
++ ~~Edit Board of Record~~
++ ~~Delete Board of Record~~
 
 ### :trophy: Leader Board
++ constants of 1RM
++ constants of Named WODs
++ Create 1RM and Named WODs
++ Read 1RM and Named WODs
++ Edit 1RM and Named WODs
++ Delete 1RM and Named WODs
 
 ### :stop_sign: Hold System
 

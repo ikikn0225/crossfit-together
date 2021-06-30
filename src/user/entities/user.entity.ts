@@ -1,11 +1,12 @@
 import { Field, InputType, Int, ObjectType, registerEnumType } from '@nestjs/graphql';
 import { IsEmail, IsEnum } from 'class-validator';
 import { CoreEntity } from 'src/common/core.entity';
-import { BeforeInsert, BeforeUpdate, Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn, RelationId } from 'typeorm';
+import { BeforeInsert, BeforeUpdate, Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn, RelationId } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { InternalServerErrorException } from '@nestjs/common';
 import { AffiliatedBox } from 'src/box/entities/box.entity';
 import { AffiliatedBoxList } from 'src/box/box.enums';
+import { Bor } from 'src/board-of-record/entities/board-of-record.entity';
 
 export enum UserRole {
   Crossfiter = 'Crossfiter',
@@ -50,6 +51,13 @@ export class User extends CoreEntity {
 
   @RelationId((user: User) => user.affiliatedBox)
   affiliatedBoxId: number;
+
+  @Field(type => [Bor])
+  @OneToMany(
+    type => Bor,
+    bor => bor.owner,
+  )
+  bors: Bor[];
 
   @Field(type => Boolean)
   @Column({ default: false })

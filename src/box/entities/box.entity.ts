@@ -1,5 +1,6 @@
 import { Field, InputType, ObjectType } from "@nestjs/graphql";
 import { IsString } from "class-validator";
+import { Bor } from "src/board-of-record/entities/board-of-record.entity";
 import { CoreEntity } from "src/common/core.entity";
 import { User } from "src/user/entities/user.entity";
 import { Wod } from "src/wod/entities/wod.entity";
