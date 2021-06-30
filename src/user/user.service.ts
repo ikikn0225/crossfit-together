@@ -69,7 +69,7 @@ export class UserService {
 
     async findById(id: number): Promise<UserProfileOutput> {
         try {
-            const user = await this.users.findOneOrFail({id});
+            const user = await this.users.findOneOrFail({id}, {relations:['bors']});
             if(user) {
                 return {
                     ok: true,

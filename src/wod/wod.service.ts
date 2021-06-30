@@ -1,5 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
+import { Bor } from "src/board-of-record/entities/board-of-record.entity";
 import { AffiliatedBox } from "src/box/entities/box.entity";
 import { User } from "src/user/entities/user.entity";
 import { Repository } from "typeorm";
@@ -18,6 +19,8 @@ export class WodService {
             private readonly wods:Repository<Wod>,
         @InjectRepository(AffiliatedBox)
             private readonly affiliatedBoxes:Repository<AffiliatedBox>,
+        @InjectRepository(Bor)
+            private readonly bors:Repository<Bor>,
     ) {}
 
     async createWod(

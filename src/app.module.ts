@@ -17,6 +17,8 @@ import { Wod } from './wod/entities/wod.entity';
 import { AffiliatedBox } from './box/entities/box.entity';
 import { AffiliatedBoxModule } from './box/box.module';
 import { WodModule } from './wod/wod.module';
+import { BorModule } from './board-of-record/board-of-record.module';
+import { Bor } from './board-of-record/entities/board-of-record.entity';
 
 @Module({
   imports: [
@@ -45,7 +47,7 @@ import { WodModule } from './wod/wod.module';
       "database": process.env.DB_NAME,
       "synchronize": process.env.NODE_ENV !== 'prod',
       "logging": process.env.NODE_ENV !== 'prod',
-      entities:[ User, Verification, AffiliatedBox, Wod ]
+      entities:[ User, Verification, AffiliatedBox, Wod, Bor, ]
     }),
     GraphQLModule.forRoot({
       autoSchemaFile: true,
@@ -68,6 +70,7 @@ import { WodModule } from './wod/wod.module';
     UserModule,
     AffiliatedBoxModule,
     WodModule,
+    BorModule,
     CommonModule,
   ],
   controllers: [],
