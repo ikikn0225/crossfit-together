@@ -7,6 +7,8 @@ import { InternalServerErrorException } from '@nestjs/common';
 import { AffiliatedBox } from 'src/box/entities/box.entity';
 import { AffiliatedBoxList } from 'src/box/box.enums';
 import { Bor } from 'src/board-of-record/entities/board-of-record.entity';
+import { LeaderBoardOneRm } from 'src/leader-board/entities/lb-one-rm.entity';
+import { LeaderBoardNamedWod } from 'src/leader-board/entities/lb-named-wods.entity';
 
 export enum UserRole {
   Crossfiter = 'Crossfiter',
@@ -58,6 +60,20 @@ export class User extends CoreEntity {
     bor => bor.owner,
   )
   bors: Bor[];
+
+  @Field(type => [LeaderBoardOneRm])
+  @OneToMany(
+    type => LeaderBoardOneRm,
+    lbOneRms => lbOneRms.owner,
+  )
+  lbOneRms: LeaderBoardOneRm[];
+
+  @Field(type => [LeaderBoardNamedWod])
+  @OneToMany(
+    type => LeaderBoardNamedWod,
+    lbNamedWods => lbNamedWods.owner,
+  )
+  lbNamedWods: LeaderBoardNamedWod[];
 
   @Field(type => Boolean)
   @Column({ default: false })

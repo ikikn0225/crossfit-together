@@ -58,18 +58,28 @@
 
 ### :file_folder: Board of Record
 + ~~Create Board of Record~~
-+ ~~Read Board of Record~~
++ ~~Read Board of Record(Both Main(all users) and Mypage(only mine))~~
 + ~~Edit Board of Record~~
 + ~~Delete Board of Record~~
 
 ### :trophy: Leader Board
-+ constants of 1RM
-+ constants of Named WODs
-+ Create 1RM and Named WODs
-+ Read 1RM and Named WODs
-+ Edit 1RM and Named WODs
-+ Delete 1RM and Named WODs
++ ~~constants of 1RM~~
++ ~~constants of Named WODs~~
++ ~~Create 1RM and Named WODs~~
++ ~~Read 1RM and Named WODs(Both Main(all users) and Mypage(only mine))~~
++ ~~Edit 1RM and Named WODs~~
++ ~~Delete 1RM and Named WODs~~
 
 ### :stop_sign: Hold System
++ Create Hold
++ Read Holds
++ Edit Hold
++ Delete Hold
 
 ### :tickets: Free Trial System
++ Create Free Trial
++ Read Free Trials
++ Edit Free Trial
++ Delete Free Trial
+
+### :date: TimeTable
