@@ -58,7 +58,9 @@
 
 ### :file_folder: Board of Record
 + ~~Create Board of Record~~
-+ ~~Read Board of Record(Both Main(all users) and Mypage(only mine))~~
++ ~~Read Board of Record~~
+    + ~~Main(all users)~~
+    + ~~Mypage(only mine)~~
 + ~~Edit Board of Record~~
 + ~~Delete Board of Record~~
 
@@ -71,9 +73,10 @@
 + ~~Delete 1RM and Named WODs~~
 
 ### :stop_sign: Hold System
-+ Create Hold
-+ Read Holds
-+ Edit Hold
++ ~~Register Hold~~
++ Read Holds(Both Main(all users) and Mypage(only mine))
+    + Main(all users) orerby holdAt
+    + Mypage(only mine) orerby holdAt
 + Delete Hold
 
 ### :tickets: Free Trial System

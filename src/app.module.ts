@@ -22,6 +22,8 @@ import { Bor } from './board-of-record/entities/board-of-record.entity';
 import { LeaderBoardOneRm } from './leader-board/entities/lb-one-rm.entity';
 import { LeaderBoardModule } from './leader-board/leader-board.module';
 import { LeaderBoardNamedWod } from './leader-board/entities/lb-named-wods.entity';
+import { Hold } from './hold/entities/hold.entity';
+import { HoldModule } from './hold/hold.module';
 
 @Module({
   imports: [
@@ -50,7 +52,7 @@ import { LeaderBoardNamedWod } from './leader-board/entities/lb-named-wods.entit
       "database": process.env.DB_NAME,
       "synchronize": process.env.NODE_ENV !== 'prod',
       "logging": process.env.NODE_ENV !== 'prod',
-      entities:[ User, Verification, AffiliatedBox, Wod, Bor, LeaderBoardOneRm, LeaderBoardNamedWod ]
+      entities:[ User, Verification, AffiliatedBox, Wod, Bor, LeaderBoardOneRm, LeaderBoardNamedWod, Hold ]
     }),
     GraphQLModule.forRoot({
       autoSchemaFile: true,
@@ -75,6 +77,7 @@ import { LeaderBoardNamedWod } from './leader-board/entities/lb-named-wods.entit
     WodModule,
     BorModule,
     LeaderBoardModule,
+    HoldModule,
     CommonModule,
   ],
   controllers: [],

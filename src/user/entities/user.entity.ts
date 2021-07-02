@@ -9,6 +9,8 @@ import { AffiliatedBoxList } from 'src/box/box.enums';
 import { Bor } from 'src/board-of-record/entities/board-of-record.entity';
 import { LeaderBoardOneRm } from 'src/leader-board/entities/lb-one-rm.entity';
 import { LeaderBoardNamedWod } from 'src/leader-board/entities/lb-named-wods.entity';
+import { Hold } from 'src/hold/entities/hold.entity';
+import { type } from 'os';
 
 export enum UserRole {
   Crossfiter = 'Crossfiter',
@@ -74,6 +76,13 @@ export class User extends CoreEntity {
     lbNamedWods => lbNamedWods.owner,
   )
   lbNamedWods: LeaderBoardNamedWod[];
+
+  @Field(type => [Hold])
+  @OneToMany(
+    type => Hold,
+    holds => holds.owner,
+  )
+  holds: Hold[];
 
   @Field(type => Boolean)
   @Column({ default: false })

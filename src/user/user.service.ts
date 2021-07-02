@@ -11,6 +11,7 @@ import { Verification } from './entities/verification.entity';
 import { VerifyEmailOutput } from './dtos/verify-email.dto';
 import { MailService } from 'src/mail/mail.service';
 import { DeleteAccountOutput } from './dtos/delete-account.dto';
+import { AffiliatedBox } from 'src/box/entities/box.entity';
 
 @Injectable()
 export class UserService {
@@ -19,17 +20,26 @@ export class UserService {
             private readonly users: Repository<User>,
         @InjectRepository(Verification) 
             private readonly verification: Repository<Verification>,
+        @InjectRepository(AffiliatedBox)
+            private readonly boxs:Repository<AffiliatedBox>,
         private readonly jwtService: JwtService,
         private readonly mailService: MailService,
     ) {}
 
     async createAccount({ name, email, password, role, myBox }: CreateAccountInput): Promise<CreateAccountOutput> {
         try {
-            const userExist = await this.users.findOne({email});
-            if(userExist) 
+            let user = await this.users.findOne({email});
+            if(user) 
                 return {ok:false, error:'There is an existed user with the email'};
-
-            const user = await this.users.save(this.users.create({name, email, password, role}));
+            const affiliatedBox = await this.boxs.findOne({name:myBox});
+            
+            if(role === 'Coach') {
+                //Coach
+                user = await this.users.save(this.users.create({name, email, password, role}));
+            } else {
+                //Crossfiter
+                user = await this.users.save(this.users.create({name, email, password, role, affiliatedBox}));
+            }
             const verification = await this.verification.save(
                 this.verification.create({ user })
             );
