@@ -5,10 +5,10 @@ import { Bor } from "../entities/board-of-record.entity";
 
 
 @InputType()
-export class RecordListInput extends PickType(Wod, ['id']) {}
+export class MyBoardofRecordInput extends PickType(Wod, ['id']) {}
 
 @ObjectType()
-export class RecordListOutput extends CoreOutput {
+export class MyBoardofRecordOutput extends CoreOutput {
     @Field(type => [Bor])
     bors?:Bor[];
 }

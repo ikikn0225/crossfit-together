@@ -6,8 +6,9 @@ import { BorService } from "./board-of-record.service";
 import { CreateBorInput, CreateBorOutput } from "./dtos/create-record.dto";
 import { DeleteBorInput, DeleteBorOutput } from "./dtos/delete-record.dto";
 import { EditBorInput, EditBorOutput } from "./dtos/edit-record.dto";
-import { RecordListInput, RecordListOutput } from "./dtos/record-list.dto";
+import { AllBoardofRecordInput, AllBoardofRecordOutput } from "./dtos/all-board-of-records.dto";
 import { Bor } from "./entities/board-of-record.entity";
+import { MyBoardofRecordInput, MyBoardofRecordOutput } from "./dtos/my-board-of-records.dto";
 
 
 @Resolver(() => Bor)
@@ -44,10 +45,19 @@ export class BorResolver {
     }
 
     @Role(['Any'])
-    @Query(type => RecordListOutput)
-    async recordList(
-        @Args('input') recordListInput:RecordListInput
-    ):Promise<RecordListOutput> {
-        return this.borService.recordList(recordListInput);
+    @Query(type => AllBoardofRecordOutput)
+    async allBoardofRecords(
+        @Args('input') allBoardofRecordInput:AllBoardofRecordInput
+    ):Promise<AllBoardofRecordOutput> {
+        return this.borService.allBoardofRecords(allBoardofRecordInput);
+    }
+
+    @Role(['Any'])
+    @Query(type => MyBoardofRecordOutput)
+    async myBoardofRecords(
+        @AuthUser() authUser:User,
+        @Args('input') myBoardofRecordInput:MyBoardofRecordInput
+    ):Promise<MyBoardofRecordOutput> {
+        return this.borService.myBoardofRecords(authUser, myBoardofRecordInput);
     }
 }

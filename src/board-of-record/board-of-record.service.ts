@@ -6,8 +6,9 @@ import { Repository } from "typeorm";
 import { CreateBorInput, CreateBorOutput } from "./dtos/create-record.dto";
 import { DeleteBorInput, DeleteBorOutput } from "./dtos/delete-record.dto";
 import { EditBorInput, EditBorOutput } from "./dtos/edit-record.dto";
-import { RecordListInput, RecordListOutput } from "./dtos/record-list.dto";
+import { AllBoardofRecordInput, AllBoardofRecordOutput } from "./dtos/all-board-of-records.dto";
 import { Bor } from "./entities/board-of-record.entity";
+import { MyBoardofRecordInput, MyBoardofRecordOutput } from "./dtos/my-board-of-records.dto";
 
 
 @Injectable()
@@ -108,16 +109,48 @@ export class BorService {
         }
     }
 
-    async recordList(
-        {id}:RecordListInput
-    ):Promise<RecordListOutput> {
+    async allBoardofRecords(
+        {id}:AllBoardofRecordInput
+    ):Promise<AllBoardofRecordOutput> {
         try {
             const wod = await this.wods.findOne({id});
             const bors = await this.bors.find({wod});
+            if(!wod) {
+                return {
+                    ok:false,
+                    error:"Wod not found."
+                }
+            }
             return {
                 bors,
                 ok:true,
             }
+        } catch (error) {
+            return {
+                ok:false,
+                error
+            }
+        }
+    }
+
+    async myBoardofRecords(
+        authUser:User,
+        {id}:MyBoardofRecordInput
+    ):Promise<MyBoardofRecordOutput> {
+        try {
+            const wod = await this.wods.findOne({id});
+            const bors = await this.bors.find({wod, owner:authUser});
+            if(!wod) {
+                return {
+                    ok:false,
+                    error:"Wod not found."
+                }
+            }
+            return {
+                ok:true,
+                bors
+            }
+            
         } catch (error) {
             return {
                 ok:false,
