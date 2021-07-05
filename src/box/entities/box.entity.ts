@@ -2,6 +2,7 @@ import { Field, InputType, ObjectType } from "@nestjs/graphql";
 import { IsString } from "class-validator";
 import { Bor } from "src/board-of-record/entities/board-of-record.entity";
 import { CoreEntity } from "src/common/core.entity";
+import { FreeTrial } from "src/free-trial/entities/ft.entity";
 import { Hold } from "src/hold/entities/hold.entity";
 import { LeaderBoardNamedWod } from "src/leader-board/entities/lb-named-wods.entity";
 import { LeaderBoardOneRm } from "src/leader-board/entities/lb-one-rm.entity";
@@ -49,6 +50,13 @@ export class AffiliatedBox extends CoreEntity {
         hold => hold.affiliatedBox,
     )
     holds: Hold[];
+
+    @Field(type => [FreeTrial])
+    @OneToMany(
+        type => FreeTrial,
+        ft => ft.affiliatedBox
+    )
+    freeTrials: FreeTrial[];
 
     @Field(type => [LeaderBoardOneRm])
     @OneToMany(

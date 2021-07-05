@@ -11,6 +11,7 @@ import { LeaderBoardOneRm } from 'src/leader-board/entities/lb-one-rm.entity';
 import { LeaderBoardNamedWod } from 'src/leader-board/entities/lb-named-wods.entity';
 import { Hold } from 'src/hold/entities/hold.entity';
 import { type } from 'os';
+import { FreeTrial } from 'src/free-trial/entities/ft.entity';
 
 export enum UserRole {
   Crossfiter = 'Crossfiter',
@@ -83,6 +84,14 @@ export class User extends CoreEntity {
     holds => holds.owner,
   )
   holds: Hold[];
+
+  @Field(type => FreeTrial)
+  @OneToOne(
+    type => FreeTrial,
+    ft => ft.owner
+  )
+  @JoinColumn()
+  freeTrial: FreeTrial;
 
   @Field(type => Boolean)
   @Column({ default: false })
