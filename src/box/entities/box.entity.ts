@@ -6,6 +6,7 @@ import { FreeTrial } from "src/free-trial/entities/ft.entity";
 import { Hold } from "src/hold/entities/hold.entity";
 import { LeaderBoardNamedWod } from "src/leader-board/entities/lb-named-wods.entity";
 import { LeaderBoardOneRm } from "src/leader-board/entities/lb-one-rm.entity";
+import { Notice } from "src/notice/entities/notice.entity";
 import { User } from "src/user/entities/user.entity";
 import { Wod } from "src/wod/entities/wod.entity";
 import { Column, Entity, JoinColumn, OneToMany, OneToOne, RelationId } from "typeorm";
@@ -50,6 +51,13 @@ export class AffiliatedBox extends CoreEntity {
         hold => hold.affiliatedBox,
     )
     holds: Hold[];
+
+    @Field(type => [Notice])
+    @OneToMany(
+        type => Notice,
+        notice => notice.affiliatedBox,
+    )
+    notices: Notice[];
 
     @Field(type => [FreeTrial])
     @OneToMany(

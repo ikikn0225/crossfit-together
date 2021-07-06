@@ -26,6 +26,8 @@ import { Hold } from './hold/entities/hold.entity';
 import { HoldModule } from './hold/hold.module';
 import { FreeTrial } from './free-trial/entities/ft.entity';
 import { FreeTrialModule } from './free-trial/free-trial.module';
+import { Notice } from './notice/entities/notice.entity';
+import { NoticeModule } from './notice/notice.module';
 
 @Module({
   imports: [
@@ -54,7 +56,7 @@ import { FreeTrialModule } from './free-trial/free-trial.module';
       "database": process.env.DB_NAME,
       "synchronize": process.env.NODE_ENV !== 'prod',
       "logging": process.env.NODE_ENV !== 'prod',
-      entities:[ User, Verification, AffiliatedBox, Wod, Bor, LeaderBoardOneRm, LeaderBoardNamedWod, Hold, FreeTrial ]
+      entities:[ User, Verification, AffiliatedBox, Wod, Bor, LeaderBoardOneRm, LeaderBoardNamedWod, Hold, FreeTrial, Notice ]
     }),
     GraphQLModule.forRoot({
       autoSchemaFile: true,
@@ -81,6 +83,7 @@ import { FreeTrialModule } from './free-trial/free-trial.module';
     LeaderBoardModule,
     HoldModule,
     FreeTrialModule,
+    NoticeModule,
     CommonModule,
   ],
   controllers: [],

@@ -12,6 +12,7 @@ import { LeaderBoardNamedWod } from 'src/leader-board/entities/lb-named-wods.ent
 import { Hold } from 'src/hold/entities/hold.entity';
 import { type } from 'os';
 import { FreeTrial } from 'src/free-trial/entities/ft.entity';
+import { Notice } from 'src/notice/entities/notice.entity';
 
 export enum UserRole {
   Crossfiter = 'Crossfiter',
@@ -92,6 +93,14 @@ export class User extends CoreEntity {
   )
   @JoinColumn()
   freeTrial: FreeTrial;
+
+  @Field(type => [Notice])
+  @OneToMany(
+      type => Notice,
+      notice => notice.owner,
+  )
+  notices: Notice[];
+
 
   @Field(type => Boolean)
   @Column({ default: false })

@@ -38,7 +38,7 @@
 + [Crossfiter]Subscription to affiliatedBox Coach that have an authorization to invite to the box 
 
 ### :bald_man: MyPage
-+ CRUD User Profile
++ ~~CRUD User Profile~~
 + ~~CRUD Leader Board~~
 + ~~CRUD Board of Record~~
 + ~~Hold~~
@@ -50,7 +50,9 @@
 + ~~Relation with Wod~~
 + ~~Relation with Board of Record(Box -> Wod -> Bor)~~
 + ~~Relation with Leader Board~~
-+ Hold and Free Trial system
++ ~~Hold and Free Trial system~~
++ Notice
++ Comment
 + ~~Create Box~~
 + ~~Delete Box~~
 + Edit Box(change main image) - process on frontend part
@@ -90,10 +92,29 @@
 + ~~Read Free Trials~~
 + ~~Delete Free Trial~~
 
+### :loudspeaker: Notice
++ ~~Create Notice~~
+    + ~~Only Coach Authorization~~
++ ~~Read Notice~~
++ ~~Edit Notice~~
++ ~~Delete Notice~~
++ Relationship with Comment
+
+### :left_speech_bubble: Comment
++ Relationship with Notice(ManyToOne)
++ Relationship with User(ManyToOne)
++ Relationship with AffiliatedBox(ManyToOne)
++ Create Comment
++ Read Comment
++ Edit Comment
++ Delete Comment
+
 ### :date: TimeTable
-+ Upload TimeTable Iamge
++ Upload TimeTable Iamge(Working in FrontEnd)
 
 ### :heart: Like
 
-### :left_speech_bubble: Comment
+### :speech_balloon: Chat
+
+
 
