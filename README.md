@@ -100,19 +100,24 @@
 + ~~Delete Notice~~
 + Relationship with Comment
 
-### :left_speech_bubble: Comment
-+ Relationship with Notice(ManyToOne)
-+ Relationship with User(ManyToOne)
-+ Relationship with AffiliatedBox(ManyToOne)
-+ Create Comment
-+ Read Comment
-+ Edit Comment
-+ Delete Comment
+### :left_speech_bubble: Comment(early on Notice, then goin to apply on other Components)
++ ~~Relationship with Notice(ManyToOne)~~
++ ~~Relationship with User(ManyToOne)~~
++ ~~Relationship with Reply(OneToMany)~~
++ ~~Create Comment~~
++ ~~Read Comment~~
++ ~~Edit Comment~~
++ ~~Delete Comment~~
+
+### :heart: Like(early on Wod, then goin to apply on other Components)
++ ~~Relationship with Wod(ManyToOne)~~
++ ~~Relationship with User(ManyToOne)~~
++ ~~Create Like~~
++ Read Like
++ Cancel Like
 
 ### :date: TimeTable
 + Upload TimeTable Iamge(Working in FrontEnd)
-
-### :heart: Like
 
 ### :speech_balloon: Chat
 

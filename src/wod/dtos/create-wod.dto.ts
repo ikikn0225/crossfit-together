@@ -4,10 +4,7 @@ import { Wod } from "../entities/wod.entity";
 
 
 @InputType()
-export class CreateWodInput extends PickType(Wod, ["title", "content"]) {
-    @Field(type => Int)
-    affiliatedBoxId:number;
-}
+export class CreateWodInput extends PickType(Wod, ["title", "content"]) {}
 
 @ObjectType()
 export class CreateWodOutput extends CoreOutput {}

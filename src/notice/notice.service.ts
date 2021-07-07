@@ -105,9 +105,27 @@ export class NoticeService {
         }
     }
 
-    async allNotices():Promise<AllNoticeOutput> {
+    async allNotices(
+        authUser:User
+    ):Promise<AllNoticeOutput> {
         try {
-            const [notices, countNotice] = await this.notices.findAndCount({relations:["owner"]});
+            console.log(authUser);
+            const affiliatedBox = await this.affiliatedBoxes.findOne(authUser.affiliatedBoxId);
+            
+            if(!affiliatedBox) {
+                return {
+                    ok:false,
+                    error:"Affiliated Box not found."
+                }
+            }
+            // const [notices, countNotice] = await this.notices.findAndCount({relations:["owner"], where: {affiliatedBox}});
+            const notices = await this.notices.find({relations:["owner"], where: {affiliatedBox}});
+            if(!notices) {
+                return {
+                    ok:false,
+                    error:"Notice not found."
+                }
+            }
             return {
                 ok:true,
                 notices

@@ -28,6 +28,10 @@ import { FreeTrial } from './free-trial/entities/ft.entity';
 import { FreeTrialModule } from './free-trial/free-trial.module';
 import { Notice } from './notice/entities/notice.entity';
 import { NoticeModule } from './notice/notice.module';
+import { Comment } from './comment/entities/comment.entity';
+import { CommentModule } from './comment/comment.module';
+import { Like } from './like/entities/like.entity';
+import { LikeModule } from './like/like.module';
 
 @Module({
   imports: [
@@ -56,7 +60,7 @@ import { NoticeModule } from './notice/notice.module';
       "database": process.env.DB_NAME,
       "synchronize": process.env.NODE_ENV !== 'prod',
       "logging": process.env.NODE_ENV !== 'prod',
-      entities:[ User, Verification, AffiliatedBox, Wod, Bor, LeaderBoardOneRm, LeaderBoardNamedWod, Hold, FreeTrial, Notice ]
+      entities:[ User, Verification, AffiliatedBox, Wod, Bor, LeaderBoardOneRm, LeaderBoardNamedWod, Hold, FreeTrial, Notice, Comment, Like ]
     }),
     GraphQLModule.forRoot({
       autoSchemaFile: true,
@@ -84,6 +88,8 @@ import { NoticeModule } from './notice/notice.module';
     HoldModule,
     FreeTrialModule,
     NoticeModule,
+    CommentModule,
+    LikeModule,
     CommonModule,
   ],
   controllers: [],

@@ -111,9 +111,24 @@ export class WodService {
         }
     }
 
-    async allWods():Promise<AllWodsOutput> {
+    async allWods(
+        authUser:User
+    ):Promise<AllWodsOutput> {
         try {
-            const [wods, countWod] = await this.wods.findAndCount();
+            const affiliatedBox = await this.affiliatedBoxes.findOne(authUser.affiliatedBoxId);
+            if(!affiliatedBox) {
+                return {
+                    ok:false,
+                    error:"Affiliated Box not found."
+                }
+            }
+            const wods = await this.wods.find({affiliatedBox});
+            if(!wods) {
+                return {
+                    ok:false,
+                    error:"Wod not found."
+                }
+            }
             return {
                 ok:true,
                 wods

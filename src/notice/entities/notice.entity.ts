@@ -1,9 +1,10 @@
-import { Field, InputType, ObjectType, registerEnumType } from "@nestjs/graphql";
+import { Field, InputType, ObjectType } from "@nestjs/graphql";
 import { IsString } from "class-validator";
 import { AffiliatedBox } from "src/box/entities/box.entity";
+import { Comment } from "src/comment/entities/comment.entity";
 import { CoreEntity } from "src/common/core.entity";
 import { User } from "src/user/entities/user.entity";
-import { Column, Entity, ManyToOne, RelationId } from "typeorm";
+import { Column, Entity, ManyToOne, OneToMany, RelationId } from "typeorm";
 
 @InputType('NoticeInputType', {isAbstract:true})
 @ObjectType()
@@ -48,5 +49,13 @@ export class Notice extends CoreEntity {
     @RelationId((notice: Notice) => notice.affiliatedBox)
     @Column()
     affiliatedBoxId: number;
+
+    @Field(type => [Comment])
+    @OneToMany(
+        type => Comment,
+        comment => comment.notice,
+        {nullable:true}
+    )
+    comments: Comment[];
 }
 

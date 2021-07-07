@@ -13,6 +13,8 @@ import { Hold } from 'src/hold/entities/hold.entity';
 import { type } from 'os';
 import { FreeTrial } from 'src/free-trial/entities/ft.entity';
 import { Notice } from 'src/notice/entities/notice.entity';
+import { Comment } from 'src/comment/entities/comment.entity';
+import { Like } from 'src/like/entities/like.entity';
 
 export enum UserRole {
   Crossfiter = 'Crossfiter',
@@ -89,7 +91,8 @@ export class User extends CoreEntity {
   @Field(type => FreeTrial)
   @OneToOne(
     type => FreeTrial,
-    ft => ft.owner
+    ft => ft.owner,
+    { nullable: true }
   )
   @JoinColumn()
   freeTrial: FreeTrial;
@@ -101,6 +104,20 @@ export class User extends CoreEntity {
   )
   notices: Notice[];
 
+  @Field(type => [Like])
+  @OneToMany(
+      type => Like,
+      like => like.owner,
+  )
+  likes: Like[];
+
+  @Field(type => [Comment])
+  @OneToMany(
+    type => Comment,
+    comment => comment.owner,
+    {nullable:true}
+  )
+  comments: Comment[];
 
   @Field(type => Boolean)
   @Column({ default: false })

@@ -12,9 +12,7 @@ import { NoticeService } from "./notice.service";
 
 @Resolver(() => Notice)
 export class NoticeResolver {
-    constructor(
-        private readonly noticeService:NoticeService,
-    ){}
+    constructor( private readonly noticeService:NoticeService, ){}
 
     @Role(["Coach"])
     @Mutation(returns => CreateNoticeOutput)
@@ -43,8 +41,11 @@ export class NoticeResolver {
         return this.noticeService.deleteNotice(authUser, editNoticeInput);
     }
 
-    @Query(returns => AllNoticeOutput)
-    allNotices():Promise<AllNoticeOutput> {
-        return this.noticeService.allNotices();
+    @Role(["Any"])
+    @Query(type => AllNoticeOutput)
+    async allNotices(
+        @AuthUser() authUser:User
+    ):Promise<AllNoticeOutput> {
+        return this.noticeService.allNotices(authUser);
     }
 }

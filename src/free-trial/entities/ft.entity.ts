@@ -5,7 +5,7 @@ import { User } from "src/user/entities/user.entity";
 import { Column, Entity, JoinColumn, ManyToOne, OneToOne, RelationId } from "typeorm";
 
 
-@InputType('HoldInputType', {isAbstract:true})
+@InputType('FreeTrialInputType', {isAbstract:true})
 @ObjectType()
 @Entity()
 export class FreeTrial extends CoreEntity {

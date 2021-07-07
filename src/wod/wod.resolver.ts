@@ -45,7 +45,9 @@ export class WodResolver {
 
     @Role(["Any"])
     @Query(type => AllWodsOutput)
-    async allWods():Promise<AllWodsOutput> {
-        return this.wodService.allWods();
+    async allWods(
+        @AuthUser() authUser:User
+    ):Promise<AllWodsOutput> {
+        return this.wodService.allWods(authUser);
     }
 }
