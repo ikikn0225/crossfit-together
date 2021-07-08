@@ -5,7 +5,7 @@ import { Role } from "src/auth/role-decorator";
 import { User } from "src/user/entities/user.entity";
 import { Repository } from "typeorm";
 import { CommentService } from "./comment.service";
-import { AllCommentsInNoticeInput, AllCommentsInNoticeOutput } from "./dtos/all-comments-in-notice.dto";
+import { AllCommentsInNoticeInput, AllCommentsInNoticeOutput } from "./dtos/comments-in-notice.dto";
 import { CreateCommentInput, CreateCommentOutput } from "./dtos/create-comment.dto";
 import { DeleteCommentInput, DeleteCommentOutput } from "./dtos/delete-comment.dto";
 import { EditCommentInput, EditCommentOutput } from "./dtos/edit-comment.dto";

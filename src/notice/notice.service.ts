@@ -109,7 +109,6 @@ export class NoticeService {
         authUser:User
     ):Promise<AllNoticeOutput> {
         try {
-            console.log(authUser);
             const affiliatedBox = await this.affiliatedBoxes.findOne(authUser.affiliatedBoxId);
             
             if(!affiliatedBox) {

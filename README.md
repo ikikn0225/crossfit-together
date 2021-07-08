@@ -109,12 +109,20 @@
 + ~~Edit Comment~~
 + ~~Delete Comment~~
 
+### :arrow_right_hook: Reply(early on Notice, then goin to apply on other Components)
++ Relationship with Notice(ManyToOne)
++ Relationship with User(ManyToOne)
++ Create Reply
++ Read Reply
++ Edit Reply
++ Delete Reply
+
 ### :heart: Like(early on Wod, then goin to apply on other Components)
 + ~~Relationship with Wod(ManyToOne)~~
 + ~~Relationship with User(ManyToOne)~~
-+ ~~Create Like~~
-+ Read Like
-+ Cancel Like
++ ~~Create Like  On Wod~~
++ ~~Read Like On Wod~~
++ ~~Cancel Like  On Wod~~
 
 ### :date: TimeTable
 + Upload TimeTable Iamge(Working in FrontEnd)
