@@ -32,6 +32,8 @@ import { Comment } from './comment/entities/comment.entity';
 import { CommentModule } from './comment/comment.module';
 import { Like } from './like/entities/like.entity';
 import { LikeModule } from './like/like.module';
+import { Reply } from './reply/entities/reply.entity';
+import { ReplyModule } from './reply/reply.module';
 
 @Module({
   imports: [
@@ -60,7 +62,7 @@ import { LikeModule } from './like/like.module';
       "database": process.env.DB_NAME,
       "synchronize": process.env.NODE_ENV !== 'prod',
       "logging": process.env.NODE_ENV !== 'prod',
-      entities:[ User, Verification, AffiliatedBox, Wod, Bor, LeaderBoardOneRm, LeaderBoardNamedWod, Hold, FreeTrial, Notice, Comment, Like ]
+      entities:[ User, Verification, AffiliatedBox, Wod, Bor, LeaderBoardOneRm, LeaderBoardNamedWod, Hold, FreeTrial, Notice, Comment, Like, Reply ]
     }),
     GraphQLModule.forRoot({
       autoSchemaFile: true,
@@ -90,6 +92,7 @@ import { LikeModule } from './like/like.module';
     NoticeModule,
     CommentModule,
     LikeModule,
+    ReplyModule,
     CommonModule,
   ],
   controllers: [],

@@ -6,9 +6,9 @@ import { User } from "src/user/entities/user.entity";
 import { Repository } from "typeorm";
 import { CommentService } from "./comment.service";
 import { AllCommentsInNoticeInput, AllCommentsInNoticeOutput } from "./dtos/comments-in-notice.dto";
-import { CreateCommentInput, CreateCommentOutput } from "./dtos/create-comment.dto";
-import { DeleteCommentInput, DeleteCommentOutput } from "./dtos/delete-comment.dto";
-import { EditCommentInput, EditCommentOutput } from "./dtos/edit-comment.dto";
+import { CreateCommentInNoticeInput, CreateCommentInNoticeOutput } from "./dtos/create-comment-in-notice.dto";
+import { DeleteCommentInNoticeInput, DeleteCommentInNoticeOutput } from "./dtos/delete-comment-in-notice.dto";
+import { EditCommentInNoticeInput, EditCommentInNoticeOutput } from "./dtos/edit-comment-in-notice.dto";
 import { Comment } from "./entities/comment.entity";
 
 
@@ -19,30 +19,30 @@ export class CommentResolver {
     ){}
 
     @Role(['Any'])
-    @Mutation(returns => CreateCommentOutput)
-    async createComment (
+    @Mutation(returns => CreateCommentInNoticeOutput)
+    async createCommentInNotice (
         @AuthUser() authUser:User,
-        @Args('input') createCommentInput:CreateCommentInput
-    ):Promise<CreateCommentOutput> {
-        return this.commentService.createComment(authUser, createCommentInput);
+        @Args('input') createCommentInNoticeInput:CreateCommentInNoticeInput
+    ):Promise<CreateCommentInNoticeOutput> {
+        return this.commentService.createCommentInNotice(authUser, createCommentInNoticeInput);
     }
 
     @Role(['Any'])
-    @Mutation(returns => EditCommentOutput)
-    async editComment(
+    @Mutation(returns => EditCommentInNoticeOutput)
+    async editCommentInNotice(
         @AuthUser() authUser:User,
-        @Args('input') editCommentInput:EditCommentInput
-    ):Promise<EditCommentOutput> {
-        return this.commentService.editComment(authUser, editCommentInput);
+        @Args('input') editCommentInNoticeInput:EditCommentInNoticeInput
+    ):Promise<EditCommentInNoticeOutput> {
+        return this.commentService.editCommentInNotice(authUser, editCommentInNoticeInput);
     }
 
     @Role(['Any'])
-    @Mutation(returns => DeleteCommentOutput)
-    async deleteComment(
+    @Mutation(returns => DeleteCommentInNoticeOutput)
+    async deleteCommentInNotice(
         @AuthUser() authUser:User,
-        @Args('input') deleteCommentInput:DeleteCommentInput
-    ):Promise<DeleteCommentOutput> {
-        return this.commentService.deleteComment(authUser, deleteCommentInput);
+        @Args('input') deleteCommentInNoticeInput:DeleteCommentInNoticeInput
+    ):Promise<DeleteCommentInNoticeOutput> {
+        return this.commentService.deleteCommentInNotice(authUser, deleteCommentInNoticeInput);
     }
 
     @Role(['Any'])

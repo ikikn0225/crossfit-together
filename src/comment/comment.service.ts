@@ -6,9 +6,9 @@ import { Notice } from "src/notice/entities/notice.entity";
 import { User } from "src/user/entities/user.entity";
 import { Repository } from "typeorm";
 import { AllCommentsInNoticeInput, AllCommentsInNoticeOutput } from "./dtos/comments-in-notice.dto";
-import { CreateCommentInput, CreateCommentOutput } from "./dtos/create-comment.dto";
-import { DeleteCommentInput, DeleteCommentOutput } from "./dtos/delete-comment.dto";
-import { EditCommentInput, EditCommentOutput } from "./dtos/edit-comment.dto";
+import { CreateCommentInNoticeInput, CreateCommentInNoticeOutput } from "./dtos/create-comment-in-notice.dto";
+import { DeleteCommentInNoticeInput, DeleteCommentInNoticeOutput } from "./dtos/delete-comment-in-notice.dto";
+import { EditCommentInNoticeInput, EditCommentInNoticeOutput } from "./dtos/edit-comment-in-notice.dto";
 import { Comment } from "./entities/comment.entity";
 
 
@@ -22,19 +22,19 @@ export class CommentService {
             private readonly notices:Repository<Notice>,
     ) {}
 
-    async createComment(
+    async createCommentInNotice(
         authUser:User,
-        createCommentInput:CreateCommentInput
-    ):Promise<CreateCommentOutput> {
+        createCommentInNoticeInput:CreateCommentInNoticeInput
+    ):Promise<CreateCommentInNoticeOutput> {
         try {
-            const notice = await this.notices.findOne(createCommentInput.noticeId);
+            const notice = await this.notices.findOne(createCommentInNoticeInput.noticeId);
             if(!notice) {
                 return {
                     ok:false,
                     error:"Notice not found."
                 }
             }
-            await this.comments.save( this.comments.create({...createCommentInput, notice, owner:authUser}) );
+            await this.comments.save( this.comments.create({...createCommentInNoticeInput, notice, owner:authUser}) );
             return {
                 ok:true,
             }
@@ -46,12 +46,12 @@ export class CommentService {
         }
     }
 
-    async editComment(
+    async editCommentInNotice(
         authUser:User,
-        editCommentInput:EditCommentInput
-    ):Promise<EditCommentOutput> {
+        editCommentInNoticeInput:EditCommentInNoticeInput
+    ):Promise<EditCommentInNoticeOutput> {
         try {
-            const comment = await this.comments.findOne(editCommentInput.commentId);
+            const comment = await this.comments.findOne(editCommentInNoticeInput.commentId);
             if(!comment) {
                 return {
                     ok:false,
@@ -64,7 +64,7 @@ export class CommentService {
                     error:"You cannnot do that."
                 }
             }
-            await this.comments.save([{ id:editCommentInput.commentId, ...editCommentInput }]);
+            await this.comments.save([{ id:editCommentInNoticeInput.commentId, ...editCommentInNoticeInput }]);
             return {
                 ok:true,
             }
@@ -76,12 +76,12 @@ export class CommentService {
         }
     }
 
-    async deleteComment(
+    async deleteCommentInNotice(
         authUser:User,
-        deleteCommentInput:DeleteCommentInput
-    ):Promise<DeleteCommentOutput> {
+        deleteCommentInNoticeInput:DeleteCommentInNoticeInput
+    ):Promise<DeleteCommentInNoticeOutput> {
         try {
-            const comment = await this.comments.findOne(deleteCommentInput.id);
+            const comment = await this.comments.findOne(deleteCommentInNoticeInput.id);
             if(!comment) {
                 return {
                     ok:false,
@@ -94,7 +94,7 @@ export class CommentService {
                     error:"You cannnot do that."
                 }
             }
-            await this.comments.delete(deleteCommentInput.id);
+            await this.comments.delete(deleteCommentInNoticeInput.id);
             return {
                 ok:true,
             }

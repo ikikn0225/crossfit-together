@@ -1,15 +1,14 @@
 import { Field, InputType, ObjectType, PartialType, PickType } from "@nestjs/graphql";
 import { CoreOutput } from "src/common/dtos/common.dto";
-import { Comment } from "../entities/comment.entity";
-
+import { Reply } from "../entities/reply.entity";
 
 @InputType()
-export class EditCommentInput extends PickType(PartialType(Comment), [
+export class EditReplyInWodInput extends PickType(PartialType(Reply), [
     'content'
 ]) {
     @Field(type => Number)
-    commentId:number;
+    replyId:number;
 }
 
 @ObjectType()
-export class EditCommentOutput extends CoreOutput {}
+export class EditReplyInWodOutput extends CoreOutput {}

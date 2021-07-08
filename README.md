@@ -51,8 +51,8 @@
 + ~~Relation with Board of Record(Box -> Wod -> Bor)~~
 + ~~Relation with Leader Board~~
 + ~~Hold and Free Trial system~~
-+ Notice
-+ Comment
++ ~~Notice~~
++ ~~Comment~~
 + ~~Create Box~~
 + ~~Delete Box~~
 + Edit Box(change main image) - process on frontend part
@@ -98,7 +98,7 @@
 + ~~Read Notice~~
 + ~~Edit Notice~~
 + ~~Delete Notice~~
-+ Relationship with Comment
++ ~~Relationship with Comment~~
 
 ### :left_speech_bubble: Comment(early on Notice, then goin to apply on other Components)
 + ~~Relationship with Notice(ManyToOne)~~
@@ -110,12 +110,12 @@
 + ~~Delete Comment~~
 
 ### :arrow_right_hook: Reply(early on Notice, then goin to apply on other Components)
-+ Relationship with Notice(ManyToOne)
-+ Relationship with User(ManyToOne)
-+ Create Reply
-+ Read Reply
-+ Edit Reply
-+ Delete Reply
++ ~~Relationship with Comment(ManyToOne)~~
++ ~~Relationship with User(ManyToOne)~~
++ ~~Create Reply~~
++ ~~Read Reply~~
++ ~~Edit Reply~~
++ ~~Delete Reply~~
 
 ### :heart: Like(early on Wod, then goin to apply on other Components)
 + ~~Relationship with Wod(ManyToOne)~~

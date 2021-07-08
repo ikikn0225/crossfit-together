@@ -15,6 +15,7 @@ import { FreeTrial } from 'src/free-trial/entities/ft.entity';
 import { Notice } from 'src/notice/entities/notice.entity';
 import { Comment } from 'src/comment/entities/comment.entity';
 import { Like } from 'src/like/entities/like.entity';
+import { Reply } from 'src/reply/entities/reply.entity';
 
 export enum UserRole {
   Crossfiter = 'Crossfiter',
@@ -118,6 +119,14 @@ export class User extends CoreEntity {
     {nullable:true}
   )
   comments: Comment[];
+
+  @Field(type => [Reply])
+  @OneToMany(
+    type => Reply,
+    reply => reply.owner,
+    {nullable:true}
+  )
+  replies: Reply[];
 
   @Field(type => Boolean)
   @Column({ default: false })
