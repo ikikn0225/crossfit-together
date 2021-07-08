@@ -4,6 +4,7 @@ import { AffiliatedBox } from "src/box/entities/box.entity";
 import { User } from "src/user/entities/user.entity";
 import { Repository } from "typeorm";
 import { AllHoldsOutput } from "./dtos/all-holds.dto";
+import { DeleteHoldInput, DeleteHoldOutput } from "./dtos/delete-hold.dto";
 import { MyHoldsOutput } from "./dtos/my-holds.dto";
 import { RegisterHoldInput } from "./dtos/register-hold.dto";
 import { Hold } from "./entities/hold.entity";
@@ -50,8 +51,10 @@ export class HoldService {
     ):Promise<AllHoldsOutput> {
         try {
             const affiliatedBox = await this.affiliatedBoxes.findOne( authUser.affiliatedBoxId );
-            const holds = await this.holds.find({affiliatedBox});
-            
+            const holds = await this.holds.find({relations: ['owner'], where: {affiliatedBox}});
+            holds.sort(function (a, b) {
+                return a.holdAt.getTime() - b.holdAt.getTime();
+            });
             if(!holds) {
                 return {
                     ok:false,
@@ -76,6 +79,9 @@ export class HoldService {
     ):Promise<MyHoldsOutput> {
         try {
             const holds = await this.holds.find({owner});
+            holds.sort(function (a, b) {
+                return a.holdAt.getTime() - b.holdAt.getTime();
+            });
             if(!holds) {
                 return {
                     ok:false,
@@ -85,6 +91,38 @@ export class HoldService {
             return {
                 ok:true,
                 holds
+            }
+            
+        } catch (error) {
+            return {
+                ok:false,
+                error
+            }
+        }
+    }
+
+    async deleteHold(
+        authUser:User,
+        {id}:DeleteHoldInput
+    ):Promise<DeleteHoldOutput> {
+        try {
+            const hold = await this.holds.findOne({id}, {relations:["owner"]});
+            
+            if(!hold) {
+                return {
+                    ok:false,
+                    error:"Hold not found."
+                }
+            }
+            if(authUser.id !== hold.ownerId) {
+                return {
+                    ok:false,
+                    error:"You cannot do this."
+                }
+            }
+            await this.holds.delete(id);
+            return {
+                ok:true,
             }
             
         } catch (error) {

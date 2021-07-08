@@ -4,8 +4,8 @@ import { Hold } from "../entities/hold.entity";
 
 @InputType()
 export class RegisterHoldInput extends PickType(Hold, ['holdAt']) {
-    @Field(type => String)
-    holdAt: string;
+    @Field(type => Date)
+    holdAt: Date;
 }
 
 @ObjectType()

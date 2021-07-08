@@ -27,24 +27,32 @@
         
 ### :hammer: User CRUD
 + ~~Create Account~~ **profile image soon**
-+ Log In
++ ~~Log In~~
     + ~~JWT~~
     + ~~AuthUser, context~~
     + ~~AuthGuard and AuthGuard Decorator~~
 + ~~Edit Profile~~
 + ~~Verify Email~~
 + ~~Delete Account~~
-+ Log Out
++ Log Out(Should be Working in Apollo Client LocalStorage)
 + [Crossfiter]Subscription to affiliatedBox Coach that have an authorization to invite to the box 
 
 ### :bald_man: MyPage
++ ~~CRUD User Profile~~
++ ~~CRUD Leader Board~~
++ ~~CRUD Board of Record~~
++ ~~Hold~~
+    + ~~Count~~
+    + ~~History~~
 
 ### :bricks: Box
 + ~~Relation with User~~
 + ~~Relation with Wod~~
 + ~~Relation with Board of Record(Box -> Wod -> Bor)~~
-+ Relation with Leader Board
-+ Hold and Free Trial system
++ ~~Relation with Leader Board~~
++ ~~Hold and Free Trial system~~
++ ~~Notice~~
++ ~~Comment~~
 + ~~Create Box~~
 + ~~Delete Box~~
 + Edit Box(change main image) - process on frontend part
@@ -74,15 +82,52 @@
 
 ### :stop_sign: Hold System
 + ~~Register Hold~~
-+ Read Holds(Both Main(all users) and Mypage(only mine))
-    + Main(all users) orerby holdAt
-    + Mypage(only mine) orerby holdAt
-+ Delete Hold
++ ~~Read Holds(Both Main(all users) and Mypage(only mine))~~
+    + ~~Main(all users) orerby holdAt~~
+    + ~~Mypage(only mine) orerby holdAt~~
++ ~~Delete Hold~~
 
 ### :tickets: Free Trial System
-+ Create Free Trial
-+ Read Free Trials
-+ Edit Free Trial
-+ Delete Free Trial
++ ~~Create Free Trial~~
++ ~~Read Free Trials~~
++ ~~Delete Free Trial~~
+
+### :loudspeaker: Notice
++ ~~Create Notice~~
+    + ~~Only Coach Authorization~~
++ ~~Read Notice~~
++ ~~Edit Notice~~
++ ~~Delete Notice~~
++ ~~Relationship with Comment~~
+
+### :left_speech_bubble: Comment(early on Notice, then goin to apply on other Components)
++ ~~Relationship with Notice(ManyToOne)~~
++ ~~Relationship with User(ManyToOne)~~
++ ~~Relationship with Reply(OneToMany)~~
++ ~~Create Comment~~
++ ~~Read Comment~~
++ ~~Edit Comment~~
++ ~~Delete Comment~~
+
+### :arrow_right_hook: Reply(early on Notice, then goin to apply on other Components)
++ ~~Relationship with Comment(ManyToOne)~~
++ ~~Relationship with User(ManyToOne)~~
++ ~~Create Reply~~
++ ~~Read Reply~~
++ ~~Edit Reply~~
++ ~~Delete Reply~~
+
+### :heart: Like(early on Wod, then goin to apply on other Components)
++ ~~Relationship with Wod(ManyToOne)~~
++ ~~Relationship with User(ManyToOne)~~
++ ~~Create Like  On Wod~~
++ ~~Read Like On Wod~~
++ ~~Cancel Like  On Wod~~
 
 ### :date: TimeTable
++ Upload TimeTable Iamge(Working in FrontEnd)
+
+### :speech_balloon: Chat
+
+
+

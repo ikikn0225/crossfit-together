@@ -4,116 +4,27 @@ import { Bor } from "src/board-of-record/entities/board-of-record.entity";
 import { AffiliatedBox } from "src/box/entities/box.entity";
 import { User } from "src/user/entities/user.entity";
 import { Repository } from "typeorm";
-import { AllWodsOutput } from "./dtos/all-wods.dto";
-import { CreateWodInput, CreateWodOutput } from "./dtos/create-wod.dto";
-import { DeleteWodInput, DeleteWodOutput } from "./dtos/delete-wod.dto";
-import { EditWodInput, EditWodOutput } from "./dtos/edit-wod.dto";
-import { Wod } from "./entities/wod.entity";
+import { AllNoticeOutput } from "./dtos/all-notice.dto";
+import { CreateNoticeInput, CreateNoticeOutput } from "./dtos/create-notice.dto";
+import { DeleteNoticeInput, DeleteNoticeOutput } from "./dtos/delete-notice.dto";
+import { EditNoticeInput, EditNoticeOutput } from "./dtos/edit-notice.dto";
+import { Notice } from "./entities/notice.entity";
 
 
 
 @Injectable()
-export class WodService {
+export class NoticeService {
     constructor(
-        @InjectRepository(Wod)
-            private readonly wods:Repository<Wod>,
+        @InjectRepository(Notice)
+            private readonly notices:Repository<Notice>,
         @InjectRepository(AffiliatedBox)
             private readonly affiliatedBoxes:Repository<AffiliatedBox>,
-        @InjectRepository(Bor)
-            private readonly bors:Repository<Bor>,
     ) {}
 
-    async createWod(
-        owner:User,
-        createWodInput:CreateWodInput
-    ):Promise<CreateWodOutput> {
-        try {
-            const affiliatedBox = await this.affiliatedBoxes.findOne( owner.affiliatedBoxId );
-            if(!affiliatedBox) {
-                return {
-                    ok:false,
-                    error:"Affiliated Box not found."
-                }
-            }
-            await this.wods.save( this.wods.create({...createWodInput, affiliatedBox}) );
-            return {
-                ok:true,
-            }
-        } catch (error) {
-            return {
-                ok:true,
-                error
-            }
-        }
-    }
-
-    async editWod(
-        owner:User,
-        editWodInput:EditWodInput
-    ):Promise<EditWodOutput> {
-        try {
-            const wod = await this.wods.findOne(editWodInput.wodId, { relations:['affiliatedBox'] });
-
-            if(!wod) {
-                return {
-                    ok:false,
-                    error:"Wod not found."
-                }
-            }
-            if(wod.affiliatedBox.id !== owner.affiliatedBoxId) {
-                return {
-                    ok:false,
-                    error:"You cannot do that."
-                }
-            }
-            await this.wods.save([{
-                id:editWodInput.wodId,
-                ...editWodInput
-            }]);
-            return {
-                ok:true,
-            }
-        } catch (error) {
-            return {
-                ok:false,
-                error
-            }
-        }
-    }
-
-    async deleteWod(
-        owner:User,
-        {wodId}:DeleteWodInput
-    ):Promise<DeleteWodOutput> {
-        try {
-            const wod = await this.wods.findOne(wodId, {relations:["affiliatedBox"]});
-            if(!wod) {
-                return {
-                    ok:false,
-                    error:"Wod not found."
-                }
-            }
-            if(wod.affiliatedBox.id !== owner.affiliatedBoxId) {
-                return {
-                    ok:false,
-                    error:"You cannot do that."
-                }
-            }
-            await this.wods.delete(wodId);
-            return {
-                ok:true,
-            }
-        } catch (error) {
-            return {
-                ok:false,
-                error
-            }
-        }
-    }
-
-    async allWods(
-        authUser:User
-    ):Promise<AllWodsOutput> {
+    async createNotice(
+        authUser:User,
+        createNoticeInput:CreateNoticeInput
+    ):Promise<CreateNoticeOutput> {
         try {
             const affiliatedBox = await this.affiliatedBoxes.findOne(authUser.affiliatedBoxId);
             if(!affiliatedBox) {
@@ -122,16 +33,101 @@ export class WodService {
                     error:"Affiliated Box not found."
                 }
             }
-            const wods = await this.wods.find({affiliatedBox});
-            if(!wods) {
+            await this.notices.save( this.notices.create({...createNoticeInput, affiliatedBox, owner:authUser}) );
+            return {
+                ok:true,
+            }
+        } catch (error) {
+            return {
+                ok:false,
+                error
+            }
+        }
+    }
+
+    async editNotice(
+        authUser:User,
+        editNoticeInput:EditNoticeInput
+    ):Promise<EditNoticeOutput> {
+        try {
+            const notice = await this.notices.findOne(editNoticeInput.noticeId);
+            if(!notice) {
+                return {
+                    ok:false,
+                    error:"Notice not found."
+                }
+            }
+            if(notice.ownerId !== authUser.id) {
+                return {
+                    ok:false,
+                    error:"You cannot do that."
+                }
+            }
+            await this.notices.save([{ id:editNoticeInput.noticeId, ...editNoticeInput }]);
+            return {
+                ok:true,
+            }
+        } catch (error) {
+            return {
+                ok:false,
+                error
+            }
+        }
+    }
+
+    async deleteNotice(
+        authUser:User,
+        {noticeId}:DeleteNoticeInput
+    ):Promise<DeleteNoticeOutput> {
+        try {
+            const notice = await this.notices.findOne(noticeId);
+            if(!notice) {
                 return {
                     ok:false,
                     error:"Wod not found."
                 }
             }
+            if(notice.ownerId !== authUser.id) {
+                return {
+                    ok:false,
+                    error:"You cannot do that."
+                }
+            }
+            await this.notices.delete(noticeId);
             return {
                 ok:true,
-                wods
+            }
+        } catch (error) {
+            return {
+                ok:false,
+                error
+            }
+        }
+    }
+
+    async allNotices(
+        authUser:User
+    ):Promise<AllNoticeOutput> {
+        try {
+            const affiliatedBox = await this.affiliatedBoxes.findOne(authUser.affiliatedBoxId);
+            
+            if(!affiliatedBox) {
+                return {
+                    ok:false,
+                    error:"Affiliated Box not found."
+                }
+            }
+            // const [notices, countNotice] = await this.notices.findAndCount({relations:["owner"], where: {affiliatedBox}});
+            const notices = await this.notices.find({relations:["owner"], where: {affiliatedBox}});
+            if(!notices) {
+                return {
+                    ok:false,
+                    error:"Notice not found."
+                }
+            }
+            return {
+                ok:true,
+                notices
             }
         } catch (error) {
             return {

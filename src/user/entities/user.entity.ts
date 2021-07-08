@@ -11,6 +11,11 @@ import { LeaderBoardOneRm } from 'src/leader-board/entities/lb-one-rm.entity';
 import { LeaderBoardNamedWod } from 'src/leader-board/entities/lb-named-wods.entity';
 import { Hold } from 'src/hold/entities/hold.entity';
 import { type } from 'os';
+import { FreeTrial } from 'src/free-trial/entities/ft.entity';
+import { Notice } from 'src/notice/entities/notice.entity';
+import { Comment } from 'src/comment/entities/comment.entity';
+import { Like } from 'src/like/entities/like.entity';
+import { Reply } from 'src/reply/entities/reply.entity';
 
 export enum UserRole {
   Crossfiter = 'Crossfiter',
@@ -83,6 +88,45 @@ export class User extends CoreEntity {
     holds => holds.owner,
   )
   holds: Hold[];
+
+  @Field(type => FreeTrial)
+  @OneToOne(
+    type => FreeTrial,
+    ft => ft.owner,
+    { nullable: true }
+  )
+  @JoinColumn()
+  freeTrial: FreeTrial;
+
+  @Field(type => [Notice])
+  @OneToMany(
+      type => Notice,
+      notice => notice.owner,
+  )
+  notices: Notice[];
+
+  @Field(type => [Like])
+  @OneToMany(
+      type => Like,
+      like => like.owner,
+  )
+  likes: Like[];
+
+  @Field(type => [Comment])
+  @OneToMany(
+    type => Comment,
+    comment => comment.owner,
+    {nullable:true}
+  )
+  comments: Comment[];
+
+  @Field(type => [Reply])
+  @OneToMany(
+    type => Reply,
+    reply => reply.owner,
+    {nullable:true}
+  )
+  replies: Reply[];
 
   @Field(type => Boolean)
   @Column({ default: false })

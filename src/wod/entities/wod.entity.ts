@@ -2,6 +2,7 @@ import { Field, InputType, ObjectType } from '@nestjs/graphql';
 import { Bor } from 'src/board-of-record/entities/board-of-record.entity';
 import { AffiliatedBox } from 'src/box/entities/box.entity';
 import { CoreEntity } from 'src/common/core.entity';
+import { Like } from 'src/like/entities/like.entity';
 import { Column, Entity, ManyToOne, OneToMany, RelationId } from 'typeorm';
 
 
@@ -35,6 +36,13 @@ export class Wod extends CoreEntity {
         bor => bor.wod,
     )
     bors: Bor[];
+
+    @Field(type => [Like])
+    @OneToMany(
+        type => Like,
+        like => like.wod,
+    )
+    likes: Like[];
 
     // @Field(type => Comment)
     // @OneToMany(

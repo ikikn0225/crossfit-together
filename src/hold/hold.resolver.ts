@@ -3,6 +3,7 @@ import { AuthUser } from "src/auth/auth-user.decorator";
 import { Role } from "src/auth/role-decorator";
 import { User } from "src/user/entities/user.entity";
 import { AllHoldsOutput } from "./dtos/all-holds.dto";
+import { DeleteHoldInput, DeleteHoldOutput } from "./dtos/delete-hold.dto";
 import { MyHoldsOutput } from "./dtos/my-holds.dto";
 import { RegisterHoldInput, RegisterHoldOutput } from "./dtos/register-hold.dto";
 import { Hold } from "./entities/hold.entity";
@@ -38,5 +39,14 @@ export class HoldResolver {
         @AuthUser() authUser:User
     ):Promise<MyHoldsOutput> {
         return this.holdService.myHolds(authUser);
+    }
+
+    @Role(['Any'])
+    @Mutation(returns => DeleteHoldOutput)
+    deleteHold(
+        @AuthUser() authUser:User,
+        @Args('input') deleteHoldInput:DeleteHoldInput
+    ):Promise<DeleteHoldOutput> {
+        return this.holdService.deleteHold(authUser, deleteHoldInput);
     }
 }

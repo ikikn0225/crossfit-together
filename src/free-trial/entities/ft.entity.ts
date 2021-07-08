@@ -2,39 +2,40 @@ import { Field, InputType, ObjectType } from "@nestjs/graphql";
 import { AffiliatedBox } from "src/box/entities/box.entity";
 import { CoreEntity } from "src/common/core.entity";
 import { User } from "src/user/entities/user.entity";
-import { Column, Entity, ManyToOne, OneToOne, RelationId } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToOne, RelationId } from "typeorm";
 
 
-@InputType('HoldInputType', {isAbstract:true})
+@InputType('FreeTrialInputType', {isAbstract:true})
 @ObjectType()
 @Entity()
-export class Hold extends CoreEntity {
+export class FreeTrial extends CoreEntity {
 
     @Field(type => Date)
     @Column()
-    holdAt: Date;
+    freeTrialAt: Date;
+
+    @Field(type => String)
+    @Column()
+    workoutTime:string;
 
     @Field(type => User)
-    @ManyToOne(
+    @OneToOne(
         type => User,
-        user => user.holds,
+        user => user.freeTrial,
         { onDelete: 'CASCADE', nullable: true }
     )
+    @JoinColumn()
     owner: User;
-
-    @RelationId((hold: Hold) => hold.owner)
-    @Column()
-    ownerId: number;
     
     @Field(type => AffiliatedBox, { nullable: false })
     @ManyToOne(
         type => AffiliatedBox,
-        box => box.holds,
+        box => box.freeTrials,
         { onDelete: 'CASCADE', nullable: false },
     )
     affiliatedBox: AffiliatedBox;
 
-    @RelationId((hold: Hold) => hold.affiliatedBox)
+    @RelationId((ft: FreeTrial) => ft.affiliatedBox)
     @Column()
     affiliatedBoxId: number;
 }

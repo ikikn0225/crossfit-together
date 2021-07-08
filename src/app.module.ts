@@ -24,6 +24,16 @@ import { LeaderBoardModule } from './leader-board/leader-board.module';
 import { LeaderBoardNamedWod } from './leader-board/entities/lb-named-wods.entity';
 import { Hold } from './hold/entities/hold.entity';
 import { HoldModule } from './hold/hold.module';
+import { FreeTrial } from './free-trial/entities/ft.entity';
+import { FreeTrialModule } from './free-trial/free-trial.module';
+import { Notice } from './notice/entities/notice.entity';
+import { NoticeModule } from './notice/notice.module';
+import { Comment } from './comment/entities/comment.entity';
+import { CommentModule } from './comment/comment.module';
+import { Like } from './like/entities/like.entity';
+import { LikeModule } from './like/like.module';
+import { Reply } from './reply/entities/reply.entity';
+import { ReplyModule } from './reply/reply.module';
 
 @Module({
   imports: [
@@ -52,7 +62,7 @@ import { HoldModule } from './hold/hold.module';
       "database": process.env.DB_NAME,
       "synchronize": process.env.NODE_ENV !== 'prod',
       "logging": process.env.NODE_ENV !== 'prod',
-      entities:[ User, Verification, AffiliatedBox, Wod, Bor, LeaderBoardOneRm, LeaderBoardNamedWod, Hold ]
+      entities:[ User, Verification, AffiliatedBox, Wod, Bor, LeaderBoardOneRm, LeaderBoardNamedWod, Hold, FreeTrial, Notice, Comment, Like, Reply ]
     }),
     GraphQLModule.forRoot({
       autoSchemaFile: true,
@@ -78,6 +88,11 @@ import { HoldModule } from './hold/hold.module';
     BorModule,
     LeaderBoardModule,
     HoldModule,
+    FreeTrialModule,
+    NoticeModule,
+    CommentModule,
+    LikeModule,
+    ReplyModule,
     CommonModule,
   ],
   controllers: [],
