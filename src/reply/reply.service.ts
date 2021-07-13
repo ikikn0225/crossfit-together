@@ -6,9 +6,10 @@ import { Comment } from "src/comment/entities/comment.entity";
 import { Notice } from "src/notice/entities/notice.entity";
 import { User } from "src/user/entities/user.entity";
 import { Repository } from "typeorm";
-import { CreateReplyInWodInput, CreateReplyInWodOutput } from "./dtos/create-reply-in-wod.dto";
-import { DeleteReplyInWodInput, DeleteReplyInWodOutput } from "./dtos/delete-reply-in-wod.dto";
-import { EditReplyInWodInput, EditReplyInWodOutput } from "./dtos/edit-reply-in-wod.dto";
+import { CreateReplyInNoticeInput, CreateReplyInNoticeOutput } from "./dtos/create-reply-in-notice.dto";
+import { DeleteReplyInNoticeInput, DeleteReplyInNoticeOutput } from "./dtos/delete-reply-in-notice.dto";
+import { EditReplyInNoticeInput, EditReplyInNoticeOutput } from "./dtos/edit-reply-in-notice.dto";
+import { AllRepliesInNoticeInput, AllRepliesInNoticeOutput } from "./dtos/replies-in-notice.dto";
 import { Reply } from "./entities/reply.entity";
 
 
@@ -22,10 +23,10 @@ export class ReplyService {
             private readonly comments:Repository<Comment>,
     ) {}
 
-    async createReplyInWod(
+    async createReplyInNotice(
         authUser:User,
-        createReplyInput:CreateReplyInWodInput
-    ):Promise<CreateReplyInWodOutput> {
+        createReplyInput:CreateReplyInNoticeInput
+    ):Promise<CreateReplyInNoticeOutput> {
         try {
             const comment = await this.comments.findOne(createReplyInput.commentId);
             if(!comment) {
@@ -46,12 +47,12 @@ export class ReplyService {
         }
     }
 
-    async editReplyInWod(
+    async editReplyInNotice(
         authUser:User,
-        editReplyInWodInput:EditReplyInWodInput
-    ):Promise<EditReplyInWodOutput> {
+        editReplyInNoticeInput:EditReplyInNoticeInput
+    ):Promise<EditReplyInNoticeOutput> {
         try {
-            const reply = await this.replies.findOne(editReplyInWodInput.replyId);
+            const reply = await this.replies.findOne(editReplyInNoticeInput.replyId);
             if(!reply) {
                 return {
                     ok:false,
@@ -64,7 +65,7 @@ export class ReplyService {
                     error:"You cannot do that."
                 }
             }
-            await this.replies.save([{ id:editReplyInWodInput.replyId, ...editReplyInWodInput }]);
+            await this.replies.save([{ id:editReplyInNoticeInput.replyId, ...editReplyInNoticeInput }]);
             return {
                 ok:true,
             }
@@ -76,12 +77,12 @@ export class ReplyService {
         }
     }
 
-    async deleteReplyInWod(
+    async deleteReplyInNotice(
         authUser:User,
-        deleteReplyInWodInput:DeleteReplyInWodInput
-    ):Promise<DeleteReplyInWodOutput> {
+        deleteReplyInNoticeInput:DeleteReplyInNoticeInput
+    ):Promise<DeleteReplyInNoticeOutput> {
         try {
-            const reply = await this.replies.findOne(deleteReplyInWodInput.id);
+            const reply = await this.replies.findOne(deleteReplyInNoticeInput.id);
             if(!reply) {
                 return {
                     ok:false,
@@ -94,9 +95,33 @@ export class ReplyService {
                     error:"You cannot do that."
                 }
             }
-            await this.replies.delete(deleteReplyInWodInput.id);
+            await this.replies.delete(deleteReplyInNoticeInput.id);
             return {
                 ok:true,
+            }
+        } catch (error) {
+            return {
+                ok:false,
+                error
+            }
+        }
+    }
+
+    async repliesInNotice(
+        allRepliesInNoticeInput:AllRepliesInNoticeInput
+    ):Promise<AllRepliesInNoticeOutput> {
+        try {
+            const comment = await this.comments.findOne(allRepliesInNoticeInput.commentId);
+            if(!comment) {
+                return {
+                    ok:false,
+                    error:"Comment not found."
+                }
+            }
+            const replies = await this.replies.find({relations:["comment", "owner"], where: {comment}});
+            return {
+                ok:true,
+                replies
             }
         } catch (error) {
             return {

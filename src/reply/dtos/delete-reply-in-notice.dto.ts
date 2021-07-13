@@ -4,7 +4,7 @@ import { Reply } from "../entities/reply.entity";
 
 
 @InputType()
-export class DeleteReplyInWodInput extends PickType(Reply, ['id']) {}
+export class DeleteReplyInNoticeInput extends PickType(Reply, ['id']) {}
 
 @ObjectType()
-export class DeleteReplyInWodOutput extends CoreOutput {}
+export class DeleteReplyInNoticeOutput extends CoreOutput {}

@@ -98,10 +98,4 @@ import { ReplyModule } from './reply/reply.module';
   controllers: [],
   providers: [],
 })
-export class AppModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(JwtMiddleware)
-      .forRoutes({ path:'/graphql', method: RequestMethod.POST });
-  }
-}
+export class AppModule {}

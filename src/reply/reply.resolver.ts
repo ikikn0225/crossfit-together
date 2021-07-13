@@ -4,9 +4,10 @@ import { AuthUser } from "src/auth/auth-user.decorator";
 import { Role } from "src/auth/role-decorator";
 import { User } from "src/user/entities/user.entity";
 import { Repository } from "typeorm";
-import { CreateReplyInWodInput, CreateReplyInWodOutput } from "./dtos/create-reply-in-wod.dto";
-import { DeleteReplyInWodInput, DeleteReplyInWodOutput } from "./dtos/delete-reply-in-wod.dto";
-import { EditReplyInWodInput, EditReplyInWodOutput } from "./dtos/edit-reply-in-wod.dto";
+import { CreateReplyInNoticeInput, CreateReplyInNoticeOutput } from "./dtos/create-reply-in-notice.dto";
+import { DeleteReplyInNoticeInput, DeleteReplyInNoticeOutput } from "./dtos/delete-reply-in-notice.dto";
+import { EditReplyInNoticeInput, EditReplyInNoticeOutput } from "./dtos/edit-reply-in-notice.dto";
+import { AllRepliesInNoticeInput, AllRepliesInNoticeOutput } from "./dtos/replies-in-notice.dto";
 import { Reply } from "./entities/reply.entity";
 import { ReplyService } from "./reply.service";
 
@@ -18,30 +19,38 @@ export class ReplyResolver {
     ){}
 
     @Role(['Any'])
-    @Mutation(returns => CreateReplyInWodOutput)
-    async createReplyInWod (
+    @Mutation(returns => CreateReplyInNoticeOutput)
+    async createReplyInNotice (
         @AuthUser() authUser:User,
-        @Args('input') createReplyInput:CreateReplyInWodInput
-    ):Promise<CreateReplyInWodOutput> {
-        return this.replyService.createReplyInWod(authUser, createReplyInput);
+        @Args('input') createReplyInput:CreateReplyInNoticeInput
+    ):Promise<CreateReplyInNoticeOutput> {
+        return this.replyService.createReplyInNotice(authUser, createReplyInput);
     }
 
     @Role(['Any'])
-    @Mutation(returns => EditReplyInWodOutput)
-    async editReplyInWod(
+    @Mutation(returns => EditReplyInNoticeOutput)
+    async editReplyInNotice(
         @AuthUser() authUser:User,
-        @Args('input') editReplyInWodInput:EditReplyInWodInput
-    ):Promise<EditReplyInWodOutput> {
-        return this.replyService.editReplyInWod(authUser, editReplyInWodInput);
+        @Args('input') editReplyInNoticeInput:EditReplyInNoticeInput
+    ):Promise<EditReplyInNoticeOutput> {
+        return this.replyService.editReplyInNotice(authUser, editReplyInNoticeInput);
     }
 
     @Role(['Any'])
-    @Mutation(returns => DeleteReplyInWodOutput)
-    async deleteReplyInWod(
+    @Mutation(returns => DeleteReplyInNoticeOutput)
+    async deleteReplyInNotice(
         @AuthUser() authUser:User,
-        @Args('input') deleteReplyInWodInput:DeleteReplyInWodInput
-    ):Promise<DeleteReplyInWodOutput> {
-        return this.replyService.deleteReplyInWod(authUser, deleteReplyInWodInput);
+        @Args('input') deleteReplyInNoticeInput:DeleteReplyInNoticeInput
+    ):Promise<DeleteReplyInNoticeOutput> {
+        return this.replyService.deleteReplyInNotice(authUser, deleteReplyInNoticeInput);
+    }
+
+    @Role(['Any'])
+    @Query(returns => AllRepliesInNoticeOutput)
+    repliesInNotice(
+        @Args('input') allRepliesInNoticeInput:AllRepliesInNoticeInput
+    ):Promise<AllRepliesInNoticeOutput> {
+        return this.replyService.repliesInNotice(allRepliesInNoticeInput);
     }
 
 }

@@ -3,10 +3,10 @@ import { CoreOutput } from "src/common/dtos/common.dto";
 
 
 @InputType()
-export class CreateLikeOnWodInput {
+export class CreateLikeInWodInput {
     @Field(type => Number)
     wodId:number;
 }
 
 @ObjectType()
-export class CreateLikeOnWodOutput extends CoreOutput {}
+export class CreateLikeInWodOutput extends CoreOutput {}

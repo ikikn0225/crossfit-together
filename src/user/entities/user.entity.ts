@@ -1,5 +1,5 @@
 import { Field, InputType, Int, ObjectType, registerEnumType } from '@nestjs/graphql';
-import { IsEmail, IsEnum } from 'class-validator';
+import { IsEmail, IsEnum, IsString } from 'class-validator';
 import { CoreEntity } from 'src/common/core.entity';
 import { BeforeInsert, BeforeUpdate, Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn, RelationId } from 'typeorm';
 import * as bcrypt from 'bcrypt';
@@ -44,6 +44,10 @@ export class User extends CoreEntity {
   @Field(type => String)
   @Column({select: false})
   password: string;
+
+  @Field(type => String, { nullable: true })
+  @Column({ nullable: true })
+  coverImg?: string;
 
   @Field(type => UserRole)
   @Column({type: 'enum', enum: UserRole})

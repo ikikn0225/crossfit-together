@@ -4,9 +4,9 @@ import { AuthUser } from "src/auth/auth-user.decorator";
 import { Role } from "src/auth/role-decorator";
 import { User } from "src/user/entities/user.entity";
 import { Repository } from "typeorm";
-import { CreateLikeOnWodInput, CreateLikeOnWodOutput } from "./dtos/create-like-on-wod.dto";
-import { DeleteLikeOnWodInput, DeleteLikeOnWodOutput } from "./dtos/delete-like-on-wod.dto";
-import { AllLikesOnWodInput, AllLikesOnWodOutput } from "./dtos/likes-on-wod.dto";
+import { CreateLikeInWodInput, CreateLikeInWodOutput } from "./dtos/create-like-in-wod.dto";
+import { DeleteLikeInWodInput, DeleteLikeInWodOutput } from "./dtos/delete-like-in-wod.dto";
+import { AllLikesInWodInput, AllLikesInWodOutput } from "./dtos/likes-in-wod.dto";
 import { Like } from "./entities/like.entity";
 import { LikeService } from "./like.service";
 
@@ -18,29 +18,29 @@ export class LikeResolver {
     ){}
 
     @Role(['Any'])
-    @Mutation(returns => CreateLikeOnWodOutput)
-    async createLikeOnWod(
+    @Mutation(returns => CreateLikeInWodOutput)
+    async createLikeInWod(
         @AuthUser() authUser:User,
-        @Args('input') createLikeOnWodInput:CreateLikeOnWodInput
-    ):Promise<CreateLikeOnWodOutput> {
-        return this.likeService.createLikeOnWod(authUser, createLikeOnWodInput);
+        @Args('input') createLikeInWodInput:CreateLikeInWodInput
+    ):Promise<CreateLikeInWodOutput> {
+        return this.likeService.createLikeInWod(authUser, createLikeInWodInput);
     }
 
     @Role(['Any'])
-    @Query(returns => AllLikesOnWodOutput)
-    async allLikesOnWod(
+    @Query(returns => AllLikesInWodOutput)
+    async allLikesInWod(
         @AuthUser() authUser:User,
-        @Args('input') allLikesOnWodInput:AllLikesOnWodInput
-    ):Promise<AllLikesOnWodOutput> {
-        return this.likeService.allLikesOnWod(allLikesOnWodInput);
+        @Args('input') allLikesInWodInput:AllLikesInWodInput
+    ):Promise<AllLikesInWodOutput> {
+        return this.likeService.allLikesInWod(allLikesInWodInput);
     }
 
     @Role(['Any'])
-    @Mutation(returns => DeleteLikeOnWodOutput)
-    async deleteLikeOnWod(
+    @Mutation(returns => DeleteLikeInWodOutput)
+    async deleteLikeInWod(
         @AuthUser() authUser:User,
-        @Args('input') deleteLikeOnWodInput:DeleteLikeOnWodInput
-    ):Promise<DeleteLikeOnWodOutput> {
-        return this.likeService.deleteLikeOnWod(authUser, deleteLikeOnWodInput);
+        @Args('input') deleteLikeInWodInput:DeleteLikeInWodInput
+    ):Promise<DeleteLikeInWodOutput> {
+        return this.likeService.deleteLikeInWod(authUser, deleteLikeInWodInput);
     }
 }
