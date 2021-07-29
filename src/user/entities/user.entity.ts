@@ -50,6 +50,10 @@ export class User extends CoreEntity {
   @Column({select: false})
   password: string;
 
+  @Field(type => String, { nullable: true })
+  @Column({ nullable: true })
+  coverImg?: string;
+
   @Field(type => UserRole)
   @Column({type: 'enum', enum: UserRole})
   @IsEnum(UserRole)

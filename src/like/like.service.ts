@@ -6,9 +6,9 @@ import { Notice } from "src/notice/entities/notice.entity";
 import { User } from "src/user/entities/user.entity";
 import { Wod } from "src/wod/entities/wod.entity";
 import { Repository } from "typeorm";
-import { CreateLikeOnWodInput, CreateLikeOnWodOutput } from "./dtos/create-like-on-wod.dto";
-import { DeleteLikeOnWodInput, DeleteLikeOnWodOutput } from "./dtos/delete-like-on-wod.dto";
-import { AllLikesOnWodInput, AllLikesOnWodOutput } from "./dtos/likes-on-wod.dto";
+import { CreateLikeInWodInput, CreateLikeInWodOutput } from "./dtos/create-like-in-wod.dto";
+import { DeleteLikeInWodInput, DeleteLikeInWodOutput } from "./dtos/delete-like-in-wod.dto";
+import { AllLikesInWodInput, AllLikesInWodOutput } from "./dtos/likes-in-wod.dto";
 import { Like } from "./entities/like.entity";
 
 
@@ -22,12 +22,12 @@ export class LikeService {
             private readonly wods:Repository<Wod>,
     ) {}
 
-    async createLikeOnWod(
+    async createLikeInWod(
         authUser:User,
-        createLikeOnWodInput:CreateLikeOnWodInput
-    ):Promise<CreateLikeOnWodOutput> {
+        createLikeInWodInput:CreateLikeInWodInput
+    ):Promise<CreateLikeInWodOutput> {
         try {
-            const wod = await this.wods.findOne(createLikeOnWodInput.wodId);
+            const wod = await this.wods.findOne(createLikeInWodInput.wodId);
             if(!wod) {
                 return {
                     ok:false,
@@ -46,19 +46,19 @@ export class LikeService {
         }
     }
 
-    async deleteLikeOnWod(
+    async deleteLikeInWod(
         authUser:User,
-        deleteLikeOnWod:DeleteLikeOnWodInput
-    ):Promise<DeleteLikeOnWodOutput> {
+        deleteLikeInWod:DeleteLikeInWodInput
+    ):Promise<DeleteLikeInWodOutput> {
         try {
-            const wod = await this.wods.findOne(deleteLikeOnWod.wodId);
+            const wod = await this.wods.findOne(deleteLikeInWod.wodId);
             if(!wod) {
                 return {
                     ok:false,
                     error:"Wod not found."
                 }
             }
-            const like = await this.likes.findOne({id:deleteLikeOnWod.id, wod, owner:authUser});
+            const like = await this.likes.findOne({id:deleteLikeInWod.id, wod, owner:authUser});
             if(!like) {
                 return {
                     ok:false,
@@ -71,7 +71,7 @@ export class LikeService {
                     error:"You cannnot do that."
                 }
             }
-            await this.likes.delete(deleteLikeOnWod.id);
+            await this.likes.delete(deleteLikeInWod.id);
             return {
                 ok:true,
             }
@@ -83,11 +83,11 @@ export class LikeService {
         }
     }
 
-    async allLikesOnWod(
-        allLikesOnWodInput:AllLikesOnWodInput
-    ):Promise<AllLikesOnWodOutput> {
+    async allLikesInWod(
+        allLikesInWodInput:AllLikesInWodInput
+    ):Promise<AllLikesInWodOutput> {
         try {
-            const wod = await this.wods.findOne(allLikesOnWodInput.wodId);
+            const wod = await this.wods.findOne(allLikesInWodInput.wodId);
             if(!wod) {
                 return {
                     ok:false,

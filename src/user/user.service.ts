@@ -33,6 +33,7 @@ export class UserService {
                 return {ok:false, error:'There is an existed user with the email'};
             const affiliatedBox = await this.boxs.findOne({name:myBox});
             
+        
             if(role === 'Coach') {
                 //Coach
                 user = await this.users.save(this.users.create({name, email, password, role, profileImg}));

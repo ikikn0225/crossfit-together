@@ -118,7 +118,7 @@ export class CommentService {
                 }
             }
             //comment는 없을 수 있으니 null도 가능
-            const comments = await this.comments.find({relations:["notice"], where: {notice}});
+            const comments = await this.comments.find({relations:["notice", "owner"], where: {notice}});
             return {
                 ok:true,
                 comments

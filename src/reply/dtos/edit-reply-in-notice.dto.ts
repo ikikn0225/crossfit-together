@@ -3,7 +3,7 @@ import { CoreOutput } from "src/common/dtos/common.dto";
 import { Reply } from "../entities/reply.entity";
 
 @InputType()
-export class EditReplyInWodInput extends PickType(PartialType(Reply), [
+export class EditReplyInNoticeInput extends PickType(PartialType(Reply), [
     'content'
 ]) {
     @Field(type => Number)
@@ -11,4 +11,4 @@ export class EditReplyInWodInput extends PickType(PartialType(Reply), [
 }
 
 @ObjectType()
-export class EditReplyInWodOutput extends CoreOutput {}
+export class EditReplyInNoticeOutput extends CoreOutput {}
