@@ -26,7 +26,7 @@ export class UserService {
         private readonly mailService: MailService,
     ) {}
 
-    async createAccount({ name, email, password, role, myBox }: CreateAccountInput): Promise<CreateAccountOutput> {
+    async createAccount({ name, email, password, role, myBox, profileImg }: CreateAccountInput): Promise<CreateAccountOutput> {
         try {
             let user = await this.users.findOne({email});
             if(user) 
@@ -35,10 +35,10 @@ export class UserService {
             
             if(role === 'Coach') {
                 //Coach
-                user = await this.users.save(this.users.create({name, email, password, role}));
+                user = await this.users.save(this.users.create({name, email, password, role, profileImg}));
             } else {
                 //Crossfiter
-                user = await this.users.save(this.users.create({name, email, password, role, affiliatedBox}));
+                user = await this.users.save(this.users.create({name, email, password, role, affiliatedBox, profileImg}));
             }
             const verification = await this.verification.save(
                 this.verification.create({ user })

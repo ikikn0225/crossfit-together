@@ -34,6 +34,7 @@ import { Like } from './like/entities/like.entity';
 import { LikeModule } from './like/like.module';
 import { Reply } from './reply/entities/reply.entity';
 import { ReplyModule } from './reply/reply.module';
+import { UploadsModule } from './uploads/uploads.module';
 
 @Module({
   imports: [
@@ -94,6 +95,7 @@ import { ReplyModule } from './reply/reply.module';
     LikeModule,
     ReplyModule,
     CommonModule,
+    UploadsModule,
   ],
   controllers: [],
   providers: [],
