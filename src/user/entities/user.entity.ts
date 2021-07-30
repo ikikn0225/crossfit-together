@@ -37,6 +37,11 @@ export class User extends CoreEntity {
   @IsString()
   name: string;
 
+  @Field(type => String, { nullable: true })
+  @Column({ nullable: true })
+  @IsString()
+  profileImg: string;
+
   @Field(type => String)
   @Column()
   @IsEmail()

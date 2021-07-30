@@ -35,6 +35,7 @@ export class UserResolver {
 
     @Role(['Any'])
     @Query(returns => UserProfileOutput)
+    @UseGuards(AuthGuard)
     async userProfile(
         @Args() userProfileInput: UserProfileInput
     ):Promise<UserProfileOutput> {
@@ -43,6 +44,7 @@ export class UserResolver {
 
     @Role(['Any'])
     @Mutation(returns => EditProfileOutput)
+    @UseGuards(AuthGuard)
     async editProfile(
         @AuthUser() authUser:User,
         @Args('input') editProfileInput:EditProfileInput):Promise<EditProfileOutput> {

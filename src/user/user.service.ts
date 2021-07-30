@@ -26,23 +26,20 @@ export class UserService {
         private readonly mailService: MailService,
     ) {}
 
-    async createAccount(
-        { name, email, password, coverImg, role, myBox }: CreateAccountInput
-    ): Promise<CreateAccountOutput> {
+    async createAccount({ name, email, password, role, myBox, profileImg }: CreateAccountInput): Promise<CreateAccountOutput> {
         try {
             let user = await this.users.findOne({email});
             if(user) 
                 return {ok:false, error:'There is an existed user with the email'};
             const affiliatedBox = await this.boxs.findOne({name:myBox});
-            console.log(coverImg);
             
         
             if(role === 'Coach') {
                 //Coach
-                user = await this.users.save(this.users.create({name, email, password, coverImg, role}));
+                user = await this.users.save(this.users.create({name, email, password, role, profileImg}));
             } else {
                 //Crossfiter
-                user = await this.users.save(this.users.create({name, email, password, coverImg, role, affiliatedBox}));
+                user = await this.users.save(this.users.create({name, email, password, role, affiliatedBox, profileImg}));
             }
             const verification = await this.verification.save(
                 this.verification.create({ user })
