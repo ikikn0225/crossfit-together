@@ -52,6 +52,8 @@ import { UploadsModule } from './uploads/uploads.module';
         SENDGRID_API_KEY:     Joi.string().required(),
         SENDGRID_FROM_EMAIL:  Joi.string().required(),
         SENDGRID_TEMPLATE_ID: Joi.string().required(),
+        AWS_KEY: Joi.string().required(),
+        AWS_SECRET: Joi.string().required(),
       })
     }),
     TypeOrmModule.forRoot({

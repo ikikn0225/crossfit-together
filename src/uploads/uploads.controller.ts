@@ -8,7 +8,7 @@ import {
   import { FileInterceptor } from '@nestjs/platform-express';
   import * as AWS from 'aws-sdk';
   
-  const BUCKET_NAME = 'crossfiTogether0225';
+  const BUCKET_NAME = 'crossfitogether0225';
   
   @Controller('uploads')
   export class UploadsController {
@@ -29,6 +29,7 @@ import {
             // }).promise();
             
         const objectName = `${Date.now() + file.originalname}`;
+        
         await new AWS.S3()
           .putObject({
             Body: file.buffer,
@@ -37,6 +38,7 @@ import {
             ACL: 'public-read',
           })
           .promise();
+        console.log(objectName);
         const url = `https://${BUCKET_NAME}.s3.amazonaws.com/${objectName}`;
         return { url };
       } catch (e) {
