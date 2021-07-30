@@ -34,6 +34,7 @@ export class User extends CoreEntity {
 
   @Field(type => String)  // nest(gql) - schema type 지정
   @Column()               // typeorm
+  @IsString()
   name: string;
 
   @Field(type => String)

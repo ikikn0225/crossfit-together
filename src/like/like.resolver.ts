@@ -28,7 +28,7 @@ export class LikeResolver {
 
     @Role(['Any'])
     @Query(returns => AllLikesInWodOutput)
-    async allLikesInWod(
+    allLikesInWod(
         @AuthUser() authUser:User,
         @Args('input') allLikesInWodInput:AllLikesInWodInput
     ):Promise<AllLikesInWodOutput> {
