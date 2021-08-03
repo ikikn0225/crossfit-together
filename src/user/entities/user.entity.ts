@@ -68,6 +68,7 @@ export class User extends CoreEntity {
   )
   affiliatedBox?: AffiliatedBox;
 
+  @Field(type => Number,{nullable: true})
   @RelationId((user: User) => user.affiliatedBox)
   affiliatedBoxId: number;
 
