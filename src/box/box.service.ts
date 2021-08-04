@@ -2,9 +2,11 @@ import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { User } from "src/user/entities/user.entity";
 import { Repository } from "typeorm";
+import { AllAffiliatedBoxesOutput } from "./dtos/all-affiliated-boxes.dto";
 import { CreateAffiliatedBoxInput, CreateAffiliatedBoxOutput } from "./dtos/create-box.dto";
 import { DeleteAffiliatedBoxOutput } from "./dtos/delete-box.dto";
 import { MyAffiliatedBoxUsersOutput } from "./dtos/my-affiliated-box-users.dto";
+import { MyAffiliatedBoxOutput } from "./dtos/my-affiliated-box.dto";
 import { AffiliatedBox } from "./entities/box.entity";
 
 
@@ -21,6 +23,9 @@ export class AffiliatedBoxService {
         owner: User,
         createAffiliatedBoxInput: CreateAffiliatedBoxInput): Promise<CreateAffiliatedBoxOutput> {
         try {
+            const existBox = await this.box.findOne({name:createAffiliatedBoxInput.name});
+            if(existBox) return {ok:false, error:'There is an existed Box'};
+
             const newBox = this.box.create(createAffiliatedBoxInput);
             const user = await this.users.findOne(owner.id);
             user.affiliatedBox = newBox;
@@ -51,6 +56,42 @@ export class AffiliatedBoxService {
             await this.box.delete(affiliatedBox.id);
             return {
                 ok:true,
+            }
+        } catch (error) {
+            return {
+                ok:false,
+                error
+            }
+        }
+    }
+
+    async allAffiliatedBoxes():Promise<AllAffiliatedBoxesOutput> {
+        try {
+            const allAffiliatedBoxes = await this.box.find();
+            return {
+                allAffiliatedBoxes: allAffiliatedBoxes,
+                ok:true,
+            }
+        } catch (error) {
+            return {
+                ok:false,
+                error
+            }
+        }
+    }
+
+    async myAffiliatedBox( user:User ):Promise<MyAffiliatedBoxOutput> {
+        try {
+            const affiliatedBox = await this.box.findOne(user.affiliatedBoxId);
+            if(!affiliatedBox) {
+                return {
+                    ok:false,
+                    error:"There is no Box"
+                }
+            }
+            return {
+                ok:true,
+                affiliatedBox:affiliatedBox
             }
         } catch (error) {
             return {

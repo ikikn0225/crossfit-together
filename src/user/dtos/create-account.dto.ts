@@ -6,9 +6,8 @@ import { User } from "../entities/user.entity";
 
 @InputType()
 export class CreateAccountInput extends PickType(User, ['name', 'email', 'password', 'role', 'profileImg']) {
-    @Field(type => AffiliatedBoxList, {nullable: true})
-    @IsEnum(AffiliatedBoxList)
-    myBox?:AffiliatedBoxList;
+    @Field(type => String, {nullable: true})
+    myBox?:string;
 }
 
 @ObjectType()

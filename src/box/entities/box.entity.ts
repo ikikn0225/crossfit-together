@@ -17,9 +17,9 @@ import { AffiliatedBoxList } from "../box.enums";
 @ObjectType()
 @Entity()
 export class AffiliatedBox extends CoreEntity {
-    @Field(type => AffiliatedBoxList)
+    @Field(type => String)
     @Column()
-    name: AffiliatedBoxList;
+    name: string;
 
     @Field(type => String, { nullable: true })
     @Column({ nullable: true })
