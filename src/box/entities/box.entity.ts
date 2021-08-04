@@ -10,7 +10,6 @@ import { Notice } from "src/notice/entities/notice.entity";
 import { User } from "src/user/entities/user.entity";
 import { Wod } from "src/wod/entities/wod.entity";
 import { Column, Entity, JoinColumn, OneToMany, OneToOne, RelationId } from "typeorm";
-import { AffiliatedBoxList } from "../box.enums";
 
 
 @InputType('AffiliatedBoxInputType', {isAbstract:true})
