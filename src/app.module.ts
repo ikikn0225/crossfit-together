@@ -59,16 +59,22 @@ import { UploadsModule } from './uploads/uploads.module';
     }),
     TypeOrmModule.forRoot({
       "type": "postgres",
-      "host": process.env.DB_HOST,
-      "port": +process.env.DB_PORT,
-      "username": process.env.DB_USERNAME,
-      "password": process.env.DB_PASSWORD,
-      "database": process.env.DB_NAME,
+      ...(process.env.DATABASE_URL 
+        ? {url:process.env.DATABASE_URL} 
+        : {
+            host: process.env.DB_HOST, 
+            port: +process.env.DB_PORT, 
+            username: process.env.DB_USERNAME, 
+            password: process.env.DB_PASSWORD, 
+            database: process.env.DB_NAME, 
+          }),
       "synchronize": process.env.NODE_ENV !== 'prod',
       "logging": process.env.NODE_ENV !== 'prod',
       entities:[ User, Verification, AffiliatedBox, Wod, Bor, LeaderBoardOneRm, LeaderBoardNamedWod, Hold, FreeTrial, Notice, Comment, Like, Reply ]
     }),
     GraphQLModule.forRoot({
+      playground: process.env.NODE_ENV !== 'production',
+      installSubscriptionHandlers:true,
       autoSchemaFile: true,
       context: ({ req, connection }) => {
         const TOKEN_KEY = 'x-jwt';
