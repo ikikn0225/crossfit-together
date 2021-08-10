@@ -12,6 +12,7 @@ import { VerifyEmailOutput } from './dtos/verify-email.dto';
 import { MailService } from 'src/mail/mail.service';
 import { DeleteAccountOutput } from './dtos/delete-account.dto';
 import { AffiliatedBox } from 'src/box/entities/box.entity';
+import { decryptValue } from 'src/crypto';
 
 @Injectable()
 export class UserService {
@@ -59,7 +60,7 @@ export class UserService {
                     ok:false,
                     error: 'User not found',
                 }
-            const passwordCorrect = await user.checkPassword(password);
+            const passwordCorrect = await user.checkPassword(decryptValue(password));
             if(!passwordCorrect)
                 return {
                     ok:false,

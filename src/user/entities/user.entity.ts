@@ -42,7 +42,7 @@ export class User extends CoreEntity {
 
   @Field(type => String)
   @Column()
-  @IsEmail()
+  // @IsEmail()
   email: string;
 
   @Field(type => String)

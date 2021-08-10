@@ -76,8 +76,12 @@ import { UploadsModule } from './uploads/uploads.module';
       playground: process.env.NODE_ENV !== 'production',
       installSubscriptionHandlers:true,
       autoSchemaFile: true,
-      context: ({ req, connection }) => {
+      context: ({ req, res, connection }) => {
         const TOKEN_KEY = 'x-jwt';
+        // res.cookie("ct-token", req.headers[TOKEN_KEY] , {
+        //   expires: new Date(Date.now() + (30 * 60 * 1000)),
+        //   httpOnly: true
+        // });
         return {
           token: req ? req.headers[TOKEN_KEY] : connection.context[TOKEN_KEY],
         }
