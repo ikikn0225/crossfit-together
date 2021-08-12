@@ -15,6 +15,8 @@ import { Notice } from 'src/notice/entities/notice.entity';
 import { Comment } from 'src/comment/entities/comment.entity';
 import { Like } from 'src/like/entities/like.entity';
 import { Reply } from 'src/reply/entities/reply.entity';
+import { jwtConstants } from 'src/common/common.constants';
+import jwt from 'jsonwebtoken';
 
 export enum UserRole {
   Crossfiter = 'Crossfiter',
@@ -46,7 +48,7 @@ export class User extends CoreEntity {
   email: string;
 
   @Field(type => String)
-  @Column({select: false})
+  @Column()
   password: string;
 
   @Field(type => String, { nullable: true })
@@ -57,6 +59,10 @@ export class User extends CoreEntity {
   @Column({type: 'enum', enum: UserRole})
   @IsEnum(UserRole)
   role: UserRole;
+
+  @Field((type) => String, { nullable: true })
+  @Column({ nullable: true })
+  refreshToken?: string;
 
   @Field(type => AffiliatedBox)
   @ManyToOne(
@@ -160,5 +166,12 @@ export class User extends CoreEntity {
     } catch (error) {
       throw new InternalServerErrorException();
     }
+  }
+
+  verifyRefresh() {
+    if (!this.refreshToken) return false;
+    const result = jwt.verify(this.refreshToken, jwtConstants.secret);
+
+    return Boolean(result);
   }
 }

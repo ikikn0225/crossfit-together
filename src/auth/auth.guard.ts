@@ -9,7 +9,7 @@ import { AllowedRoles } from "./role-decorator";
 
 
 @Injectable()
-export class AuthGuard implements CanActivate {
+export class AuthUserGuard implements CanActivate {
     constructor(private readonly reflector: Reflector,
         private readonly jwtService:JwtService,
         private readonly usersService:UserService,) {}

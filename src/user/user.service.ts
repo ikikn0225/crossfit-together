@@ -12,7 +12,9 @@ import { VerifyEmailOutput } from './dtos/verify-email.dto';
 import { MailService } from 'src/mail/mail.service';
 import { DeleteAccountOutput } from './dtos/delete-account.dto';
 import { AffiliatedBox } from 'src/box/entities/box.entity';
-import { decryptValue } from 'src/crypto';
+import { Context } from '@nestjs/graphql';
+import { Response } from 'express';
+import { encryptValue, decryptValue } from 'src/crypto';
 
 @Injectable()
 export class UserService {
@@ -52,7 +54,7 @@ export class UserService {
         }
     }
 
-    async login({ email, password }: LoginInput): Promise<LoginOutput> {
+    async login({ email, password }: LoginInput, @Context() { res }: { res: Response }): Promise<LoginOutput> {
         try {
             const user = await this.users.findOne({email}, {select:['id', 'password']});
             if(!user) 
@@ -76,6 +78,34 @@ export class UserService {
                 ok: false,
                 error,
             }
+        }
+    }
+
+    async getById(id: number) {
+        const user = await this.users.findOne({ where: { id } });
+        return user;
+    }
+
+    async getByUserId(email: string) {
+        const user = await this.users.findOne({
+            where: { email: email }
+        });
+        return user;
+    }
+
+    async updateRefreshToken(id: number, refreshToken: string | null) {
+        await this.users.update(id, {refreshToken});
+    }
+    
+    async update({ id, ...updateInfo }: EditProfileInput) {
+        try {
+            const user = await this.users.findOne({ where: { id } });
+
+            if(user) user.refreshToken = updateInfo.refreshToken;
+            await this.users.save(user);
+            return { ok: true };
+        } catch (error) {
+            return { ok: false, error };
         }
     }
 
