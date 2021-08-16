@@ -15,8 +15,8 @@ import { Notice } from 'src/notice/entities/notice.entity';
 import { Comment } from 'src/comment/entities/comment.entity';
 import { Like } from 'src/like/entities/like.entity';
 import { Reply } from 'src/reply/entities/reply.entity';
-import { jwtConstants } from 'src/common/common.constants';
 import jwt from 'jsonwebtoken';
+import { jwtConstants } from 'src/auth/constants';
 
 export enum UserRole {
   Crossfiter = 'Crossfiter',
@@ -170,7 +170,7 @@ export class User extends CoreEntity {
 
   verifyRefresh() {
     if (!this.refreshToken) return false;
-    const result = jwt.verify(this.refreshToken, jwtConstants.secret);
+    const result = jwt.verify(this.refreshToken, process.env.JWT_SECRET_KEY);
 
     return Boolean(result);
   }

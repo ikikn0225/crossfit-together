@@ -1,13 +1,13 @@
 import { Injectable, ExecutionContext, UnauthorizedException } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { GqlExecutionContext } from '@nestjs/graphql';
-import { jwtConstants } from 'src/common/common.constants';
 import { decryptValue } from 'src/crypto';
+import { jwtConstants } from '../constants';
 
 const setAuth = (context: ExecutionContext) => {
     const gqlContext = GqlExecutionContext.create(context);
     const ctx = gqlContext.getContext();
-    const authCookie = ctx.req.cookies[jwtConstants.header];
+    const authCookie = ctx.req.cookies[process.env.JWT_HEADER];
 
     if (authCookie) {
         ctx.req.headers.authorization = `Bearer ${decryptValue(authCookie)}`;
