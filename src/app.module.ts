@@ -53,8 +53,10 @@ import { UploadsModule } from './uploads/uploads.module';
         SENDGRID_API_KEY:     Joi.string().required(),
         SENDGRID_FROM_EMAIL:  Joi.string().required(),
         SENDGRID_TEMPLATE_ID: Joi.string().required(),
-        AWS_KEY: Joi.string().required(),
-        AWS_SECRET: Joi.string().required(),
+        AWS_KEY:              Joi.string().required(),
+        AWS_SECRET:           Joi.string().required(),
+        JWT_SECRET_KEY:       Joi.string().required(),
+        JWT_HEADER:           Joi.string().required(),
       })
     }),
     TypeOrmModule.forRoot({
@@ -76,12 +78,7 @@ import { UploadsModule } from './uploads/uploads.module';
       playground: process.env.NODE_ENV !== 'production',
       installSubscriptionHandlers:true,
       autoSchemaFile: true,
-      // context: ({ req, connection, ctx }) => {
-      //   ({...ctx})
-      //     // res.cookie("ct-token", req.headers[TOKEN_KEY] , {
-      //     //   expires: new Date(Date.now() + (30 * 60 * 1000)),
-      //     //   httpOnly: true
-      //     // });
+      // context: ({ req, connection }) => {
       //     const TOKEN_KEY = 'x-jwt';
       //   return {
       //     token: req ? req.headers[TOKEN_KEY] : connection.context[TOKEN_KEY],
@@ -91,6 +88,8 @@ import { UploadsModule } from './uploads/uploads.module';
     }),
     JwtModule.forRoot({
       privateKey: process.env.PRIVATE_KEY,
+      secret: process.env.JWT_SECRET_KEY,
+      header: process.env.JWT_HEADER,
     }),
     MailModule.forRoot({
       apiKey: process.env.SENDGRID_API_KEY,

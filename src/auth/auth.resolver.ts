@@ -12,14 +12,15 @@ import { UserDeco } from '../decorators/user.decorator'
 import { User } from 'src/user/entities/user.entity';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { UserService } from 'src/user/user.service';
-import { jwtConstants } from 'src/common/common.constants';
 import { CoreOutput } from 'src/common/dtos/common.dto';
+import { jwtConstants } from './constants';
+import { ConfigService } from '@nestjs/config';
 
 const EXPIRED = 1000 * 60 * 60 * 24 * 7;
 
 @Resolver()
 export class AuthResolver {
-    constructor(private authService: AuthService, private userService: UserService) {}
+    constructor(private authService: AuthService, private userService: UserService, private readonly config: ConfigService,) {}
 
     @UseGuards(LocalAuthGuard)
     @Mutation((returns) => LoginOutput)
@@ -31,9 +32,9 @@ export class AuthResolver {
         
         const accessToken = await this.authService.signin({ id: user.id });
         
-        res.cookie(jwtConstants.header, accessToken, {
-        httpOnly: true,
-        maxAge: EXPIRED,
+        res.cookie(this.config.get('JWT_HEADER'), accessToken, {
+            httpOnly: true,
+            maxAge: EXPIRED,
         });
 
         return { ok: true, token: accessToken };
@@ -51,7 +52,7 @@ export class AuthResolver {
         if (!isVerifiedToken) return { ok: false, error: 'expried refresh token' };
 
         const accessToken = await this.authService.signin({ id: user.id });
-        res.cookie(jwtConstants.header, accessToken, {
+        res.cookie(this.config.get('JWT_HEADER'), accessToken, {
         httpOnly: true,
         maxAge: EXPIRED,
         });
@@ -67,7 +68,7 @@ export class AuthResolver {
     ): Promise<CoreOutput> {
         await this.userService.updateRefreshToken(user.id, null);
 
-        res.clearCookie(jwtConstants.header);
+        res.clearCookie(this.config.get('JWT_HEADER'));
 
         return { ok: true };
     }
