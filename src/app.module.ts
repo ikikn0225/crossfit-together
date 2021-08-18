@@ -78,13 +78,15 @@ import { UploadsModule } from './uploads/uploads.module';
       playground: process.env.NODE_ENV !== 'production',
       installSubscriptionHandlers:true,
       autoSchemaFile: true,
-      // context: ({ req, connection }) => {
-      //     const TOKEN_KEY = 'x-jwt';
-      //   return {
-      //     token: req ? req.headers[TOKEN_KEY] : connection.context[TOKEN_KEY],
-      //   }
-      // },
-      context:(ctx) => ({...ctx}),
+      context: ({ req, connection }) => {
+          // const TOKEN_KEY = 'x-jwt';
+        return {
+          headers: req.headers,
+          // token: req ? req.headers[TOKEN_KEY] : connection.context[TOKEN_KEY],
+        }
+      },
+      // context:(ctx) => ({...ctx}),
+      // context: ({ req }) => ({ headers: req.headers }),
     }),
     JwtModule.forRoot({
       privateKey: process.env.PRIVATE_KEY,

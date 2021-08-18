@@ -3,6 +3,7 @@ import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Response } from 'express';
 import { AuthUser } from 'src/auth/auth-user.decorator';
 import { AuthUserGuard } from 'src/auth/auth.guard';
+import { AuthGuard } from 'src/auth/auth-plus.guard';
 import { Role } from 'src/auth/role-decorator';
 import { CreateAccountInput, CreateAccountOutput } from './dtos/create-account.dto';
 import { DeleteAccountOutput } from './dtos/delete-account.dto';
@@ -24,12 +25,12 @@ export class UserResolver {
     }
 
     @Mutation(returns => LoginOutput)
-    async login(@Args('input') loginInput: LoginInput, @Context() { res }: { res: Response }): Promise<LoginOutput> {
-        return this.userService.login(loginInput, {res});
+    async login(@Args('input') loginInput: LoginInput): Promise<LoginOutput> {
+        return this.userService.login(loginInput);
     }
 
-    @Role(['Any'])
     @Query(returns => User)
+    @UseGuards(AuthGuard)
     me(@AuthUser() authUser:User){
         return authUser;
     }
