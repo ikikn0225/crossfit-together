@@ -14,7 +14,7 @@ import { ConfigService } from "@nestjs/config";
 
 
 @Module({
-    imports:[UserModule, PassportModule, JwtModule.register({ secret: ""+process.env.JWT_SECRET_KEY }), ConfigService],
+    imports:[UserModule, PassportModule, JwtModule.register({ secret: jwtConstants.secret }), ConfigService],
     providers: [AuthService, LocalStrategy, JwtStrategy, ExpriedJwtStrategy, AuthResolver,
         {
             provide: APP_GUARD,

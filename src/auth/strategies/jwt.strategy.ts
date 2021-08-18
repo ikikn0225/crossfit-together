@@ -10,7 +10,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     constructor() {
         super({
         jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-        secretOrKey: process.env.JWT_SECRET_KEY,
+        secretOrKey: jwtConstants.secret,
         });
     }
 
@@ -24,7 +24,7 @@ export class ExpriedJwtStrategy extends PassportStrategy(Strategy, 'jwt-expried'
     constructor() {
         super({
         jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-        secretOrKey: process.env.JWT_SECRET_KEY,
+        secretOrKey: jwtConstants.secret,
         ignoreExpiration: true,
         });
     }

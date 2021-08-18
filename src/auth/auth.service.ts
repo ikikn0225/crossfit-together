@@ -14,6 +14,7 @@ export class AuthService {
         const isCompared = await user?.checkPassword(password);
 
         if (!isCompared || !user) return null;
+console.log(user.id);
 
         return { id: user.id };
     }
@@ -24,7 +25,7 @@ export class AuthService {
         const refreshToken = this.jwtService.sign(payload, { expiresIn: '14d' });
 
         await this.userService.updateRefreshToken(payload.id, refreshToken);
-
+        console.log(accessToken);
         return encryptValue(accessToken);
     }
 

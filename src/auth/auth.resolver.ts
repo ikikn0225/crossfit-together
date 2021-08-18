@@ -31,6 +31,7 @@ export class AuthResolver {
     ): Promise<LoginOutput> {
         
         const accessToken = await this.authService.signin({ id: user.id });
+        console.log(accessToken);
         
         res.cookie(this.config.get('JWT_HEADER'), accessToken, {
             httpOnly: true,
