@@ -54,7 +54,7 @@ export class UserService {
         }
     }
 
-    async login({ email, password }: LoginInput, @Context() { res }: { res: Response }): Promise<LoginOutput> {
+    async login({ email, password }: LoginInput): Promise<LoginOutput> {
         try {
             const user = await this.users.findOne({email}, {select:['id', 'password']});
             if(!user) 
@@ -71,7 +71,7 @@ export class UserService {
             const token = await this.jwtService.sign(user.id);
             return {
                 ok: true,
-                token,
+                token:encryptValue(token),
             }
         } catch (error) {
             return {

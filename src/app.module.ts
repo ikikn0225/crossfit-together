@@ -70,21 +70,23 @@ import { UploadsModule } from './uploads/uploads.module';
             password: process.env.DB_PASSWORD, 
             database: process.env.DB_NAME, 
           }),
-      "synchronize": process.env.NODE_ENV !== 'prod',
-      "logging": process.env.NODE_ENV !== 'prod',
+      "synchronize": process.env.NODE_ENV !== 'production',
+      "logging": process.env.NODE_ENV !== 'production',
       entities:[ User, Verification, AffiliatedBox, Wod, Bor, LeaderBoardOneRm, LeaderBoardNamedWod, Hold, FreeTrial, Notice, Comment, Like, Reply ]
     }),
     GraphQLModule.forRoot({
       playground: process.env.NODE_ENV !== 'production',
       installSubscriptionHandlers:true,
       autoSchemaFile: true,
-      // context: ({ req, connection }) => {
-      //     const TOKEN_KEY = 'x-jwt';
+      // context: ({ req, connection, res }) => {
+      //     // const TOKEN_KEY = 'x-jwt';
       //   return {
-      //     token: req ? req.headers[TOKEN_KEY] : connection.context[TOKEN_KEY],
+      //     headers: req.headers,
+      //     // token: req ? req.headers[TOKEN_KEY] : connection.context[TOKEN_KEY],
       //   }
       // },
-      context:(ctx) => ({...ctx}),
+      // context:(ctx) => ({...ctx}),
+      context: ({ req, res }) => ({ headers: req.headers, res }),
     }),
     JwtModule.forRoot({
       privateKey: process.env.PRIVATE_KEY,
