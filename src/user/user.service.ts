@@ -71,7 +71,7 @@ export class UserService {
             const token = await this.jwtService.sign(user.id);
             return {
                 ok: true,
-                token,
+                token:encryptValue(token),
             }
         } catch (error) {
             return {

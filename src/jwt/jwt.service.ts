@@ -11,7 +11,7 @@ export class JwtService {
     ) {}
 
     sign(userId: number): string {
-        return jwt.sign({id: userId}, this.options.privateKey);
+        return jwt.sign({id: userId}, this.options.privateKey, { expiresIn: '1h' });
     }
 
     verify(token: string) {

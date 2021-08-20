@@ -58,6 +58,7 @@
     "rimraf": "^3.0.2",
     "rxjs": "^6.6.6",
     "sendgrid-nodejs": "0.1.0-2",
+    "type-graphql": "^1.1.1",
     "typeorm": "^0.2.34",
     "uuid": "^8.3.2"
   },
