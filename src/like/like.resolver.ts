@@ -17,7 +17,7 @@ export class LikeResolver {
         private readonly likeService:LikeService
     ){}
 
-    @Role(['Any'])
+    @Role(["Any"])
     @Mutation(returns => CreateLikeInWodOutput)
     async createLikeInWod(
         @AuthUser() authUser:User,
@@ -26,7 +26,7 @@ export class LikeResolver {
         return this.likeService.createLikeInWod(authUser, createLikeInWodInput);
     }
 
-    @Role(['Any'])
+    @Role(["Any"])
     @Query(returns => AllLikesInWodOutput)
     allLikesInWod(
         @AuthUser() authUser:User,
@@ -35,7 +35,7 @@ export class LikeResolver {
         return this.likeService.allLikesInWod(allLikesInWodInput);
     }
 
-    @Role(['Any'])
+    @Role(["Any"])
     @Mutation(returns => DeleteLikeInWodOutput)
     async deleteLikeInWod(
         @AuthUser() authUser:User,

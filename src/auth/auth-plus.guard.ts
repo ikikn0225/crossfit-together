@@ -10,11 +10,19 @@ import { GqlExecutionContext } from '@nestjs/graphql';
 import * as jwt from 'jsonwebtoken';
 import { decryptValue } from 'src/crypto';
 import { UserService } from 'src/user/user.service';
+import { AllowedRoles } from './role-decorator';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-    constructor(private readonly reflector: Reflector, private readonly usersService:UserService) {}
+    constructor(
+        private readonly reflector: Reflector, private readonly usersService:UserService) {}
     async canActivate(context: ExecutionContext): Promise<boolean> {
+        const roles = this.reflector.get<AllowedRoles>('roles', context.getHandler(),);
+        console.log(roles);
+        
+        if(!roles) {
+            return true;
+        }
         const ctx = GqlExecutionContext.create(context).getContext();
         
         if (!ctx.headers.authorization) {
@@ -22,8 +30,9 @@ export class AuthGuard implements CanActivate {
         }
         
         ctx.user = await this.validateToken(ctx.headers.authorization);
-        
-        return true;
+        if(roles.includes('Any'))
+            return true;
+        return roles.includes(ctx.user.role);
     }
 
     async validateToken(auth: string) {

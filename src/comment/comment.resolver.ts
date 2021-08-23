@@ -18,7 +18,7 @@ export class CommentResolver {
         private readonly commentService:CommentService
     ){}
 
-    @Role(['Any'])
+    @Role(["Any"])
     @Mutation(returns => CreateCommentInNoticeOutput)
     async createCommentInNotice (
         @AuthUser() authUser:User,
@@ -27,7 +27,7 @@ export class CommentResolver {
         return this.commentService.createCommentInNotice(authUser, createCommentInNoticeInput);
     }
 
-    @Role(['Any'])
+    @Role(["Any"])
     @Mutation(returns => EditCommentInNoticeOutput)
     async editCommentInNotice(
         @AuthUser() authUser:User,
@@ -36,7 +36,7 @@ export class CommentResolver {
         return this.commentService.editCommentInNotice(authUser, editCommentInNoticeInput);
     }
 
-    @Role(['Any'])
+    @Role(["Any"])
     @Mutation(returns => DeleteCommentInNoticeOutput)
     async deleteCommentInNotice(
         @AuthUser() authUser:User,
@@ -45,7 +45,7 @@ export class CommentResolver {
         return this.commentService.deleteCommentInNotice(authUser, deleteCommentInNoticeInput);
     }
 
-    @Role(['Any'])
+    @Role(["Any"])
     @Query(returns => AllCommentsInNoticeOutput)
     async allCommentsInNotice(
         @Args('input') allCommentsInNotice:AllCommentsInNoticeInput

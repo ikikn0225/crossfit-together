@@ -13,6 +13,7 @@ import { UserProfileInput, UserProfileOutput } from './dtos/user-profile.dto';
 import { VerifyEmailInput, VerifyEmailOutput } from './dtos/verify-email.dto';
 import { User } from './entities/user.entity';
 import { UserService } from './user.service';
+import { RolesGuard } from 'src/auth/role.guard';
 
 @Resolver(of => User)
 export class UserResolver {
@@ -28,7 +29,8 @@ export class UserResolver {
     async login(@Args('input') loginInput: LoginInput): Promise<LoginOutput> {
         return this.userService.login(loginInput);
     }
-
+    
+    @Role(["Any"])
     @Query(returns => User)
     @UseGuards(AuthGuard)
     me(@AuthUser() authUser:User){

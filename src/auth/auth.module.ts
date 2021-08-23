@@ -7,6 +7,7 @@ import { UserModule } from "src/user/user.module";
 import { AuthUserGuard } from "./auth.guard";
 import { jwtConstants } from "./constants";
 import { ConfigService } from "@nestjs/config";
+import { AuthGuard } from "./auth-plus.guard";
 
 
 @Module({
@@ -14,7 +15,7 @@ import { ConfigService } from "@nestjs/config";
     providers: [
         {
             provide: APP_GUARD,
-            useClass: AuthUserGuard,
+            useClass: AuthGuard,
         },
     ],
 })

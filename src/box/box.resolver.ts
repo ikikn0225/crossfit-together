@@ -24,7 +24,7 @@ export class AffiliatedBoxResolver {
         return this.boxService.createAffiliatedBox(authUser, createAffiliatedBoxInput);
     }
 
-    @Role(['Coach'])
+    @Role(["Coach"])
     @Mutation(returns => DeleteAffiliatedBoxOutput)
     async deleteAffiliatedBox(@AuthUser() authUser:User ): Promise<DeleteAffiliatedBoxOutput> {
         return this.boxService.deleteAffiliatedBox(authUser);
