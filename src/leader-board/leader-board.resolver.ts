@@ -23,7 +23,7 @@ export class LeaderBoardOneRmResolver {
         private readonly lbService:LeaderBoardService
     ) {}
 
-    @Role(['Any'])
+    @Role(["Any"])
     @Mutation(returns => CreateOneRmRecordOutput)
     async createOneRmRecord(
         @AuthUser() authUser:User,
@@ -32,7 +32,7 @@ export class LeaderBoardOneRmResolver {
         return this.lbService.createOneRmRecord(authUser, createOneRmRecordInput);
     }
 
-    @Role(['Any'])
+    @Role(["Any"])
     @Mutation(returns => EditOneRmRecordOutput)
     async editOneRmRecord(
         @AuthUser() authUser:User,
@@ -50,7 +50,7 @@ export class LeaderBoardOneRmResolver {
         return this.lbService.deleteOneRmRecord(authUser, editOneRmInput);
     }
 
-    @Role(['Any'])
+    @Role(["Any"])
     @Query(returns => AllOneRmRecordsOutput)
     async allOneRmRecords(
         @AuthUser() authUser:User,
@@ -59,7 +59,7 @@ export class LeaderBoardOneRmResolver {
         return this.lbService.allOneRmRecords(authUser, allOneRmRecordsInput);
     }
 
-    @Role(['Any'])
+    @Role(["Any"])
     @Query(returns => MyOneRmRecordsOutput)
     async myOneRmRecords(
         @AuthUser() authUser:User,
@@ -75,7 +75,7 @@ export class LeaderBoardNamedWodResolver {
         private readonly lbService:LeaderBoardService
     ) {}
 
-    @Role(['Any'])
+    @Role(["Any"])
     @Mutation(returns => CreateNamedWodRecordOutput)
     async createNamedWodRecord(
         @AuthUser() authUser:User,
@@ -84,7 +84,7 @@ export class LeaderBoardNamedWodResolver {
         return this.lbService.createNamedWodRecord(authUser, createNamedWodRecordInput);
     }
 
-    @Role(['Any'])
+    @Role(["Any"])
     @Mutation(returns => EditNamedWodRecordOutput)
     async editNamedWodRecord(
         @AuthUser() authUser:User,
@@ -102,7 +102,7 @@ export class LeaderBoardNamedWodResolver {
         return this.lbService.deleteNamedWodRecord(authUser, editNamedWodInput);
     }
 
-    @Role(['Any'])
+    @Role(["Any"])
     @Query(returns => AllNamedWodRecordsOutput)
     async allNamedWodRecords(
         @AuthUser() authUser:User,
@@ -111,7 +111,7 @@ export class LeaderBoardNamedWodResolver {
         return this.lbService.allNamedWodRecords(authUser, allNamedWodRecordsInput);
     }
 
-    @Role(['Any'])
+    @Role(["Any"])
     @Query(returns => MyNamedWodRecordsOutput)
     async myNamedWodRecords(
         @AuthUser() authUser:User,

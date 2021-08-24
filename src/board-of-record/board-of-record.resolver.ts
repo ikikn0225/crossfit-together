@@ -17,7 +17,7 @@ export class BorResolver {
         private readonly borService:BorService
     ) {}
 
-    @Role(['Any'])
+    @Role(["Any"])
     @Mutation(type => CreateBorOutput)
     async createBor(
         @AuthUser() user:User,
@@ -26,7 +26,7 @@ export class BorResolver {
         return this.borService.createBor(user, createBor);
     }
 
-    @Role(['Any'])
+    @Role(["Any"])
     @Mutation(type => EditBorOutput)
     async editBor(
         @AuthUser() authUser:User,
@@ -35,7 +35,7 @@ export class BorResolver {
         return this.borService.editBor(authUser, editBorInput);
     }
 
-    @Role(['Any'])
+    @Role(["Any"])
     @Mutation(type => DeleteBorOutput)
     async deleteBor(
         @AuthUser() authUser:User,
@@ -44,7 +44,7 @@ export class BorResolver {
         return this.borService.deleteBor(authUser, deleteBorInput);
     }
 
-    @Role(['Any'])
+    @Role(["Any"])
     @Query(type => AllBoardofRecordOutput)
     async allBoardofRecords(
         @Args('input') allBoardofRecordInput:AllBoardofRecordInput
@@ -52,7 +52,7 @@ export class BorResolver {
         return this.borService.allBoardofRecords(allBoardofRecordInput);
     }
 
-    @Role(['Any'])
+    @Role(["Any"])
     @Query(type => MyBoardofRecordOutput)
     async myBoardofRecords(
         @AuthUser() authUser:User,

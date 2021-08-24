@@ -14,9 +14,12 @@ import { AllowedRoles } from './role-decorator';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-    constructor(private reflector: Reflector, private readonly usersService:UserService) {}
+    constructor(
+        private readonly reflector: Reflector, private readonly usersService:UserService) {}
     async canActivate(context: ExecutionContext): Promise<boolean> {
-        const roles = this.reflector.get<AllowedRoles>('roles', context.getHandler());
+        const roles = this.reflector.get<AllowedRoles>('roles', context.getHandler(),);
+        console.log(roles);
+        
         if(!roles) {
             return true;
         }
@@ -25,14 +28,11 @@ export class AuthGuard implements CanActivate {
         if (!ctx.headers.authorization) {
         return false;
         }
-        const user = await this.validateToken(ctx.headers.authorization);
-        if(!user)
-            return false;
-        ctx.user = user;
-
+        
+        ctx.user = await this.validateToken(ctx.headers.authorization);
         if(roles.includes('Any'))
             return true;
-        return roles.includes(user.role);
+        return roles.includes(ctx.user.role);
     }
 
     async validateToken(auth: string) {

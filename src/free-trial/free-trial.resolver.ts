@@ -15,7 +15,7 @@ export class FreeTrialResolver {
         private readonly freeTrialService:FreeTrialService,
     ){}
 
-    @Role(['Any'])
+    @Role(["Any"])
     @Mutation(returns => CreateFreeTrialOutput)
     async createFreeTrial(
         @AuthUser() authUser:User,
@@ -24,7 +24,7 @@ export class FreeTrialResolver {
         return this.freeTrialService.createFreeTrial(authUser, freeTrialInput);
     }
 
-    @Role(['Any'])
+    @Role(["Any"])
     @Query(returns => AllFreeTrialOutput)
     async allFreeTrial(
         @AuthUser() authUser:User
@@ -32,7 +32,7 @@ export class FreeTrialResolver {
         return this.freeTrialService.allFreeTrial(authUser);
     }
 
-    @Role(['Any'])
+    @Role(["Any"])
     @Mutation(returns => DeleteFreeTrialOutput)
     deleteFreeTrial(
         @AuthUser() authUser:User,

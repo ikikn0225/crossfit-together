@@ -25,7 +25,7 @@ export class HoldResolver {
         return this.holdService.registerHold(authUser, registerHoldInput);
     }
 
-    @Role(['Any'])
+    @Role(["Any"])
     @Query(returns => AllHoldsOutput)
     allHolds(
         @AuthUser() authUser:User
@@ -33,7 +33,7 @@ export class HoldResolver {
         return this.holdService.allHolds(authUser);
     }
 
-    @Role(['Any'])
+    @Role(["Any"])
     @Query(returns => MyHoldsOutput)
     myHolds(
         @AuthUser() authUser:User
@@ -41,7 +41,7 @@ export class HoldResolver {
         return this.holdService.myHolds(authUser);
     }
 
-    @Role(['Any'])
+    @Role(["Any"])
     @Mutation(returns => DeleteHoldOutput)
     deleteHold(
         @AuthUser() authUser:User,

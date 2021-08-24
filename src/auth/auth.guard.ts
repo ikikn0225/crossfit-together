@@ -1,12 +1,10 @@
 import { Injectable, CanActivate, ExecutionContext } from "@nestjs/common";
 import { Reflector } from "@nestjs/core";
 import { GqlExecutionContext } from "@nestjs/graphql";
-import { Observable } from "rxjs";
 import { JwtService } from "src/jwt/jwt.service";
 import { User } from "src/user/entities/user.entity";
 import { UserService } from "src/user/user.service";
 import { AllowedRoles } from "./role-decorator";
-
 
 @Injectable()
 export class AuthUserGuard implements CanActivate {

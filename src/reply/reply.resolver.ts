@@ -18,7 +18,7 @@ export class ReplyResolver {
         private readonly replyService:ReplyService
     ){}
 
-    @Role(['Any'])
+    @Role(["Any"])
     @Mutation(returns => CreateReplyInNoticeOutput)
     async createReplyInNotice (
         @AuthUser() authUser:User,
@@ -27,7 +27,7 @@ export class ReplyResolver {
         return this.replyService.createReplyInNotice(authUser, createReplyInput);
     }
 
-    @Role(['Any'])
+    @Role(["Any"])
     @Mutation(returns => EditReplyInNoticeOutput)
     async editReplyInNotice(
         @AuthUser() authUser:User,
@@ -36,7 +36,7 @@ export class ReplyResolver {
         return this.replyService.editReplyInNotice(authUser, editReplyInNoticeInput);
     }
 
-    @Role(['Any'])
+    @Role(["Any"])
     @Mutation(returns => DeleteReplyInNoticeOutput)
     async deleteReplyInNotice(
         @AuthUser() authUser:User,
@@ -45,7 +45,7 @@ export class ReplyResolver {
         return this.replyService.deleteReplyInNotice(authUser, deleteReplyInNoticeInput);
     }
 
-    @Role(['Any'])
+    @Role(["Any"])
     @Query(returns => AllRepliesInNoticeOutput)
     repliesInNotice(
         @Args('input') allRepliesInNoticeInput:AllRepliesInNoticeInput
