@@ -1,39 +1,54 @@
-import { Injectable, CanActivate, ExecutionContext } from "@nestjs/common";
-import { Reflector } from "@nestjs/core";
-import { GqlExecutionContext } from "@nestjs/graphql";
-import { JwtService } from "src/jwt/jwt.service";
-import { User } from "src/user/entities/user.entity";
-import { UserService } from "src/user/user.service";
-import { AllowedRoles } from "./role-decorator";
+import {
+    Injectable,
+    CanActivate,
+    ExecutionContext,
+    HttpException,
+    HttpStatus,
+} from '@nestjs/common';
+import { Reflector } from '@nestjs/core';
+import { GqlExecutionContext } from '@nestjs/graphql';
+import * as jwt from 'jsonwebtoken';
+import { decryptValue } from 'src/crypto';
+import { UserService } from 'src/user/user.service';
+import { AllowedRoles } from './role-decorator';
 
 @Injectable()
-export class AuthUserGuard implements CanActivate {
-    constructor(private readonly reflector: Reflector,
-        private readonly jwtService:JwtService,
-        private readonly usersService:UserService,) {}
-    async canActivate(context: ExecutionContext) {
+export class AuthGuard implements CanActivate {
+    constructor(
+        private readonly reflector: Reflector, private readonly usersService:UserService) {}
+    async canActivate(context: ExecutionContext): Promise<boolean> {
         const roles = this.reflector.get<AllowedRoles>('roles', context.getHandler(),);
+        console.log(roles);
+        
         if(!roles) {
             return true;
         }
-        const gqlContext = GqlExecutionContext.create(context).getContext();
-        const token = gqlContext.token;
-        if(token) {
-            const decoded = this.jwtService.verify(token.toString());
-            if(typeof decoded === "object" && decoded.hasOwnProperty('id')) {
-                const { user } = await this.usersService.findById(decoded["id"]);
-                if(!user) 
-                    return false;
-                gqlContext['user'] = user;
-                
-                if(roles.includes('Any'))
-                    return true;
-                return roles.includes(user.role);
-            } else {
-                return false;
-            }
-        } else {
-            return false;
+        const ctx = GqlExecutionContext.create(context).getContext();
+        
+        if (!ctx.headers.authorization) {
+        return false;
+        }
+        
+        ctx.user = await this.validateToken(ctx.headers.authorization);
+        if(roles.includes('Any'))
+            return true;
+        return roles.includes(ctx.user.role);
+    }
+
+    async validateToken(auth: string) {
+        if (auth.split(' ')[0] !== 'Bearer') {
+            throw new HttpException('Invalid token', HttpStatus.UNAUTHORIZED);
+        }
+        const token = auth.split(' ')[1];
+
+        try {
+            const decoded = jwt.verify(decryptValue(token), process.env.PRIVATE_KEY);
+            const { user } = await this.usersService.findById(decoded["id"]);
+            return user;
+        } catch (err) {
+            return true;
+            // const message = 'Token error: ' + (err.message || err.name);
+            // throw new HttpException(message, HttpStatus.UNAUTHORIZED);
         }
     }
 }
