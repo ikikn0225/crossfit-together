@@ -1,4 +1,6 @@
+import { UseGuards } from "@nestjs/common";
 import { Args, Mutation, Resolver, Query } from "@nestjs/graphql";
+import { AuthGuard } from "src/auth/auth-plus.guard";
 import { AuthUser } from "src/auth/auth-user.decorator";
 import { Role } from "src/auth/role-decorator";
 import { User } from "src/user/entities/user.entity";
@@ -37,6 +39,7 @@ export class AffiliatedBoxResolver {
 
     @Role(["Any"])
     @Query(returns => MyAffiliatedBoxOutput)
+    @UseGuards(AuthGuard)
     myAffiliatedBox( @AuthUser() authUser:User ):Promise<MyAffiliatedBoxOutput> {
         return this.boxService.myAffiliatedBox(authUser);
     }
