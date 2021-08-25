@@ -37,16 +37,15 @@ export class UserService {
             const affiliatedBox = await this.boxs.findOne({name:myBox});
             
         
-            if(role === 'Coach') {
-                //Coach
+            if(role === 'Coach') { //Coach
                 user = await this.users.save(this.users.create({name, email, password, role, profileImg}));
-            } else {
-                //Crossfiter
+            } else { //Crossfiter
                 user = await this.users.save(this.users.create({name, email, password, role, affiliatedBox, profileImg}));
             }
             const verification = await this.verification.save(
                 this.verification.create({ user })
             );
+            
             this.mailService.sendVerificationEmail(user.name, user.email, verification.code);
             return {ok: true};
         } catch (e) {
@@ -81,32 +80,8 @@ export class UserService {
         }
     }
 
-    async getById(id: number) {
-        const user = await this.users.findOne({ where: { id } });
-        return user;
-    }
-
-    async getByUserId(email: string) {
-        const user = await this.users.findOne({
-            where: { email: email }
-        });
-        return user;
-    }
-
     async updateRefreshToken(id: number, refreshToken: string | null) {
         await this.users.update(id, {refreshToken});
-    }
-    
-    async update({ id, ...updateInfo }: EditProfileInput) {
-        try {
-            const user = await this.users.findOne({ where: { id } });
-
-            if(user) user.refreshToken = updateInfo.refreshToken;
-            await this.users.save(user);
-            return { ok: true };
-        } catch (error) {
-            return { ok: false, error };
-        }
     }
 
     async findById(id: number): Promise<UserProfileOutput> {
@@ -182,9 +157,18 @@ export class UserService {
                 {code},
                 {relations:['user']}
             );
+            
+            
             if(verification) {
                 verification.user.verified = true;
+                const user = await this.users.findOne(verification.user.id);
+                console.log(user);
+                
                 await this.users.save(verification.user);
+
+                const user1 = await this.users.findOne(verification.user.id);
+                console.log(user1);
+                
                 await this.verification.delete(verification.id);
                 return {ok:true};
             }

@@ -1,7 +1,7 @@
 import { UseGuards } from "@nestjs/common";
 import { Args, Mutation, Resolver, Query } from "@nestjs/graphql";
-import { AuthGuard } from "src/auth/auth-plus.guard";
 import { AuthUser } from "src/auth/auth-user.decorator";
+import { AuthGuard } from "src/auth/auth.guard";
 import { Role } from "src/auth/role-decorator";
 import { User } from "src/user/entities/user.entity";
 import { AffiliatedBoxService } from "./box.service";

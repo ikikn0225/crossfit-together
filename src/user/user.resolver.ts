@@ -12,7 +12,6 @@ import { UserProfileInput, UserProfileOutput } from './dtos/user-profile.dto';
 import { VerifyEmailInput, VerifyEmailOutput } from './dtos/verify-email.dto';
 import { User } from './entities/user.entity';
 import { UserService } from './user.service';
-import { RolesGuard } from 'src/auth/role.guard';
 
 @Resolver(of => User)
 export class UserResolver {
@@ -72,6 +71,7 @@ export class UserResolver {
         return this.userService.deleteAccount(authUser.id);
     }
 
+    @Role(['Any'])
     @Mutation(returns => VerifyEmailOutput)
     verifyEmail(
         @Args('input') { code }: VerifyEmailInput,
