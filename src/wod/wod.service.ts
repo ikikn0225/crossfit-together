@@ -122,7 +122,7 @@ export class WodService {
                     error:"Affiliated Box not found."
                 }
             }
-            const wods = await this.wods.find({affiliatedBox});
+            const wods = await this.wods.find({relations:["likes"], where: {affiliatedBox}});
             if(!wods) {
                 return {
                     ok:false,
