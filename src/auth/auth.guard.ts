@@ -18,7 +18,6 @@ export class AuthGuard implements CanActivate {
         private readonly reflector: Reflector, private readonly usersService:UserService) {}
     async canActivate(context: ExecutionContext): Promise<boolean> {
         const roles = this.reflector.get<AllowedRoles>('roles', context.getHandler(),);
-        console.log(roles);
         
         if(!roles) {
             return true;
