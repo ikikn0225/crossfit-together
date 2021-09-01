@@ -7,7 +7,8 @@ import { CreateWodInput } from "./create-wod.dto";
 @InputType()
 export class EditWodInput extends PickType(PartialType(Wod), [
     'title',
-    'content'
+    'content',
+    'titleDate'
 ]) {
     @Field(type => Int)
     wodId:number;

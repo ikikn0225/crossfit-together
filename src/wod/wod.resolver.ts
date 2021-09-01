@@ -8,6 +8,7 @@ import { AllWodsOutput } from "./dtos/all-wods.dto";
 import { CreateWodInput, CreateWodOutput } from "./dtos/create-wod.dto";
 import { DeleteWodInput, DeleteWodOutput } from "./dtos/delete-wod.dto";
 import { EditWodInput, EditWodOutput } from "./dtos/edit-wod.dto";
+import { OneWodInput, OneWodOutput } from "./dtos/one-wod.dto";
 import { Wod } from "./entities/wod.entity";
 import { WodService } from "./wod.service";
 
@@ -49,5 +50,13 @@ export class WodResolver {
         @AuthUser() authUser:User
     ):Promise<AllWodsOutput> {
         return this.wodService.allWods(authUser);
+    }
+
+    @Role(["Any"])
+    @Query(type => OneWodOutput)
+    async wod(
+        @Args('input') oneWodInput:OneWodInput
+    ):Promise<OneWodOutput> {
+        return this.wodService.findWodById(oneWodInput);
     }
 }

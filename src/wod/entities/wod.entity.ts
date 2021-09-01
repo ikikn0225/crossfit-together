@@ -15,6 +15,10 @@ export class Wod extends CoreEntity {
     @Column()
     title:string;
 
+    @Field(type => Date, { nullable: true })
+    @Column({ nullable: true })
+    titleDate:Date;
+
     @Field(type => String)
     @Column()
     content:string;

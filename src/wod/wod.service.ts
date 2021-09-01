@@ -8,6 +8,7 @@ import { AllWodsOutput } from "./dtos/all-wods.dto";
 import { CreateWodInput, CreateWodOutput } from "./dtos/create-wod.dto";
 import { DeleteWodInput, DeleteWodOutput } from "./dtos/delete-wod.dto";
 import { EditWodInput, EditWodOutput } from "./dtos/edit-wod.dto";
+import { OneWodInput, OneWodOutput } from "./dtos/one-wod.dto";
 import { Wod } from "./entities/wod.entity";
 
 
@@ -122,7 +123,7 @@ export class WodService {
                     error:"Affiliated Box not found."
                 }
             }
-            const wods = await this.wods.find({relations:["likes"], where: {affiliatedBox}});
+            const wods = await this.wods.find({relations:["likes"], where: {affiliatedBox}, order:{title:"DESC"}});
             if(!wods) {
                 return {
                     ok:false,
@@ -137,6 +138,29 @@ export class WodService {
             return {
                 ok:false,
                 error
+            }
+        }
+    }
+
+    async findWodById({wodId}: OneWodInput): Promise<OneWodOutput> {
+        try {
+            const wod = await this.wods.findOne(wodId
+                // , { relations: ['menu'], }
+            );
+            if(!wod) {
+                return {
+                    ok:false,
+                    error:'Wod not found',
+                };
+            }
+            return {
+                ok: true,
+                wod,
+            };
+        } catch (error) {
+            return {
+                ok: false,
+                error:'Could not find wod',
             }
         }
     }

@@ -4,7 +4,7 @@ import { Wod } from "../entities/wod.entity";
 
 
 @InputType()
-export class CreateWodInput extends PickType(Wod, ["title", "content"]) {}
+export class CreateWodInput extends PickType(Wod, ["title", "content", "titleDate"]) {}
 
 @ObjectType()
 export class CreateWodOutput extends CoreOutput {}
