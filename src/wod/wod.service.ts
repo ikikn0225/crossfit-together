@@ -145,7 +145,7 @@ export class WodService {
     async findWodById({wodId}: OneWodInput): Promise<OneWodOutput> {
         try {
             const wod = await this.wods.findOne(wodId
-                // , { relations: ['menu'], }
+                , { relations: ['likes'], }
             );
             if(!wod) {
                 return {
