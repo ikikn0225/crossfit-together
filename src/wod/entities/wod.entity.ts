@@ -3,7 +3,8 @@ import { Bor } from 'src/board-of-record/entities/board-of-record.entity';
 import { AffiliatedBox } from 'src/box/entities/box.entity';
 import { CoreEntity } from 'src/common/core.entity';
 import { Like } from 'src/like/entities/like.entity';
-import { Column, Entity, ManyToOne, OneToMany, RelationId } from 'typeorm';
+import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, RelationId } from 'typeorm';
+import { Category } from './category.entity';
 
 
 @InputType('WodInputType', {isAbstract: true})
@@ -33,6 +34,14 @@ export class Wod extends CoreEntity {
 
     @RelationId((wod: Wod) => wod.affiliatedBox)
     affiliatedBoxId: number;
+
+    @Field(type => Category, { nullable: true })
+    @ManyToOne(
+        type => Category,
+        category => category.wods,
+        { nullable: true, onDelete: 'SET NULL', eager: true },
+    )
+    category: Category;
 
     @Field(type => [Bor])
     @OneToMany(

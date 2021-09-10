@@ -6,12 +6,14 @@ import { AffiliatedBoxService } from 'src/box/box.service';
 import { AffiliatedBox } from 'src/box/entities/box.entity';
 import { Like } from 'src/like/entities/like.entity';
 import { User } from 'src/user/entities/user.entity';
+import { Category } from './entities/category.entity';
 import { Wod } from './entities/wod.entity';
-import { WodResolver } from './wod.resolver';
+import { CategoryRepository } from './repositories/category.repository';
+import { CategoryResolver, WodResolver } from './wod.resolver';
 import { WodService } from './wod.service';
 
 @Module({
-    imports:[TypeOrmModule.forFeature([Wod, User, AffiliatedBox, Bor, Like])],
-    providers: [WodResolver, WodService, AffiliatedBoxService],
+    imports:[TypeOrmModule.forFeature([Wod, User, AffiliatedBox, Bor, Like, CategoryRepository])],
+    providers: [WodResolver, WodService, AffiliatedBoxService, CategoryResolver],
 })
 export class WodModule {}

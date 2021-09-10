@@ -4,12 +4,16 @@ import { Bor } from "src/board-of-record/entities/board-of-record.entity";
 import { AffiliatedBox } from "src/box/entities/box.entity";
 import { User } from "src/user/entities/user.entity";
 import { Repository } from "typeorm";
+import { AllCategoriesOutput } from "./dtos/all-categories.dto";
 import { AllWodsOutput } from "./dtos/all-wods.dto";
+import { CategoryInput, CategoryOutput } from "./dtos/category.dto";
 import { CreateWodInput, CreateWodOutput } from "./dtos/create-wod.dto";
 import { DeleteWodInput, DeleteWodOutput } from "./dtos/delete-wod.dto";
 import { EditWodInput, EditWodOutput } from "./dtos/edit-wod.dto";
 import { OneWodInput, OneWodOutput } from "./dtos/one-wod.dto";
+import { Category } from "./entities/category.entity";
 import { Wod } from "./entities/wod.entity";
+import { CategoryRepository } from "./repositories/category.repository";
 
 
 
@@ -22,6 +26,7 @@ export class WodService {
             private readonly affiliatedBoxes:Repository<AffiliatedBox>,
         @InjectRepository(Bor)
             private readonly bors:Repository<Bor>,
+        private readonly categories:CategoryRepository,
     ) {}
 
     async createWod(
@@ -161,6 +166,53 @@ export class WodService {
             return {
                 ok: false,
                 error:'Could not find wod',
+            }
+        }
+    }
+
+    // countWod(category:Category) {
+    //     return this.wods.count({category});
+    // }
+
+    async allCategories(): Promise<AllCategoriesOutput> {
+        try {
+            const categories = await this.categories.find();
+            return {
+                ok: true,
+                categories
+            }
+        } catch (error) {
+            return {
+                ok:false,
+                error: "Could not load categories.",
+            }
+        }
+    }
+
+    async findCategoryBySlug({ slug }:CategoryInput): Promise<CategoryOutput> {
+        try {
+            const category = await this.categories.findOne({slug},);
+            console.log(category);
+            
+            if(!category) {
+                return {
+                    ok:false,
+                    error:'Category not found',
+                };
+            }
+            const wods = await this.wods.find({
+                where:{
+                    category,
+                }
+            });
+            return {
+                ok:true,
+                category
+            }
+        } catch (error) {
+            return {
+                ok: false,
+                error: 'Could not load category',
             }
         }
     }

@@ -1,14 +1,17 @@
-import { Args, Mutation, Resolver, Query } from "@nestjs/graphql";
+import { Args, Mutation, Resolver, Query, ResolveField, Int, Parent } from "@nestjs/graphql";
 import { InjectRepository } from "@nestjs/typeorm";
 import { AuthUser } from "src/auth/auth-user.decorator";
 import { Role } from "src/auth/role-decorator";
 import { User } from "src/user/entities/user.entity";
 import { Repository } from "typeorm";
+import { AllCategoriesOutput } from "./dtos/all-categories.dto";
 import { AllWodsOutput } from "./dtos/all-wods.dto";
+import { CategoryInput, CategoryOutput } from "./dtos/category.dto";
 import { CreateWodInput, CreateWodOutput } from "./dtos/create-wod.dto";
 import { DeleteWodInput, DeleteWodOutput } from "./dtos/delete-wod.dto";
 import { EditWodInput, EditWodOutput } from "./dtos/edit-wod.dto";
 import { OneWodInput, OneWodOutput } from "./dtos/one-wod.dto";
+import { Category } from "./entities/category.entity";
 import { Wod } from "./entities/wod.entity";
 import { WodService } from "./wod.service";
 
@@ -58,5 +61,25 @@ export class WodResolver {
         @Args('input') oneWodInput:OneWodInput
     ):Promise<OneWodOutput> {
         return this.wodService.findWodById(oneWodInput);
+    }
+}
+
+@Resolver(of => Category)
+export class CategoryResolver {
+    constructor(private readonly wodService: WodService) {}
+
+    // @ResolveField(type => Int)
+    // wodCount(@Parent() category:Category): Promise<number> {
+    //     return this.wodService.countWod(category);
+    // }
+
+    @Query(type => AllCategoriesOutput)
+    allCategories() :Promise<AllCategoriesOutput> {
+        return this.wodService.allCategories();
+    }
+
+    @Query(type => CategoryOutput)
+    findCategoryBySlug(@Args('input') categoryInput:CategoryInput):Promise<CategoryOutput> {
+        return this.wodService.findCategoryBySlug(categoryInput);
     }
 }

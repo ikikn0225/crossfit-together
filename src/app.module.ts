@@ -35,6 +35,7 @@ import { LikeModule } from './like/like.module';
 import { Reply } from './reply/entities/reply.entity';
 import { ReplyModule } from './reply/reply.module';
 import { UploadsModule } from './uploads/uploads.module';
+import { Category } from './wod/entities/category.entity';
 
 @Module({
   imports: [
@@ -72,7 +73,7 @@ import { UploadsModule } from './uploads/uploads.module';
           }),
       "synchronize": process.env.NODE_ENV !== 'production',
       "logging": process.env.NODE_ENV !== 'production',
-      entities:[ User, Verification, AffiliatedBox, Wod, Bor, LeaderBoardOneRm, LeaderBoardNamedWod, Hold, FreeTrial, Notice, Comment, Like, Reply ]
+      entities:[ User, Verification, AffiliatedBox, Wod, Bor, LeaderBoardOneRm, LeaderBoardNamedWod, Hold, FreeTrial, Notice, Comment, Like, Reply, Category ]
     }),
     GraphQLModule.forRoot({
       playground: process.env.NODE_ENV !== 'production',
