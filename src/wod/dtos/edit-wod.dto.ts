@@ -12,6 +12,9 @@ export class EditWodInput extends PickType(PartialType(Wod), [
 ]) {
     @Field(type => Int)
     wodId:number;
+
+    @Field(type => Number)
+    categoryId:number;
 }
 
 @ObjectType()

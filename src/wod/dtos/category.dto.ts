@@ -16,6 +16,6 @@ export class CategoryOutput extends CoreOutput {
     @Field(type => [Wod], {nullable: true})
     wods?: Wod[];
 
-    @Field(type => Category, {nullable: true})
+    @Field(type => Category)
     category?: Category;
 }

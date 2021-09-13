@@ -35,13 +35,20 @@ export class WodService {
     ):Promise<CreateWodOutput> {
         try {
             const affiliatedBox = await this.affiliatedBoxes.findOne( owner.affiliatedBoxId );
+            const category = await this.categories.findOne( createWodInput.categoryId );
             if(!affiliatedBox) {
                 return {
                     ok:false,
                     error:"Affiliated Box not found."
                 }
             }
-            await this.wods.save( this.wods.create({...createWodInput, affiliatedBox}) );
+            if(!category) {
+                return {
+                    ok:false,
+                    error:"Category not found",
+                }
+            }
+            await this.wods.save( this.wods.create({...createWodInput, affiliatedBox, category}) );
             return {
                 ok:true,
             }
@@ -59,11 +66,18 @@ export class WodService {
     ):Promise<EditWodOutput> {
         try {
             const wod = await this.wods.findOne(editWodInput.wodId, { relations:['affiliatedBox'] });
+            const category = await this.categories.findOne( editWodInput.categoryId );
 
             if(!wod) {
                 return {
                     ok:false,
                     error:"Wod not found."
+                }
+            }
+            if(!category) {
+                return {
+                    ok:false,
+                    error:"Category not found",
                 }
             }
             if(wod.affiliatedBox.id !== owner.affiliatedBoxId) {
@@ -74,6 +88,7 @@ export class WodService {
             }
             await this.wods.save([{
                 id:editWodInput.wodId,
+                category,
                 ...editWodInput
             }]);
             return {
@@ -150,7 +165,7 @@ export class WodService {
     async findWodById({wodId}: OneWodInput): Promise<OneWodOutput> {
         try {
             const wod = await this.wods.findOne(wodId
-                , { relations: ['likes'], }
+                , { relations: ['likes', 'category'], }
             );
             if(!wod) {
                 return {

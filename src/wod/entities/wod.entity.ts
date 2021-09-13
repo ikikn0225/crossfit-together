@@ -35,11 +35,10 @@ export class Wod extends CoreEntity {
     @RelationId((wod: Wod) => wod.affiliatedBox)
     affiliatedBoxId: number;
 
-    @Field(type => Category, { nullable: true })
+    @Field(type => Category)
     @ManyToOne(
         type => Category,
-        category => category.wods,
-        { nullable: true, onDelete: 'SET NULL', eager: true },
+        category => category.wods
     )
     category: Category;
 
