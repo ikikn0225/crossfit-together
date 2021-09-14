@@ -5,7 +5,7 @@ import { AffiliatedBox } from "src/box/entities/box.entity";
 import { User } from "src/user/entities/user.entity";
 import { Repository } from "typeorm";
 import { AllCategoriesOutput } from "./dtos/all-categories.dto";
-import { AllWodsOutput } from "./dtos/all-wods.dto";
+import { AllWodsInput, AllWodsOutput } from "./dtos/all-wods.dto";
 import { CategoryInput, CategoryOutput } from "./dtos/category.dto";
 import { CreateWodInput, CreateWodOutput } from "./dtos/create-wod.dto";
 import { DeleteWodInput, DeleteWodOutput } from "./dtos/delete-wod.dto";
@@ -133,7 +133,8 @@ export class WodService {
     }
 
     async allWods(
-        authUser:User
+        authUser:User,
+        {slug}:AllWodsInput
     ):Promise<AllWodsOutput> {
         try {
             const affiliatedBox = await this.affiliatedBoxes.findOne(authUser.affiliatedBoxId);
@@ -143,7 +144,13 @@ export class WodService {
                     error:"Affiliated Box not found."
                 }
             }
-            const wods = await this.wods.find({relations:["likes"], where: {affiliatedBox}, order:{title:"DESC"}});
+            let wods:Wod[];
+            if(slug) {
+                const category = await this.categories.findOne({slug},);
+                wods = await this.wods.find({relations:["likes"], where: {affiliatedBox, category:category}, order:{title:"DESC"}});
+            }
+            else
+                wods = await this.wods.find({relations:["likes"], where: {affiliatedBox}, order:{title:"DESC"}});
             if(!wods) {
                 return {
                     ok:false,
@@ -220,9 +227,12 @@ export class WodService {
                     category,
                 }
             });
+            console.log(wods);
+            
             return {
                 ok:true,
-                category
+                category,
+                wods
             }
         } catch (error) {
             return {

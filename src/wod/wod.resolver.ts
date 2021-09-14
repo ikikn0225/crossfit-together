@@ -5,7 +5,7 @@ import { Role } from "src/auth/role-decorator";
 import { User } from "src/user/entities/user.entity";
 import { Repository } from "typeorm";
 import { AllCategoriesOutput } from "./dtos/all-categories.dto";
-import { AllWodsOutput } from "./dtos/all-wods.dto";
+import { AllWodsInput, AllWodsOutput } from "./dtos/all-wods.dto";
 import { CategoryInput, CategoryOutput } from "./dtos/category.dto";
 import { CreateWodInput, CreateWodOutput } from "./dtos/create-wod.dto";
 import { DeleteWodInput, DeleteWodOutput } from "./dtos/delete-wod.dto";
@@ -50,9 +50,10 @@ export class WodResolver {
     @Role(["Any"])
     @Query(type => AllWodsOutput)
     async allWods(
-        @AuthUser() authUser:User
+        @AuthUser() authUser:User,
+        @Args('input') allWodsInput:AllWodsInput
     ):Promise<AllWodsOutput> {
-        return this.wodService.allWods(authUser);
+        return this.wodService.allWods(authUser, allWodsInput);
     }
 
     @Role(["Any"])
