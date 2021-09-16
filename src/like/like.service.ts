@@ -94,7 +94,7 @@ export class LikeService {
                     error:"Wod not found."
                 }
             }
-            const likes = await this.likes.find({relations: ['wod'], where: {wod}});
+            const likes = await this.likes.find({relations: ['wod', 'owner'], where: {wod}});
             return {
                 ok:true,
                 likes
