@@ -147,7 +147,7 @@ export class WodService {
             let wods:Wod[];
             if(slug) {
                 const category = await this.categories.findOne({slug},);
-                wods = await this.wods.find({relations:["likes"], where: {affiliatedBox, category:category}, order:{title:"DESC"}});
+                wods = await this.wods.find({relations:["likes"], where: {affiliatedBox, category}, order:{title:"DESC"}});
             }
             else
                 wods = await this.wods.find({relations:["likes"], where: {affiliatedBox}, order:{title:"DESC"}});

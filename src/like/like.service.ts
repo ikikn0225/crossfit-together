@@ -84,10 +84,10 @@ export class LikeService {
     }
 
     async allLikesInWod(
-        allLikesInWodInput:AllLikesInWodInput
+        {wodId}:AllLikesInWodInput
     ):Promise<AllLikesInWodOutput> {
         try {
-            const wod = await this.wods.findOne(allLikesInWodInput.wodId);
+            const wod = await this.wods.findOne(wodId);
             if(!wod) {
                 return {
                     ok:false,
