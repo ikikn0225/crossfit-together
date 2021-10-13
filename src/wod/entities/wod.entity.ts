@@ -2,10 +2,10 @@ import { Field, InputType, ObjectType } from '@nestjs/graphql';
 import { Bor } from 'src/board-of-record/entities/board-of-record.entity';
 import { AffiliatedBox } from 'src/box/entities/box.entity';
 import { CoreEntity } from 'src/common/core.entity';
+import { CoreOutput } from 'src/common/dtos/common.dto';
 import { Like } from 'src/like/entities/like.entity';
-import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, RelationId } from 'typeorm';
+import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn, RelationId } from 'typeorm';
 import { Category } from './category.entity';
-
 
 @InputType('WodInputType', {isAbstract: true})
 @ObjectType()
@@ -61,4 +61,37 @@ export class Wod extends CoreEntity {
     //     type => Comment,
     // )
     // comment: Comment;
+}
+
+@InputType('EdgeInputType', {isAbstract: true})
+@ObjectType()
+export class Edge {
+
+    @Field(type => Number)
+    cursor:number;
+
+    @Field(type => Wod)
+    node:Wod;
+}
+
+@InputType('PageInfoInputType', {isAbstract: true})
+@ObjectType()
+export class PageInfo {
+
+    @Field(type => Number)
+    endCursor:number;
+
+    @Field(type => Boolean)
+    hasNextPage:boolean;
+}
+
+@InputType('WodListResponseInputType', {isAbstract: true})
+@ObjectType()
+export class WodListResponse {
+
+    @Field(type => [Edge])
+    edges:Edge[];
+
+    @Field(type => PageInfo)
+    pageInfo:PageInfo;
 }

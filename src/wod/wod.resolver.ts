@@ -11,6 +11,7 @@ import { CreateWodInput, CreateWodOutput } from "./dtos/create-wod.dto";
 import { DeleteWodInput, DeleteWodOutput } from "./dtos/delete-wod.dto";
 import { EditWodInput, EditWodOutput } from "./dtos/edit-wod.dto";
 import { OneWodInput, OneWodOutput } from "./dtos/one-wod.dto";
+import { WodListInput, WodListOutput } from "./dtos/wod-list.dto";
 import { Category } from "./entities/category.entity";
 import { Wod } from "./entities/wod.entity";
 import { WodService } from "./wod.service";
@@ -54,6 +55,15 @@ export class WodResolver {
         @Args('input') allWodsInput:AllWodsInput
     ):Promise<AllWodsOutput> {
         return this.wodService.allWods(authUser, allWodsInput);
+    }
+
+    @Role(["Any"])
+    @Query(type => WodListOutput)
+    async wodList(
+        @AuthUser() authUser:User,
+        @Args('input') wodListInput:WodListInput
+    ):Promise<WodListOutput> {
+        return this.wodService.wodList(authUser, wodListInput);
     }
 
     @Role(["Any"])

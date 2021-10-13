@@ -13,7 +13,7 @@ import { JwtMiddleware } from './jwt/jwt.middleware';
 import { Verification } from './user/entities/verification.entity';
 import { AuthModule } from './auth/auth.module';
 import { MailModule } from './mail/mail.module';
-import { Wod } from './wod/entities/wod.entity';
+import { Edge, PageInfo, Wod, WodListResponse } from './wod/entities/wod.entity';
 import { AffiliatedBox } from './box/entities/box.entity';
 import { AffiliatedBoxModule } from './box/box.module';
 import { WodModule } from './wod/wod.module';
@@ -73,7 +73,23 @@ import { Category } from './wod/entities/category.entity';
           }),
       "synchronize": process.env.NODE_ENV !== 'production',
       "logging": process.env.NODE_ENV !== 'production',
-      entities:[ User, Verification, AffiliatedBox, Wod, Bor, LeaderBoardOneRm, LeaderBoardNamedWod, Hold, FreeTrial, Notice, Comment, Like, Reply, Category ]
+      entities:[ User,
+        Verification,
+        AffiliatedBox, 
+        Wod, 
+        Bor, 
+        LeaderBoardOneRm, 
+        LeaderBoardNamedWod, 
+        Hold, 
+        FreeTrial, 
+        Notice, 
+        Comment, 
+        Like, 
+        Reply, 
+        Category,
+        WodListResponse,
+        Edge,
+        PageInfo ]
     }),
     GraphQLModule.forRoot({
       playground: process.env.NODE_ENV !== 'production',

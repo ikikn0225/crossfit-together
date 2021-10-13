@@ -11,6 +11,7 @@ import { CreateWodInput, CreateWodOutput } from "./dtos/create-wod.dto";
 import { DeleteWodInput, DeleteWodOutput } from "./dtos/delete-wod.dto";
 import { EditWodInput, EditWodOutput } from "./dtos/edit-wod.dto";
 import { OneWodInput, OneWodOutput } from "./dtos/one-wod.dto";
+import { WodListInput, WodListOutput } from "./dtos/wod-list.dto";
 import { Category } from "./entities/category.entity";
 import { Wod } from "./entities/wod.entity";
 import { CategoryRepository } from "./repositories/category.repository";
@@ -165,6 +166,51 @@ export class WodService {
             return {
                 ok:false,
                 error
+            }
+        }
+    }
+
+    async wodList(
+        authUser:User,
+        wodList:WodListInput
+    ): Promise<WodListOutput> {
+        try {
+            const affiliatedBox = await this.affiliatedBoxes.findOne(authUser.affiliatedBoxId);
+            if(!affiliatedBox) {
+                return {
+                    ok:false,
+                    error:"Affiliated Box not found."
+                }
+            }
+            let wods:Wod[];
+            wods = await this.wods.find({relations:["likes"], where: {affiliatedBox}, order:{title:"DESC"}});
+            const first = wodList.first || 5;
+            const after = wodList.after || 0;
+            const index = wods.findIndex((wod) => wod.id === after);
+            const offset = index + 1;
+
+            const wodListResult = wods.slice(offset, offset + first);
+            const lastWodListResult = wodListResult[wodListResult.length - 1];
+
+            return {
+                ok:true,
+                wodListResponse: {
+                    pageInfo: {
+                        endCursor: lastWodListResult.id,
+                        hasNextPage: offset + first < wods.length,
+                    },
+                    edges: wods.map((wod) => ({
+                        cursor: wod.id,
+                        node: wod,
+                    }))
+                }
+            }
+            
+            
+        } catch (error) {
+            return {
+                ok:false,
+                error:'WodList not found'
             }
         }
     }
