@@ -199,7 +199,7 @@ export class WodService {
                         endCursor: lastWodListResult.id,
                         hasNextPage: offset + first < wods.length,
                     },
-                    edges: wods.map((wod) => ({
+                    edges: wodListResult.map((wod) => ({
                         cursor: wod.id,
                         node: wod,
                     }))
