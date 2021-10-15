@@ -182,8 +182,15 @@ export class WodService {
                     error:"Affiliated Box not found."
                 }
             }
+            
             let wods:Wod[];
-            wods = await this.wods.find({relations:["likes"], where: {affiliatedBox}, order:{title:"DESC"}});
+            if(wodList.slug) {
+                const category = await this.categories.findOne({slug:wodList.slug});
+                wods = await this.wods.find({relations:["likes"], where: {affiliatedBox, category}, order:{title:"DESC"}});
+            } else {
+                wods = await this.wods.find({relations:["likes"], where: {affiliatedBox}, order:{title:"DESC"}});
+            }
+            
             const first = wodList.first || 5;
             const after = wodList.after || 0;
             const index = wods.findIndex((wod) => wod.id === after);

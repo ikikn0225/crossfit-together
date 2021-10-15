@@ -10,6 +10,12 @@ export class WodListInput {
 
     @Field(type => Number, {nullable:true})
     after?:number;
+
+    @Field(type => Boolean, {nullable:true})
+    delay:boolean;
+
+    @Field(type => String, { nullable: true })
+    slug?:string;
 }
 
 @ObjectType()
