@@ -12,7 +12,7 @@ export class WodListInput {
     after?:number;
 
     @Field(type => Boolean, {nullable:true})
-    delay:boolean;
+    delay?:boolean;
 
     @Field(type => String, { nullable: true })
     slug?:string;
