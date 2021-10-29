@@ -61,9 +61,10 @@ export class WodResolver {
     @Query(type => WodListOutput)
     async wodList(
         @AuthUser() authUser:User,
-        @Args('input') wodListInput:WodListInput
+        @Args('first', { type: () => Int, nullable:true }) first?:number,
+        @Args('after', { type: () => Int, nullable:true }) after?:number,
     ):Promise<WodListOutput> {
-        return this.wodService.wodList(authUser, wodListInput);
+        return this.wodService.wodList(authUser, first, after);
     }
 
     @Role(["Any"])

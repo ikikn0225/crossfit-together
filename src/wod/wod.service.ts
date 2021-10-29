@@ -172,7 +172,8 @@ export class WodService {
 
     async wodList(
         authUser:User,
-        wodList:WodListInput
+        first?:number,
+        after?:number
     ): Promise<WodListOutput> {
         try {
             const affiliatedBox = await this.affiliatedBoxes.findOne(authUser.affiliatedBoxId);
@@ -184,27 +185,28 @@ export class WodService {
             }
             
             let wods:Wod[];
-            if(wodList.slug) {
-                const category = await this.categories.findOne({slug:wodList.slug});
-                wods = await this.wods.find({relations:["likes"], where: {affiliatedBox, category}, order:{title:"DESC"}});
-            } else {
+            // if(wodList.slug) {
+            //     const category = await this.categories.findOne({slug:wodList.slug});
+            //     wods = await this.wods.find({relations:["likes"], where: {affiliatedBox, category}, order:{title:"DESC"}});
+            // } else {
                 wods = await this.wods.find({relations:["likes"], where: {affiliatedBox}, order:{title:"DESC"}});
-            }
+            // }
             
-            const first = wodList.first || 5;
-            const after = wodList.after || 0;
-            const index = wods.findIndex((wod) => wod.id === after);
+            const firstWod = first || 5;
+            const afterWod = after || 0;
+            const index = wods.findIndex((wod) => wod.id === afterWod);
             const offset = index + 1;
 
-            const wodListResult = wods.slice(offset, offset + first);
+            const wodListResult = wods.slice(offset, offset + firstWod);
             const lastWodListResult = wodListResult[wodListResult.length - 1];
-
+            console.log(firstWod);
+            console.log(after);
             return {
                 ok:true,
                 wodListResponse: {
                     pageInfo: {
                         endCursor: lastWodListResult.id,
-                        hasNextPage: offset + first < wods.length,
+                        hasNextPage: offset + firstWod < wods.length,
                     },
                     edges: wodListResult.map((wod) => ({
                         cursor: wod.id,
