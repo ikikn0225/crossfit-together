@@ -63,6 +63,7 @@ export class WodResolver {
         @AuthUser() authUser:User,
         @Args('first', { type: () => Int, nullable:true }) first?:number,
         @Args('after', { type: () => Int, nullable:true }) after?:number,
+        @Args('slug', { type: () => String, nullable:true }) slug?:string,
     ):Promise<WodListOutput> {
         return this.wodService.wodList(authUser, first, after);
     }

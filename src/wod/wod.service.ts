@@ -173,7 +173,8 @@ export class WodService {
     async wodList(
         authUser:User,
         first?:number,
-        after?:number
+        after?:number,
+        slug?:string,
     ): Promise<WodListOutput> {
         try {
             const affiliatedBox = await this.affiliatedBoxes.findOne(authUser.affiliatedBoxId);
@@ -185,12 +186,12 @@ export class WodService {
             }
             
             let wods:Wod[];
-            // if(wodList.slug) {
-            //     const category = await this.categories.findOne({slug:wodList.slug});
-            //     wods = await this.wods.find({relations:["likes"], where: {affiliatedBox, category}, order:{title:"DESC"}});
-            // } else {
+            if(slug) {
+                const category = await this.categories.findOne({slug});
+                wods = await this.wods.find({relations:["likes"], where: {affiliatedBox, category}, order:{title:"DESC"}});
+            } else {
                 wods = await this.wods.find({relations:["likes"], where: {affiliatedBox}, order:{title:"DESC"}});
-            // }
+            }
             
             const firstWod = first || 5;
             const afterWod = after || 0;
@@ -199,20 +200,17 @@ export class WodService {
 
             const wodListResult = wods.slice(offset, offset + firstWod);
             const lastWodListResult = wodListResult[wodListResult.length - 1];
-            console.log(firstWod);
-            console.log(after);
+            
             return {
                 ok:true,
-                wodListResponse: {
-                    pageInfo: {
-                        endCursor: lastWodListResult.id,
-                        hasNextPage: offset + firstWod < wods.length,
-                    },
-                    edges: wodListResult.map((wod) => ({
-                        cursor: wod.id,
-                        node: wod,
-                    }))
-                }
+                pageInfo: {
+                    endCursor: lastWodListResult.id,
+                    hasNextPage: offset + firstWod < wods.length,
+                },
+                edges: wodListResult.map((wod) => ({
+                    cursor: wod.id,
+                    node: wod,
+                }))
             }
             
             
