@@ -193,6 +193,8 @@ export class WodService {
                 wods = await this.wods.find({relations:["likes"], where: {affiliatedBox}, order:{title:"DESC"}});
             }
             
+            if(!wods.length) return { ok:true, edges:[] }
+            
             const firstWod = first || 5;
             const afterWod = after || 0;
             const index = wods.findIndex((wod) => wod.id === afterWod);
