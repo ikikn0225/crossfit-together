@@ -4,7 +4,7 @@ import { Like } from "../entities/like.entity";
 
 
 @InputType()
-export class DeleteLikeInWodInput extends PickType(Like, ['id']) {
+export class DeleteLikeInWodInput{
     @Field(type => Int)
     wodId:number;
 }

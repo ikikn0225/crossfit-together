@@ -58,7 +58,7 @@ export class LikeService {
                     error:"Wod not found."
                 }
             }
-            const like = await this.likes.findOne({id:deleteLikeInWod.id, wod, owner:authUser});
+            const like = await this.likes.findOne({wod, owner:authUser});
             if(!like) {
                 return {
                     ok:false,
@@ -71,7 +71,7 @@ export class LikeService {
                     error:"You cannnot do that."
                 }
             }
-            await this.likes.delete(deleteLikeInWod.id);
+            await this.likes.delete(like.id);
             return {
                 ok:true,
             }
