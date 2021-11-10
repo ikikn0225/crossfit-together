@@ -6,8 +6,6 @@ import { Bor } from "../entities/board-of-record.entity";
 
 @InputType()
 export class CreateBorInput extends PickType(Bor, ['content']) {
-    @Field(type => Number, {nullable:true})
-    ownerId?:number;
 
     @Field(type => Number)
     wodId:number;
@@ -15,4 +13,8 @@ export class CreateBorInput extends PickType(Bor, ['content']) {
 }
 
 @ObjectType()
-export class CreateBorOutput extends CoreOutput {}
+export class CreateBorOutput extends CoreOutput {
+
+    @Field(type => Number)
+    borId?:number;
+}

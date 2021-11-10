@@ -26,16 +26,18 @@ export class BorService {
     ):Promise<CreateBorOutput> {
         try {
             const wod = await this.wods.findOne( createBorInput.wodId );
-            createBorInput.ownerId = owner.id;
+            // createBorInput.ownerId = owner.id;
             if(!wod) {
                 return {
                     ok:false,
                     error:"Wod not found."
                 }
             }
-            await this.bors.save(this.bors.create({...createBorInput, wod, owner}));
+            const newBor = await this.bors.save(this.bors.create({...createBorInput, wod, owner}));
+            
             return {
                 ok:true,
+                borId:newBor.id
             }
         } catch (error) {
             return {
@@ -114,7 +116,7 @@ export class BorService {
     ):Promise<AllBoardofRecordOutput> {
         try {
             const wod = await this.wods.findOne({id});
-            const bors = await this.bors.find({wod});
+            const bors = await this.bors.find({where:{wod}, order:{updatedAt:"DESC"}});
             if(!wod) {
                 return {
                     ok:false,
