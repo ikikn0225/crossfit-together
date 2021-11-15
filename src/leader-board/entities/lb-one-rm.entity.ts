@@ -1,4 +1,5 @@
 import { Field, InputType, ObjectType, registerEnumType } from "@nestjs/graphql";
+import { IsEnum } from "class-validator";
 import { AffiliatedBox } from "src/box/entities/box.entity";
 import { CoreEntity } from "src/common/core.entity";
 import { User } from "src/user/entities/user.entity";
@@ -8,12 +9,13 @@ import { OneRmList } from "../lb-one-rm.enum";
 registerEnumType(OneRmList, {name: 'OneRmList'});
 
 @InputType('LeaderBoardOneRmInputType', {isAbstract:true})
-@ObjectType()
 @Entity()
+@ObjectType()
 export class LeaderBoardOneRm extends CoreEntity {
 
     @Field(type => OneRmList)
-    @Column()
+    @Column({type: 'enum', enum: OneRmList})
+    @IsEnum(OneRmList)
     oneRm:OneRmList;
 
     @Field(type => Number)

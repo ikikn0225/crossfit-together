@@ -116,6 +116,7 @@ export class LeaderBoardService {
         try {
             const affiliatedBox = await this.affiliatedBoxes.findOne( authUser.affiliatedBoxId );
             const oneRms = await this.lbOneRm.find({oneRm, affiliatedBox});
+            
             if(!affiliatedBox) {
                 return {
                     ok:false,
