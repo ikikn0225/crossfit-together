@@ -19,9 +19,9 @@ export class LeaderBoardNamedWod extends CoreEntity {
     @Column()
     namedWod:NamedWodsList;
 
-    @Field(type => String)
+    @Field(type => Number)
     @Column()
-    record: string;
+    record: number;
 
     @Field(type => User)
     @ManyToOne(

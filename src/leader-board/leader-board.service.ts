@@ -115,12 +115,19 @@ export class LeaderBoardService {
     ):Promise<AllOneRmRecordsOutput> {
         try {
             const affiliatedBox = await this.affiliatedBoxes.findOne( authUser.affiliatedBoxId );
-            const oneRms = await this.lbOneRm.find({oneRm, affiliatedBox});
+            const oneRms = await this.lbOneRm.find({where:{oneRm, affiliatedBox}, relations:['owner']});
             
             if(!affiliatedBox) {
                 return {
                     ok:false,
                     error:"Affiliated Box not found."
+                }
+            }
+
+            if(!oneRms) {
+                return {
+                    ok:false,
+                    error:"oneRm not found."
                 }
             }
             return {
