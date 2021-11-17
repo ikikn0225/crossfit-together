@@ -1,6 +1,7 @@
 
 
 import { Field, InputType, ObjectType, registerEnumType } from "@nestjs/graphql";
+import { IsEnum } from "class-validator";
 import { string } from "joi";
 import { AffiliatedBox } from "src/box/entities/box.entity";
 import { CoreEntity } from "src/common/core.entity";
@@ -16,7 +17,8 @@ registerEnumType(NamedWodsList, {name: 'NamedWodsList'});
 export class LeaderBoardNamedWod extends CoreEntity {
 
     @Field(type => NamedWodsList)
-    @Column()
+    @Column({type: 'enum', enum: NamedWodsList})
+    @IsEnum(NamedWodsList)
     namedWod:NamedWodsList;
 
     @Field(type => Number)
