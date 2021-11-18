@@ -31,7 +31,7 @@ export class HoldService {
             if(hold.length >= 15) {
                 return {
                     ok:true,
-                    error:"You used all the available holds.",
+                    error:"There are no available holds.",
                 }
             }
             await this.holds.save(this.holds.create({holdAt:registerHoldInput.holdAt, owner:authUser, affiliatedBox}));
@@ -55,6 +55,8 @@ export class HoldService {
             holds.sort(function (a, b) {
                 return a.holdAt.getTime() - b.holdAt.getTime();
             });
+            console.log(holds);
+            
             if(!holds) {
                 return {
                     ok:false,
