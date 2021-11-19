@@ -2,7 +2,8 @@ import { Args, Mutation, Query, Resolver } from "@nestjs/graphql";
 import { AuthUser } from "src/auth/auth-user.decorator";
 import { Role } from "src/auth/role-decorator";
 import { User } from "src/user/entities/user.entity";
-import { AllHoldsOutput } from "./dtos/all-holds.dto";
+import { AllDistinctHoldsOutput } from "./dtos/all-distinct-holds.dto";
+import { AllHoldsInput, AllHoldsOutput } from "./dtos/all-holds.dto";
 import { DeleteHoldInput, DeleteHoldOutput } from "./dtos/delete-hold.dto";
 import { MyHoldsOutput } from "./dtos/my-holds.dto";
 import { RegisterHoldInput, RegisterHoldOutput } from "./dtos/register-hold.dto";
@@ -26,11 +27,20 @@ export class HoldResolver {
     }
 
     @Role(["Any"])
+    @Query(returns => AllDistinctHoldsOutput)
+    allDistinctHolds(
+        @AuthUser() authUser:User
+    ):Promise<AllDistinctHoldsOutput> {
+        return this.holdService.allDistinctHolds(authUser);
+    }
+
+    @Role(["Any"])
     @Query(returns => AllHoldsOutput)
     allHolds(
-        @AuthUser() authUser:User
+        @AuthUser() authUser:User,
+        @Args('input') allHoldsInput:AllHoldsInput,
     ):Promise<AllHoldsOutput> {
-        return this.holdService.allHolds(authUser);
+        return this.holdService.allHolds(authUser, allHoldsInput);
     }
 
     @Role(["Any"])

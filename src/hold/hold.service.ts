@@ -3,7 +3,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { AffiliatedBox } from "src/box/entities/box.entity";
 import { User } from "src/user/entities/user.entity";
 import { Repository } from "typeorm";
-import { AllHoldsOutput } from "./dtos/all-holds.dto";
+import { AllHoldsInput, AllHoldsOutput } from "./dtos/all-holds.dto";
 import { DeleteHoldInput, DeleteHoldOutput } from "./dtos/delete-hold.dto";
 import { MyHoldsOutput } from "./dtos/my-holds.dto";
 import { RegisterHoldInput } from "./dtos/register-hold.dto";
@@ -46,16 +46,76 @@ export class HoldService {
         }
     }
 
-    async allHolds(
+    async allDistinctHolds(
         authUser:User
     ):Promise<AllHoldsOutput> {
         try {
             const affiliatedBox = await this.affiliatedBoxes.findOne( authUser.affiliatedBoxId );
-            const holds = await this.holds.find({relations: ['owner'], where: {affiliatedBox}});
+            const holds = await this.holds.find({relations: ['owner'], where: {affiliatedBox}, });
             holds.sort(function (a, b) {
                 return a.holdAt.getTime() - b.holdAt.getTime();
             });
-            console.log(holds);
+            // console.log(holds);
+            let helpArray = new Array(); 
+            let holdDistinctArray = new Array(); 
+
+            // // holdAt 중복x 개수 뽑아내기
+            holds.forEach(hold => {
+                if(helpArray.indexOf(hold.holdAt.toISOString()) == -1) {
+                    
+                    holdDistinctArray.push(hold);
+                    helpArray.push(hold.holdAt.toISOString());
+                }
+            });
+            
+            if(!holds) {
+                return {
+                    ok:false,
+                    error:"Holds not found."
+                }
+            }
+            return {
+                ok:true,
+                holds:holdDistinctArray
+            }
+            
+        } catch (error) {
+            return {
+                ok:false,
+                error
+            }
+        }
+    }
+
+    async allHolds(
+        authUser:User,
+        allHoldsInput:AllHoldsInput
+    ):Promise<AllHoldsOutput> {
+        try {
+            const affiliatedBox = await this.affiliatedBoxes.findOne( authUser.affiliatedBoxId );
+            const holds = await this.holds.find({relations: ['owner'], where:{holdAt:allHoldsInput.holdAt} });
+console.log(allHoldsInput.holdAt);
+
+            // console.log(holds);
+            // let holdDistinctArray = new Array(); 
+
+            // // holdAt 중복x 개수 뽑아내기
+            // holds.forEach(hold => {
+            //     if(holdDistinctArray.indexOf(hold.holdAt.toISOString()) == -1) {
+            //         holdDistinctArray.push(hold.holdAt.toISOString());
+            //     }
+            // });
+
+            // //holdAt 같은 것들만 묶기
+            // let sameHoldAtArray = new Array(holdDistinctArray.length).fill(null).map(()=>Array()); 
+            // holdDistinctArray.forEach(function(element0, index) {
+            //     holds.forEach(element1 => {
+            //         if(element0 == element1.holdAt.toISOString()) {
+            //             sameHoldAtArray[index].push(element1);
+            //         }
+            //     });
+            // })
+            // console.log(sameHoldAtArray);
             
             if(!holds) {
                 return {
