@@ -3,7 +3,9 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { AffiliatedBox } from "src/box/entities/box.entity";
 import { User } from "src/user/entities/user.entity";
 import { Repository } from "typeorm";
+import { AllDistinctHoldsInput, AllDistinctHoldsOutput } from "./dtos/all-distinct-holds.dto";
 import { AllHoldsInput, AllHoldsOutput } from "./dtos/all-holds.dto";
+import { AllSpecificHoldsInput, AllSpecificHoldsOutput } from "./dtos/all-specific-holds.dto";
 import { DeleteHoldInput, DeleteHoldOutput } from "./dtos/delete-hold.dto";
 import { MyHoldsOutput } from "./dtos/my-holds.dto";
 import { RegisterHoldInput } from "./dtos/register-hold.dto";
@@ -34,9 +36,11 @@ export class HoldService {
                     error:"There are no available holds.",
                 }
             }
-            await this.holds.save(this.holds.create({holdAt:registerHoldInput.holdAt, owner:authUser, affiliatedBox}));
+            const newHold = await this.holds.save(this.holds.create({holdAt:registerHoldInput.holdAt, owner:authUser, affiliatedBox}));
+
             return {
                 ok: true,
+                holdId:newHold.id
             }
         } catch (error) {
             return {
@@ -47,13 +51,14 @@ export class HoldService {
     }
 
     async allDistinctHolds(
-        authUser:User
-    ):Promise<AllHoldsOutput> {
+        authUser:User,
+        {affiliatedBoxId}:AllDistinctHoldsInput
+    ):Promise<AllDistinctHoldsOutput> {
         try {
-            const affiliatedBox = await this.affiliatedBoxes.findOne( authUser.affiliatedBoxId );
-            const holds = await this.holds.find({relations: ['owner'], where: {affiliatedBox}, });
+            // const affiliatedBox = await this.affiliatedBoxes.findOne( authUser.affiliatedBoxId );
+            const holds = await this.holds.find({relations: ['owner'], where: {affiliatedBoxId}, });
             holds.sort(function (a, b) {
-                return a.holdAt.getTime() - b.holdAt.getTime();
+                return b.holdAt.getTime() - a.holdAt.getTime();
             });
             // console.log(holds);
             let helpArray = new Array(); 
@@ -87,35 +92,40 @@ export class HoldService {
         }
     }
 
-    async allHolds(
+    async allSpecificHolds(
         authUser:User,
-        allHoldsInput:AllHoldsInput
-    ):Promise<AllHoldsOutput> {
+        {holdAt}:AllSpecificHoldsInput
+    ):Promise<AllSpecificHoldsOutput> {
         try {
             const affiliatedBox = await this.affiliatedBoxes.findOne( authUser.affiliatedBoxId );
-            const holds = await this.holds.find({relations: ['owner'], where:{holdAt:allHoldsInput.holdAt} });
-console.log(allHoldsInput.holdAt);
+            const holds = await this.holds.find({relations: ['owner'], where:{holdAt} });
+            
+            if(!holds) {
+                return {
+                    ok:false,
+                    error:"Holds not found."
+                }
+            }
+            return {
+                ok:true,
+                holds
+            }
+            
+        } catch (error) {
+            return {
+                ok:false,
+                error
+            }
+        }
+    }
 
-            // console.log(holds);
-            // let holdDistinctArray = new Array(); 
-
-            // // holdAt 중복x 개수 뽑아내기
-            // holds.forEach(hold => {
-            //     if(holdDistinctArray.indexOf(hold.holdAt.toISOString()) == -1) {
-            //         holdDistinctArray.push(hold.holdAt.toISOString());
-            //     }
-            // });
-
-            // //holdAt 같은 것들만 묶기
-            // let sameHoldAtArray = new Array(holdDistinctArray.length).fill(null).map(()=>Array()); 
-            // holdDistinctArray.forEach(function(element0, index) {
-            //     holds.forEach(element1 => {
-            //         if(element0 == element1.holdAt.toISOString()) {
-            //             sameHoldAtArray[index].push(element1);
-            //         }
-            //     });
-            // })
-            // console.log(sameHoldAtArray);
+    async allHolds(
+        authUser:User,
+        {affiliatedBoxId}:AllHoldsInput
+    ):Promise<AllHoldsOutput> {
+        try {
+            // const affiliatedBox = await this.affiliatedBoxes.findOne( authUser.affiliatedBoxId );
+            const holds = await this.holds.find({relations: ['owner'], where:{affiliatedBoxId} });
             
             if(!holds) {
                 return {
@@ -142,7 +152,7 @@ console.log(allHoldsInput.holdAt);
         try {
             const holds = await this.holds.find({owner});
             holds.sort(function (a, b) {
-                return a.holdAt.getTime() - b.holdAt.getTime();
+                return b.holdAt.getTime() - a.holdAt.getTime();
             });
             if(!holds) {
                 return {

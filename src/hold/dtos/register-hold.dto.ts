@@ -9,4 +9,7 @@ export class RegisterHoldInput extends PickType(Hold, ['holdAt']) {
 }
 
 @ObjectType()
-export class RegisterHoldOutput extends CoreOutput {}
+export class RegisterHoldOutput extends CoreOutput {
+    @Field(type => Number)
+    holdId?:number;
+}

@@ -4,8 +4,8 @@ import { Hold } from "../entities/hold.entity";
 
 @InputType()
 export class AllHoldsInput {
-    @Field(type => Date, {nullable:true})
-    holdAt?:Date;
+    @Field(type => Number, {nullable:true})
+    affiliatedBoxId?:number;
 }
 
 @ObjectType()
