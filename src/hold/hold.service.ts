@@ -55,23 +55,23 @@ export class HoldService {
         {affiliatedBoxId}:AllDistinctHoldsInput
     ):Promise<AllDistinctHoldsOutput> {
         try {
-            // const affiliatedBox = await this.affiliatedBoxes.findOne( authUser.affiliatedBoxId );
             const holds = await this.holds.find({relations: ['owner'], where: {affiliatedBoxId}, });
             holds.sort(function (a, b) {
                 return b.holdAt.getTime() - a.holdAt.getTime();
             });
-            // console.log(holds);
+            
             let helpArray = new Array(); 
             let holdDistinctArray = new Array(); 
 
             // // holdAt 중복x 개수 뽑아내기
             holds.forEach(hold => {
                 if(helpArray.indexOf(hold.holdAt.toISOString()) == -1) {
-                    
                     holdDistinctArray.push(hold);
                     helpArray.push(hold.holdAt.toISOString());
                 }
             });
+            console.log(holdDistinctArray);
+            
             
             if(!holds) {
                 return {
