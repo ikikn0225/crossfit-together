@@ -123,8 +123,6 @@ export class HoldService {
             });
 
             if(!holdDistinctArray.length) return { ok:true, edges:[] }
-            console.log(first);
-            console.log(after);
             
             const firstHold = first || 10;
             const afterHold = after || 0;

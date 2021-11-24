@@ -3,13 +3,13 @@ import { CoreOutput } from "src/common/dtos/common.dto";
 import { FreeTrial } from "../entities/ft.entity";
 
 @InputType()
-export class CreateFreeTrialInput extends PickType(FreeTrial, ['freeTrialAt', 'workoutTime']) {
+export class RegisterFreeTrialInput extends PickType(FreeTrial, ['freeTrialAt']) {
     @Field(type => Date)
     freeTrialAt: Date;
-
-    @Field(type => String)
-    workoutTime:string;
 }
 
 @ObjectType()
-export class CreateFreeTrialOutput extends CoreOutput {}
+export class RegisterFreeTrialOutput extends CoreOutput {
+    @Field(type => Number)
+    freeTrialId?:number;    
+}
