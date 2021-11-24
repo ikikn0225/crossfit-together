@@ -7,6 +7,7 @@ import { AllDistinctHoldsInput, AllDistinctHoldsOutput } from "./dtos/all-distin
 import { AllHoldsInput, AllHoldsOutput } from "./dtos/all-holds.dto";
 import { AllSpecificHoldsInput, AllSpecificHoldsOutput } from "./dtos/all-specific-holds.dto";
 import { DeleteHoldInput, DeleteHoldOutput } from "./dtos/delete-hold.dto";
+import { HoldListOutput } from "./dtos/hold-list.dto";
 import { MyHoldsOutput } from "./dtos/my-holds.dto";
 import { RegisterHoldInput } from "./dtos/register-hold.dto";
 import { Hold } from "./entities/hold.entity";
@@ -84,6 +85,66 @@ export class HoldService {
                 holds:holdDistinctArray
             }
             
+        } catch (error) {
+            return {
+                ok:false,
+                error
+            }
+        }
+    }
+
+    async distinctHoldList(
+        authUser:User,
+        first?:number,
+        after?:number,
+    ):Promise<HoldListOutput> {
+        try {
+            const affiliatedBox = await this.affiliatedBoxes.findOne(authUser.affiliatedBoxId);
+            if(!affiliatedBox) {
+                return {
+                    ok:false,
+                    error:"Affiliated Box not found."
+                }
+            }
+            const holds = await this.holds.find({relations: ['owner'], where:{affiliatedBox}, });
+            holds.sort(function (a, b) {
+                return b.holdAt.getTime() - a.holdAt.getTime();
+            });
+            
+            let helpArray = new Array(); 
+            let holdDistinctArray = new Array(); 
+
+            // // holdAt 중복x 개수 뽑아내기
+            holds.forEach(hold => {
+                if(helpArray.indexOf(hold.holdAt.toISOString()) == -1) {
+                    holdDistinctArray.push(hold);
+                    helpArray.push(hold.holdAt.toISOString());
+                }
+            });
+
+            if(!holdDistinctArray.length) return { ok:true, edges:[] }
+            console.log(first);
+            console.log(after);
+            
+            const firstHold = first || 10;
+            const afterHold = after || 0;
+            const index = holdDistinctArray.findIndex((hold) => hold.id === afterHold);
+            const offset = index + 1;
+
+            const holdListResult = holdDistinctArray.slice(offset, offset + firstHold);
+            const lastHoldListResult = holdListResult[holdListResult.length - 1];
+
+            return {
+                ok:true,
+                pageInfo: {
+                    endCursor: lastHoldListResult.id,
+                    hasNextPage: offset + firstHold < holdDistinctArray.length,
+                },
+                edges: holdListResult.map((hold) => ({
+                    cursor: hold.id,
+                    node: hold,
+                }))
+            }
         } catch (error) {
             return {
                 ok:false,

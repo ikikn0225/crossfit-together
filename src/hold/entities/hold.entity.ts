@@ -38,3 +38,36 @@ export class Hold extends CoreEntity {
     @Column()
     affiliatedBoxId: number;
 }
+
+@InputType('HoldEdgeInputType', {isAbstract: true})
+@ObjectType()
+export class HoldEdge {
+
+    @Field(type => Number)
+    cursor:number;
+
+    @Field(type => Hold)
+    node:Hold;
+}
+
+@InputType('HoldPageInfoInputType', {isAbstract: true})
+@ObjectType()
+export class HoldPageInfo {
+
+    @Field(type => Number)
+    endCursor:number;
+
+    @Field(type => Boolean)
+    hasNextPage:boolean;
+}
+
+@InputType('HoldListResponseInputType', {isAbstract: true})
+@ObjectType()
+export class HoldListResponse {
+
+    @Field(type => [HoldEdge])
+    edges:HoldEdge[];
+
+    @Field(type => HoldPageInfo)
+    pageInfo:HoldPageInfo;
+}
