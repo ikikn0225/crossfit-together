@@ -7,6 +7,6 @@ export class MyNamedWodRecordsInput extends PickType(LeaderBoardNamedWod, ['name
 
 @ObjectType()
 export class MyNamedWodRecordsOutput extends CoreOutput {
-    @Field(type => [LeaderBoardNamedWod], {nullable:true})
-    lbNamedWods?:LeaderBoardNamedWod[];
+    @Field(type => LeaderBoardNamedWod, {nullable:true})
+    lbNamedWods?:LeaderBoardNamedWod;
 }

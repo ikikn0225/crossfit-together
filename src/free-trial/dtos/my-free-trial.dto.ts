@@ -11,6 +11,6 @@ export class MyFreeTrialInput {
 
 @ObjectType()
 export class MyFreeTrialOutput extends CoreOutput {
-    @Field(type => FreeTrial)
+    @Field(type => FreeTrial, {nullable:true})
     freeTrial?:FreeTrial;
 }

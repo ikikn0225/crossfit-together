@@ -166,12 +166,14 @@ export class FreeTrialService {
     ):Promise<MyFreeTrialOutput> {
         try {
             const freeTrial = await this.freeTrials.findOne({owner});
-            if(!freeTrial) {
+
+            if(!freeTrial || freeTrial == undefined) {
                 return {
                     ok:false,
                     error:"Hold not found."
                 }
             }
+            
             return {
                 ok:true,
                 freeTrial

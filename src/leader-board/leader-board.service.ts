@@ -116,6 +116,7 @@ export class LeaderBoardService {
         try {
             const affiliatedBox = await this.affiliatedBoxes.findOne( authUser.affiliatedBoxId );
             const oneRms = await this.lbOneRm.find({where:{oneRm, affiliatedBox}, relations:['owner'], order:{record:"DESC"}});
+            console.log(oneRms);
             
             if(!affiliatedBox) {
                 return {
@@ -148,10 +149,11 @@ export class LeaderBoardService {
         { oneRm }: MyOneRmRecordsInput
     ):Promise<MyOneRmRecordsOutput> {
         try {
-            const oneRms = await this.lbOneRm.find({oneRm, owner:authUser});
+            const lbOneRms = await this.lbOneRm.findOne({where:{oneRm, owner:authUser}, relations:['owner']});
+            
             return {
                 ok:true,
-                lbOneRms:oneRms,
+                lbOneRms,
             }
         } catch (error) {
             return {
@@ -279,10 +281,10 @@ export class LeaderBoardService {
         { namedWod }: MyNamedWodRecordsInput
     ):Promise<MyNamedWodRecordsOutput> {
         try {
-            const NamedWods = await this.lbNamedWod.find({namedWod, owner:authUser});
+            const lbNamedWods = await this.lbNamedWod.findOne({where:{namedWod, owner:authUser}, relations:['owner']});
             return {
                 ok:true,
-                lbNamedWods:NamedWods,
+                lbNamedWods,
             }
         } catch (error) {
             return {

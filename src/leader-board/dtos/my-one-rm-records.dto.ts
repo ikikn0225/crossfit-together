@@ -7,6 +7,6 @@ export class MyOneRmRecordsInput extends PickType(LeaderBoardOneRm, ['oneRm']) {
 
 @ObjectType()
 export class MyOneRmRecordsOutput extends CoreOutput {
-    @Field(type => [LeaderBoardOneRm], {nullable:true})
-    lbOneRms?:LeaderBoardOneRm[];
+    @Field(type => LeaderBoardOneRm, {nullable:true})
+    lbOneRms?:LeaderBoardOneRm;
 }
