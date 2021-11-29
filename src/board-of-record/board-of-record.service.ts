@@ -141,7 +141,8 @@ export class BorService {
     ):Promise<MyBoardofRecordOutput> {
         try {
             const wod = await this.wods.findOne({id});
-            const bors = await this.bors.find({wod, owner:authUser});
+            const bors = await this.bors.find({where:{wod, owner:authUser}, relations: ['owner', 'wod'], order:{createdAt:"DESC"}});
+            
             if(!wod) {
                 return {
                     ok:false,
