@@ -2,6 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { User } from "src/user/entities/user.entity";
 import { Repository } from "typeorm";
+import { AddTimeTableInput, AddTimeTableOutput } from "./dtos/add-time-table.dto";
 import { AllAffiliatedBoxesOutput } from "./dtos/all-affiliated-boxes.dto";
 import { CreateAffiliatedBoxInput, CreateAffiliatedBoxOutput } from "./dtos/create-box.dto";
 import { DeleteAffiliatedBoxOutput } from "./dtos/delete-box.dto";
@@ -109,6 +110,34 @@ export class AffiliatedBoxService {
             return {
                 users: users,
                 ok:true,
+            }
+        } catch (error) {
+            return {
+                ok:false,
+                error
+            }
+        }
+    }
+
+    async addTimeTable(
+        user: User,
+        {timeTableImg}: AddTimeTableInput 
+    ): Promise<AddTimeTableOutput> {
+        try {
+            const affiliatedBox = await this.box.findOne(user.affiliatedBoxId);
+// console.log("timeTableImg", affiliatedBox);
+
+            const edittimeTable = await this.box.save([{
+                id:user.affiliatedBoxId,
+                timeTableImg,
+                ...affiliatedBox
+            }]);
+            if(affiliatedBox) affiliatedBox.timeTableImg = timeTableImg;
+            await this.box.save(affiliatedBox);
+
+            
+            return {
+                ok:true
             }
         } catch (error) {
             return {

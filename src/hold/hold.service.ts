@@ -71,7 +71,6 @@ export class HoldService {
                     helpArray.push(hold.holdAt.toISOString());
                 }
             });
-            console.log(holdDistinctArray);
             
             
             if(!holds) {
@@ -183,7 +182,6 @@ export class HoldService {
         {affiliatedBoxId}:AllHoldsInput
     ):Promise<AllHoldsOutput> {
         try {
-            // const affiliatedBox = await this.affiliatedBoxes.findOne( authUser.affiliatedBoxId );
             const holds = await this.holds.find({relations: ['owner'], where:{affiliatedBoxId} });
             
             if(!holds) {

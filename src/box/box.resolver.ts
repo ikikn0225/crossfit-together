@@ -5,6 +5,7 @@ import { AuthGuard } from "src/auth/auth.guard";
 import { Role } from "src/auth/role-decorator";
 import { User } from "src/user/entities/user.entity";
 import { AffiliatedBoxService } from "./box.service";
+import { AddTimeTableInput, AddTimeTableOutput } from "./dtos/add-time-table.dto";
 import { AllAffiliatedBoxesOutput } from "./dtos/all-affiliated-boxes.dto";
 import { CreateAffiliatedBoxInput, CreateAffiliatedBoxOutput } from "./dtos/create-box.dto";
 import { DeleteAffiliatedBoxOutput } from "./dtos/delete-box.dto";
@@ -48,5 +49,14 @@ export class AffiliatedBoxResolver {
     @Query(returns => MyAffiliatedBoxUsersOutput)
     async myAffiliatedBoxUsers( @AuthUser() authUser:User ): Promise<MyAffiliatedBoxUsersOutput> {
         return this.boxService.myAffiliatedBoxUsers(authUser);
+    }
+
+    @Role(["Coach"])
+    @Mutation(returns => AddTimeTableOutput)
+    async addTimeTable( 
+        @AuthUser() authUser:User,
+        @Args('input') addTimeTableInput:AddTimeTableInput,
+    ): Promise<AddTimeTableOutput> {
+        return this.boxService.addTimeTable(authUser, addTimeTableInput);
     }
 }
