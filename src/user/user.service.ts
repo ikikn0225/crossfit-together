@@ -162,12 +162,10 @@ export class UserService {
             if(verification) {
                 verification.user.verified = true;
                 const user = await this.users.findOne(verification.user.id);
-                console.log(user);
                 
                 await this.users.save(verification.user);
 
                 const user1 = await this.users.findOne(verification.user.id);
-                console.log(user1);
                 
                 await this.verification.delete(verification.id);
                 return {ok:true};
