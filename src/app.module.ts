@@ -62,7 +62,7 @@ import { Category } from './wod/entities/category.entity';
       })
     }),
     TypeOrmModule.forRoot({
-      "type": "postgres",
+      type: "postgres",
       ...(process.env.DATABASE_URL 
         ? {url:process.env.DATABASE_URL} 
         : {
@@ -73,8 +73,8 @@ import { Category } from './wod/entities/category.entity';
             database: process.env.DB_NAME, 
             timezone: process.env.TIME_ZONE,
           }),
-      "synchronize": process.env.NODE_ENV !== 'production',
-      "logging": process.env.NODE_ENV !== 'production',
+      synchronize: process.env.NODE_ENV !== 'production',
+      logging: process.env.NODE_ENV !== 'production',
       entities:[ User,
         Verification,
         AffiliatedBox, 
