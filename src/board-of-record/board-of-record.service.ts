@@ -9,6 +9,7 @@ import { EditBorInput, EditBorOutput } from "./dtos/edit-record.dto";
 import { AllBoardofRecordInput, AllBoardofRecordOutput } from "./dtos/all-board-of-records.dto";
 import { Bor } from "./entities/board-of-record.entity";
 import { MyBoardofRecordInput, MyBoardofRecordOutput } from "./dtos/my-board-of-records.dto";
+import { AllMyBoardofRecordOutput } from "./dtos/all-my-board-of-records.dto";
 
 
 @Injectable()
@@ -149,6 +150,25 @@ export class BorService {
                     error:"Wod not found."
                 }
             }
+            return {
+                ok:true,
+                bors
+            }
+            
+        } catch (error) {
+            return {
+                ok:false,
+                error
+            }
+        }
+    }
+
+    async allMyBoardofRecords(
+        owner:User
+    ):Promise<AllMyBoardofRecordOutput> {
+        try {
+            const bors = await this.bors.find({owner});
+            
             return {
                 ok:true,
                 bors

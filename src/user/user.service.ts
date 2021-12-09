@@ -15,6 +15,7 @@ import { AffiliatedBox } from 'src/box/entities/box.entity';
 import { Context } from '@nestjs/graphql';
 import { Response } from 'express';
 import { encryptValue, decryptValue } from 'src/crypto';
+import { EditPasswordInput, EditPasswordOutput } from './dtos/edit-password.dto';
 
 @Injectable()
 export class UserService {
@@ -33,7 +34,7 @@ export class UserService {
         try {
             let user = await this.users.findOne({email});
             if(user) 
-                return {ok:false, error:'There is an existed user with the email'};
+                return {ok:false, error:'이미 회원이 가입된 이메일입니다.'};
             const affiliatedBox = await this.boxs.findOne({name:myBox});
             
         
@@ -49,7 +50,7 @@ export class UserService {
             this.mailService.sendVerificationEmail(user.name, user.email, verification.code);
             return {ok: true};
         } catch (e) {
-            return {ok:false, error:'Could not create account.'};
+            return {ok:false, error:'계정을 생성할 수 없습니다.'};
         }
     }
 
@@ -127,6 +128,40 @@ export class UserService {
         }
     }
 
+    async editPassword(
+        userId:number,
+        { email, currentPw, changePw }:EditPasswordInput
+    ):Promise<EditPasswordOutput> {
+        try {
+            const user = await this.users.findOne(userId);
+            const passwordCorrect = await user.checkPassword(decryptValue(user.password));
+            if(!passwordCorrect) {
+                return {
+                    ok:false,
+                    error: '현재 비밀번호가 틀렸습니다.',
+                }
+            }
+            
+            if(currentPw !== changePw) {
+                return {
+                    ok:false,
+                    error:"두 비밀번호가 다릅니다."
+                }
+            }
+            
+            if(changePw) {
+                user.password = changePw;
+            }
+            await this.users.save(user);
+            return {ok:true,}
+        } catch (error) {
+            return {
+                ok:false,
+                error: 'Could not update profile'
+            }
+        }
+    }
+
     async deleteAccount(
         userId:number
     ): Promise<DeleteAccountOutput> {
@@ -161,11 +196,8 @@ export class UserService {
             
             if(verification) {
                 verification.user.verified = true;
-                const user = await this.users.findOne(verification.user.id);
                 
                 await this.users.save(verification.user);
-
-                const user1 = await this.users.findOne(verification.user.id);
                 
                 await this.verification.delete(verification.id);
                 return {ok:true};

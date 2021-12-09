@@ -9,6 +9,7 @@ import { EditBorInput, EditBorOutput } from "./dtos/edit-record.dto";
 import { AllBoardofRecordInput, AllBoardofRecordOutput } from "./dtos/all-board-of-records.dto";
 import { Bor } from "./entities/board-of-record.entity";
 import { MyBoardofRecordInput, MyBoardofRecordOutput } from "./dtos/my-board-of-records.dto";
+import { AllMyBoardofRecordOutput } from "./dtos/all-my-board-of-records.dto";
 
 
 @Resolver(() => Bor)
@@ -59,5 +60,13 @@ export class BorResolver {
         @Args('input') myBoardofRecordInput:MyBoardofRecordInput
     ):Promise<MyBoardofRecordOutput> {
         return this.borService.myBoardofRecords(authUser, myBoardofRecordInput);
+    }
+
+    @Role(["Any"])
+    @Query(type => AllMyBoardofRecordOutput)
+    async allMyBoardofRecords(
+        @AuthUser() authUser:User,
+    ):Promise<AllMyBoardofRecordOutput> {
+        return this.borService.allMyBoardofRecords(authUser);
     }
 }

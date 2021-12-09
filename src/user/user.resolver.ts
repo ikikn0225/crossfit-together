@@ -6,6 +6,7 @@ import { AuthGuard } from 'src/auth/auth.guard';
 import { Role } from 'src/auth/role-decorator';
 import { CreateAccountInput, CreateAccountOutput } from './dtos/create-account.dto';
 import { DeleteAccountOutput } from './dtos/delete-account.dto';
+import { EditPasswordInput, EditPasswordOutput } from './dtos/edit-password.dto';
 import { EditProfileInput, EditProfileOutput } from './dtos/edit-profile.dto';
 import { LoginInput, LoginOutput } from './dtos/login.dto';
 import { UserProfileInput, UserProfileOutput } from './dtos/user-profile.dto';
@@ -61,6 +62,15 @@ export class UserResolver {
                     error
                 }
             }
+    }
+
+    @Role(['Any'])
+    @Mutation(returns => EditPasswordOutput)
+    @UseGuards(AuthGuard)
+    async editPassword(
+        @AuthUser() authUser:User,
+        @Args('input') editPasswordInput:EditPasswordInput):Promise<EditPasswordOutput> {
+            return this.userService.editPassword(authUser.id, editPasswordInput);
     }
 
     @Role(['Any'])
