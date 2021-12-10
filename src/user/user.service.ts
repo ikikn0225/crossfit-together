@@ -130,11 +130,18 @@ export class UserService {
 
     async editPassword(
         userId:number,
-        { email, currentPw, changePw }:EditPasswordInput
+        { currentPw, changePw }:EditPasswordInput
     ):Promise<EditPasswordOutput> {
         try {
-            const user = await this.users.findOne(userId);
-            const passwordCorrect = await user.checkPassword(decryptValue(user.password));
+            const user = await this.users.findOne(userId, {select:['id', 'password']});
+            if(!user) {
+                return {
+                    ok:false,
+                    error: '회원이 아닙니다.',
+                }
+            }
+
+            const passwordCorrect = await user.checkPassword(decryptValue(currentPw));
             if(!passwordCorrect) {
                 return {
                     ok:false,
@@ -142,22 +149,16 @@ export class UserService {
                 }
             }
             
-            if(currentPw !== changePw) {
-                return {
-                    ok:false,
-                    error:"두 비밀번호가 다릅니다."
-                }
-            }
             
             if(changePw) {
-                user.password = changePw;
+                user.password = decryptValue(changePw);
             }
             await this.users.save(user);
             return {ok:true,}
         } catch (error) {
             return {
                 ok:false,
-                error: 'Could not update profile'
+                error: '비밀번호를 변경할 수 없습니다.'
             }
         }
     }

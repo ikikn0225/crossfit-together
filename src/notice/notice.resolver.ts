@@ -14,7 +14,7 @@ import { NoticeService } from "./notice.service";
 export class NoticeResolver {
     constructor( private readonly noticeService:NoticeService, ){}
 
-    @Role(["Coach"])
+    @Role(["Any"])
     @Mutation(returns => CreateNoticeOutput)
     async createNotice(
         @AuthUser() authUser:User,
@@ -23,7 +23,7 @@ export class NoticeResolver {
         return this.noticeService.createNotice(authUser, createNoticeInput);
     }
 
-    @Role(["Coach"])
+    @Role(["Any"])
     @Mutation(type => EditNoticeOutput)
     async editNotice(
         @AuthUser() authUser:User,
@@ -32,7 +32,7 @@ export class NoticeResolver {
         return this.noticeService.editNotice(authUser, editNoticeInput);
     }
 
-    @Role(["Coach"])
+    @Role(["Any"])
     @Mutation(type => DeleteNoticeOutput)
     async deleteNotice(
         @AuthUser() authUser:User,

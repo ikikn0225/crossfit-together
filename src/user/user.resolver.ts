@@ -50,27 +50,29 @@ export class UserResolver {
     @UseGuards(AuthGuard)
     async editProfile(
         @AuthUser() authUser:User,
-        @Args('input') editProfileInput:EditProfileInput):Promise<EditProfileOutput> {
-            try {
-                await this.userService.editProfile(authUser.id, editProfileInput);
-                return {
-                    ok: true,
-                }
-            } catch (error) {
-                return {
-                    ok: false,
-                    error
-                }
+        @Args('input') editProfileInput:EditProfileInput
+    ):Promise<EditProfileOutput> {
+        try {
+            await this.userService.editProfile(authUser.id, editProfileInput);
+            return {
+                ok: true,
             }
+        } catch (error) {
+            return {
+                ok: false,
+                error
+            }
+        }
     }
 
     @Role(['Any'])
-    @Mutation(returns => EditPasswordOutput)
-    @UseGuards(AuthGuard)
+    @Mutation(type => EditPasswordOutput)
+    // @UseGuards(AuthGuard)
     async editPassword(
         @AuthUser() authUser:User,
-        @Args('input') editPasswordInput:EditPasswordInput):Promise<EditPasswordOutput> {
-            return this.userService.editPassword(authUser.id, editPasswordInput);
+        @Args('input') editPasswordInput:EditPasswordInput
+    ):Promise<EditPasswordOutput> {
+        return this.userService.editPassword(authUser.id, editPasswordInput);
     }
 
     @Role(['Any'])
