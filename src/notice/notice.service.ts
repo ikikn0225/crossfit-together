@@ -8,6 +8,7 @@ import { AllNoticeOutput } from "./dtos/all-notice.dto";
 import { CreateNoticeInput, CreateNoticeOutput } from "./dtos/create-notice.dto";
 import { DeleteNoticeInput, DeleteNoticeOutput } from "./dtos/delete-notice.dto";
 import { EditNoticeInput, EditNoticeOutput } from "./dtos/edit-notice.dto";
+import { OneNoticeInput, OneNoticeOutput } from "./dtos/one-notice.dto";
 import { Notice } from "./entities/notice.entity";
 
 
@@ -118,7 +119,7 @@ export class NoticeService {
                 }
             }
             // const [notices, countNotice] = await this.notices.findAndCount({relations:["owner"], where: {affiliatedBox}});
-            const notices = await this.notices.find({relations:["owner"], where: {affiliatedBox}});
+            const notices = await this.notices.find({relations:["owner"], where: {affiliatedBox}, order:{createdAt:"DESC"}});
             if(!notices) {
                 return {
                     ok:false,
@@ -133,6 +134,29 @@ export class NoticeService {
             return {
                 ok:false,
                 error
+            }
+        }
+    }
+
+    async findNoticeById({noticeId}: OneNoticeInput): Promise<OneNoticeOutput> {
+        try {
+            const notice = await this.notices.findOne(noticeId
+                , { relations: ['comments', 'owner'], }
+            );
+            if(!notice) {
+                return {
+                    ok:false,
+                    error:'Notice not found',
+                };
+            }
+            return {
+                ok: true,
+                notice,
+            };
+        } catch (error) {
+            return {
+                ok: false,
+                error:'Could not find notice',
             }
         }
     }

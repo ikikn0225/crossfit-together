@@ -6,6 +6,7 @@ import { AllNoticeOutput } from "./dtos/all-notice.dto";
 import { CreateNoticeInput, CreateNoticeOutput } from "./dtos/create-notice.dto";
 import { DeleteNoticeInput, DeleteNoticeOutput } from "./dtos/delete-notice.dto";
 import { EditNoticeInput, EditNoticeOutput } from "./dtos/edit-notice.dto";
+import { OneNoticeInput, OneNoticeOutput } from "./dtos/one-notice.dto";
 import { Notice } from "./entities/notice.entity";
 import { NoticeService } from "./notice.service";
 
@@ -47,5 +48,13 @@ export class NoticeResolver {
         @AuthUser() authUser:User
     ):Promise<AllNoticeOutput> {
         return this.noticeService.allNotices(authUser);
+    }
+
+    @Role(["Any"])
+    @Query(type => OneNoticeOutput)
+    async notice(
+        @Args('input') oneNoticeInput:OneNoticeInput
+    ):Promise<OneNoticeOutput> {
+        return this.noticeService.findNoticeById(oneNoticeInput);
     }
 }
