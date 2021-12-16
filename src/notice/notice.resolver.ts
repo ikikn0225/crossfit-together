@@ -37,9 +37,9 @@ export class NoticeResolver {
     @Mutation(type => DeleteNoticeOutput)
     async deleteNotice(
         @AuthUser() authUser:User,
-        @Args('input') editNoticeInput:DeleteNoticeInput
+        @Args('input') deleteNoticeInput:DeleteNoticeInput
     ):Promise<DeleteNoticeOutput> {
-        return this.noticeService.deleteNotice(authUser, editNoticeInput);
+        return this.noticeService.deleteNotice(authUser, deleteNoticeInput);
     }
 
     @Role(["Any"])

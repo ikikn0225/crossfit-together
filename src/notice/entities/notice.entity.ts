@@ -17,7 +17,7 @@ export class Notice extends CoreEntity {
     title: string;
 
     @Field(type => String, {nullable:true})
-    @Column()
+    @Column({ nullable: true })
     @IsString()
     coverImg?: string;
 
