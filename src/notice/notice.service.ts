@@ -8,6 +8,7 @@ import { AllNoticeOutput } from "./dtos/all-notice.dto";
 import { CreateNoticeInput, CreateNoticeOutput } from "./dtos/create-notice.dto";
 import { DeleteNoticeInput, DeleteNoticeOutput } from "./dtos/delete-notice.dto";
 import { EditNoticeInput, EditNoticeOutput } from "./dtos/edit-notice.dto";
+import { NoticeListOutput } from "./dtos/notice-list.dto";
 import { OneNoticeInput, OneNoticeOutput } from "./dtos/one-notice.dto";
 import { Notice } from "./entities/notice.entity";
 
@@ -102,6 +103,54 @@ export class NoticeService {
             return {
                 ok:false,
                 error
+            }
+        }
+    }
+
+    async noticeList(
+        authUser:User,
+        first?:number,
+        after?:number
+    ): Promise<NoticeListOutput> {
+        try {
+            const affiliatedBox = await this.affiliatedBoxes.findOne(authUser.affiliatedBoxId);
+            if(!affiliatedBox) {
+                return {
+                    ok:false,
+                    error:"Affiliated Box not found."
+                }
+            }
+            
+            
+            const notices = await this.notices.find({relations:["owner"], where: {affiliatedBox}, order:{createdAt:"DESC"}});
+            
+            if(!notices.length) return { ok:true, edges:[] }
+            
+            const firstNotice = first || 5;
+            const afterNotice = after || 0;
+            const index = notices.findIndex((notice) => notice.id === afterNotice);
+            const offset = index + 1;
+
+            const noticeListResult = notices.slice(offset, offset + firstNotice);
+            const lastNoticeListResult = noticeListResult[noticeListResult.length - 1];
+            
+            return {
+                ok:true,
+                pageInfo: {
+                    endCursor: lastNoticeListResult.id,
+                    hasNextPage: offset + firstNotice < notices.length,
+                },
+                edges: noticeListResult.map((notice) => ({
+                    cursor: notice.id,
+                    node: notice,
+                }))
+            }
+            
+            
+        } catch (error) {
+            return {
+                ok:false,
+                error:'WodList not found'
             }
         }
     }

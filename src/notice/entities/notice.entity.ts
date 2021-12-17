@@ -59,3 +59,35 @@ export class Notice extends CoreEntity {
     comments: Comment[];
 }
 
+@InputType('NoticeEdgeInputType', {isAbstract: true})
+@ObjectType()
+export class NoticeEdge {
+
+    @Field(type => Number)
+    cursor:number;
+
+    @Field(type => Notice)
+    node:Notice;
+}
+
+@InputType('NoticePageInfoInputType', {isAbstract: true})
+@ObjectType()
+export class NoticePageInfo {
+
+    @Field(type => Number)
+    endCursor:number;
+
+    @Field(type => Boolean)
+    hasNextPage:boolean;
+}
+
+@InputType('NoticeListResponseInputType', {isAbstract: true})
+@ObjectType()
+export class NoticeListResponse {
+
+    @Field(type => [NoticeEdge])
+    edges:NoticeEdge[];
+
+    @Field(type => NoticePageInfo)
+    pageInfo:NoticePageInfo;
+}
