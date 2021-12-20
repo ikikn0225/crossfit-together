@@ -118,7 +118,7 @@ export class ReplyService {
                     error:"Comment not found."
                 }
             }
-            const replies = await this.replies.find({relations:["comment", "owner"], where: {comment}});
+            const replies = await this.replies.find({relations:["comment", "owner"], where: {comment}, order:{createdAt:"DESC"}});
             return {
                 ok:true,
                 replies
