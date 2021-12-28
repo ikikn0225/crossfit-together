@@ -10,8 +10,8 @@ export class JwtService {
         @Inject(CONFIG_OPTIONS) private readonly options: JwtModuleOptions,
     ) {}
 
-    sign(userId: number): string {
-        return jwt.sign({id: userId}, this.options.privateKey, { expiresIn: '15m' });
+    sign(userId: number, expiresIn: string): string {
+        return jwt.sign({id: userId}, this.options.privateKey, { expiresIn });
     }
     refreshSign(userId: number): string {
         return jwt.sign({id: userId}, this.options.privateKey, { expiresIn: '7d' });
