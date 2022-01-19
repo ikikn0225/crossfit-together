@@ -13,9 +13,12 @@ import { MailService } from 'src/mail/mail.service';
 import { DeleteAccountOutput } from './dtos/delete-account.dto';
 import { AffiliatedBox } from 'src/box/entities/box.entity';
 import { Context } from '@nestjs/graphql';
-import { Response } from 'express';
+import { Request, Response } from 'express';
 import { encryptValue, decryptValue } from 'src/crypto';
 import { EditPasswordInput, EditPasswordOutput } from './dtos/edit-password.dto';
+import { GraphQLExecutionContext } from 'graphql-tools';
+
+const EXPIRED = 1000 * 60 * 60 * 24 * 7;
 
 @Injectable()
 export class UserService {
@@ -54,8 +57,12 @@ export class UserService {
         }
     }
 
-    async login({ email, password }: LoginInput): Promise<LoginOutput> {
+    async login(
+        { email, password }: LoginInput,
+        context: GraphQLExecutionContext,
+        ): Promise<LoginOutput> {
         try {
+            
             const user = await this.users.findOne({email}, {select:['id', 'password']});
             if(!user) 
                 return {
@@ -68,12 +75,12 @@ export class UserService {
                     ok:false,
                     error: 'Password is not correct',
                 }
-            const token = await this.jwtService.sign(user.id, '15m');
+            const accessToken = await this.jwtService.sign(user.id, '1m');
             const refreshToken = await this.jwtService.sign(user.id, '7d');
             this.updateRefreshToken(user.id, refreshToken);
             return {
                 ok: true,
-                token:encryptValue(token),
+                token:encryptValue(accessToken),
                 refreshToken:encryptValue(refreshToken),
             }
         } catch (error) {

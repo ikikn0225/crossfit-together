@@ -269,7 +269,6 @@ export class WodService {
     async findCategoryBySlug({ slug }:CategoryInput): Promise<CategoryOutput> {
         try {
             const category = await this.categories.findOne({slug},);
-            console.log(category);
             
             if(!category) {
                 return {
@@ -282,7 +281,6 @@ export class WodService {
                     category,
                 }
             });
-            console.log(wods);
             
             return {
                 ok:true,

@@ -125,7 +125,6 @@ export class AffiliatedBoxService {
     ): Promise<AddTimeTableOutput> {
         try {
             const affiliatedBox = await this.box.findOne(user.affiliatedBoxId);
-// console.log("timeTableImg", affiliatedBox);
 
             const edittimeTable = await this.box.save([{
                 id:user.affiliatedBoxId,

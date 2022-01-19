@@ -116,7 +116,6 @@ export class LeaderBoardService {
         try {
             const affiliatedBox = await this.affiliatedBoxes.findOne( authUser.affiliatedBoxId );
             const oneRms = await this.lbOneRm.find({where:{oneRm, affiliatedBox}, relations:['owner'], order:{record:"DESC"}});
-            console.log(oneRms);
             
             if(!affiliatedBox) {
                 return {
