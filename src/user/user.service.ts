@@ -75,7 +75,7 @@ export class UserService {
                     ok:false,
                     error: 'Password is not correct',
                 }
-            const accessToken = await this.jwtService.sign(user.id, '1m');
+            const accessToken = await this.jwtService.sign(user.id, '8h');
             const refreshToken = await this.jwtService.sign(user.id, '7d');
             this.updateRefreshToken(user.id, refreshToken);
             return {
