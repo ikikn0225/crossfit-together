@@ -30,32 +30,32 @@ export class AuthGuard implements CanActivate {
         }
         // console.log(ctx.headers);
         
-        ctx.user = await this.validateToken(ctx.headers.authorization, ctx.headers.refreshtoken);
+        ctx.user = await this.validateToken(ctx.headers.authorization);
         if(roles.includes('Any'))
             return true;
         return roles.includes(ctx.user.role);
     }
 
-    async validateToken(accessToken: string, refreshToken: string) {
-        let token:string;
-        console.log(refreshToken);
+    async validateToken(accessToken: string) {
+        // let token:string;
+        // console.log(refreshToken);
         
-        if (accessToken.split(' ')[0] !== 'Bearer') {
-            if (refreshToken.split(' ')[0] !== 'Bearer') {
-                throw new HttpException('Invalid accessToken', HttpStatus.UNAUTHORIZED);
-            }else {
-                const decoded = jwt.verify(decryptValue(refreshToken.split(' ')[1]), process.env.PRIVATE_KEY);
-                const { user } = await this.usersService.findById(decoded["id"]);
-                // const isVerifiedToken = await user.verifyRefresh();
-                // if(!isVerifiedToken) throw new HttpException('Invalid refreshToken', HttpStatus.UNAUTHORIZED);
-                token = await this.jwtService.sign(user.id, '1m');
-            }
-        } else {
-            token = accessToken.split(' ')[1];
-        }
+        // if (accessToken.split(' ')[0] !== 'Bearer') {
+        //     if (refreshToken.split(' ')[0] !== 'Bearer') {
+        //         throw new HttpException('Invalid accessToken', HttpStatus.UNAUTHORIZED);
+        //     }else {
+        //         const decoded = jwt.verify(decryptValue(refreshToken.split(' ')[1]), process.env.PRIVATE_KEY);
+        //         const { user } = await this.usersService.findById(decoded["id"]);
+        //         // const isVerifiedToken = await user.verifyRefresh();
+        //         // if(!isVerifiedToken) throw new HttpException('Invalid refreshToken', HttpStatus.UNAUTHORIZED);
+        //         token = await this.jwtService.sign(user.id, '1m');
+        //     }
+        // } else {
+        //     token = accessToken.split(' ')[1];
+        // }
 
         try {
-            const decoded = jwt.verify(decryptValue(token), process.env.PRIVATE_KEY);
+            const decoded = jwt.verify(decryptValue(accessToken.split(' ')[1]), process.env.PRIVATE_KEY);
             const { user } = await this.usersService.findById(decoded["id"]);
             return user;
         } catch (err) {
