@@ -18,7 +18,9 @@ export class BorService {
         @InjectRepository(Bor)
             private readonly bors:Repository<Bor>,
         @InjectRepository(Wod)
-            private readonly wods:Repository<Wod>
+            private readonly wods:Repository<Wod>,
+        @InjectRepository(User)
+            private readonly users:Repository<User>
     ) {}
 
     async createBor(
@@ -138,11 +140,12 @@ export class BorService {
 
     async myBoardofRecords(
         authUser:User,
-        {id}:MyBoardofRecordInput
+        myBoardofRecordInput:MyBoardofRecordInput
     ):Promise<MyBoardofRecordOutput> {
         try {
-            const wod = await this.wods.findOne({id});
-            const bors = await this.bors.find({where:{wod, owner:authUser}, relations: ['owner', 'wod'], order:{createdAt:"DESC"}});
+            const wod = await this.wods.findOne(myBoardofRecordInput.id);
+            const user = await this.users.findOne(myBoardofRecordInput.userId);
+            const bors = await this.bors.find({where:{wod, owner:user}, relations: ['owner', 'wod'], order:{createdAt:"DESC"}});
             
             if(!wod) {
                 return {
